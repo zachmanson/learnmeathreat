@@ -1,0 +1,116 @@
+# Requirements: Learn Me the Threat
+
+**Defined:** 2026-09-03
+**Core Value:** A reader with zero background can start at post one and, post by post, actually understand how quantum computing threatens Bitcoin — every concept explained before it's used, math rendered properly, nothing assumed.
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### Content Pipeline
+
+- [ ] **CONT-01**: Posts are authored as local Markdown files with frontmatter (title, date, tags, excerpt)
+- [ ] **CONT-02**: Inline (`$..$`) and block (`$$..$$`) LaTeX math in post Markdown renders as typeset equations, in the same font as body text, at build time (no client-side rendering flash)
+- [ ] **CONT-03**: Every heading in a post gets a stable, clickable anchor link (`#id`) that survives future content edits
+- [ ] **CONT-04**: Code blocks in posts render with syntax highlighting
+- [ ] **CONT-05**: Each post displays an estimated reading time
+
+### Pages
+
+- [ ] **PAGE-01**: Homepage lists all posts in reverse-chronological order, each showing title and short excerpt
+- [ ] **PAGE-02**: Each post has its own page at a clean URL (e.g. `/posts/how-bitcoin-transactions-work/`)
+- [ ] **PAGE-03**: Static `/about` page exists with user-authored content
+- [ ] **PAGE-04**: Top nav shows Home and About, present on every page
+- [ ] **PAGE-05**: A custom 404 page is shown for unknown URLs
+
+### Design
+
+- [ ] **DSGN-01**: Site uses a minimal, text-first visual design — no stock photography, no hero images, no marketing-site styling
+- [ ] **DSGN-02**: Headers use a distinct monospace or serif accent font, separate from body text
+- [ ] **DSGN-03**: Site supports a light/dark theme toggle, and math/code rendering is legible and correctly themed in both modes
+- [ ] **DSGN-04**: Layout is readable on mobile screens
+
+### Discovery & Sharing
+
+- [ ] **DISC-01**: Site publishes an RSS/Atom feed of all posts
+- [ ] **DISC-02**: Site publishes a sitemap.xml listing all pages
+- [ ] **DISC-03**: Each post has per-page title, meta description, and Open Graph tags derived from its frontmatter, so shared links render properly on X/Discord/Reddit
+
+### Analytics
+
+- [ ] **ANLY-01**: Site tracks pageviews via a privacy-friendly, cookieless analytics tool (Cloudflare Web Analytics)
+
+### Deployment
+
+- [ ] **DEPL-01**: Site is deployed on Cloudflare Pages' free tier, auto-deploying on every push to the git repo
+- [ ] **DEPL-02**: Site is reachable at a working `*.pages.dev` URL as an intermediate milestone before the custom domain is attached
+- [ ] **DEPL-03**: Documented steps exist for attaching the learnmethethreat.com custom domain to the deployed site once it's registered (registration itself is a manual, out-of-band step by the user)
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Navigation Polish
+
+- **NAV-01**: Table of contents on long posts, auto-generated from anchor headings
+- **NAV-02**: Previous/Next post navigation, based on publish-date order
+
+### Content Growth
+
+- **GROW-01**: Series/Topics page grouping posts by their existing tag frontmatter
+- **GROW-02**: Client-side search across posts (once archive is large enough, ~15-20+ posts)
+
+### Polish
+
+- **POLSH-01**: Copy-to-clipboard button on code blocks
+- **POLSH-02**: Print/PDF-friendly stylesheet
+- **POLSH-03**: Footnote/aside styling convention for definitions and tangents
+
+## Out of Scope
+
+Explicitly excluded. Documented to prevent scope creep.
+
+| Feature | Reason |
+|---------|--------|
+| Comments section | Requires moderation and either a backend or third-party embed; no community yet for a single-author launch |
+| Newsletter/email signup | Needs an email provider integration and ongoing list hygiene; RSS feed already covers "notify me of new posts" for this audience |
+| Web-based CMS/editor | Adds a backend, auth surface, and hosting complexity that conflicts with the $0 static-hosting, no-backend constraint; local Markdown + git is the confirmed workflow |
+| Domain registration | Hosting is free, but registering learnmethethreat.com is a manual billing step with a registrar, outside what a build phase can do |
+| Analytics beyond pageviews (heatmaps, session replay) | Conflicts with the privacy-friendly, cookieless requirement |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| CONT-01 | TBD | Pending |
+| CONT-02 | TBD | Pending |
+| CONT-03 | TBD | Pending |
+| CONT-04 | TBD | Pending |
+| CONT-05 | TBD | Pending |
+| PAGE-01 | TBD | Pending |
+| PAGE-02 | TBD | Pending |
+| PAGE-03 | TBD | Pending |
+| PAGE-04 | TBD | Pending |
+| PAGE-05 | TBD | Pending |
+| DSGN-01 | TBD | Pending |
+| DSGN-02 | TBD | Pending |
+| DSGN-03 | TBD | Pending |
+| DSGN-04 | TBD | Pending |
+| DISC-01 | TBD | Pending |
+| DISC-02 | TBD | Pending |
+| DISC-03 | TBD | Pending |
+| ANLY-01 | TBD | Pending |
+| DEPL-01 | TBD | Pending |
+| DEPL-02 | TBD | Pending |
+| DEPL-03 | TBD | Pending |
+
+**Coverage:**
+- v1 requirements: 21 total
+- Mapped to phases: 0 (roadmap not yet created)
+- Unmapped: 21 ⚠️
+
+---
+*Requirements defined: 2026-09-03*
+*Last updated: 2026-09-03 after initial definition*
