@@ -52,13 +52,15 @@ Phase 1 uses the OS default font stack (`system-ui, -apple-system, "Segoe UI", R
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 18px | 400 (regular) | 1.6 |
-| Label (meta: date, tags, nav) | 14px | 400 (regular) | 1.4 |
+| Label (meta: date, tags, nav) / Code | 14px | 400 (regular) | 1.4 (1.5 for code blocks) |
 | Heading (h2/h3 in post body) | 24px | 600 (semibold) | 1.25 |
 | Display (page title: post title, "About", homepage intro) | 32px | 600 (semibold) | 1.2 |
 
-Only 2 weights declared (400, 600) — matches the design-contract limit and keeps the base stylesheet minimal, consistent with "hand-built, not templated."
+Only 2 weights declared (400, 600) and 4 sizes total — matches the design-contract limit and keeps the base stylesheet minimal, consistent with "hand-built, not templated."
 
-Code blocks: 15px, `ui-monospace` stack, line-height 1.5, no wrap — horizontal scroll on overflow (required for mobile legibility of long code lines, per DSGN-04 which lands in Phase 2 but should not be architecturally precluded now).
+**Visual anchor:** Post title (Display, 32px/600) is the primary focal point on both the homepage list and individual post pages; meta (date/tags, Label size) and excerpt/body text (Body size) form the secondary reading order beneath it. Headings within post body (24px) subdivide content but never compete with the page-level Display title for visual weight.
+
+Code blocks: 14px (shared with Label size — see table above), `ui-monospace` stack, line-height 1.5, no wrap — horizontal scroll on overflow (required for mobile legibility of long code lines, per DSGN-04 which lands in Phase 2 but should not be architecturally precluded now).
 
 ---
 
