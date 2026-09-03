@@ -44,6 +44,34 @@ A reader with zero background can start at post one and, post by post, actually 
 - Content pipeline is collaborative: user writes rough thoughts/structure, Claude helps polish into finished posts; both need to be able to edit the same Markdown/LaTeX source files.
 - Domain (learnmethethreat.com) is not yet registered.
 
+## Writing Style
+
+Guide for how Claude should clean up the user's drafts into finished posts. **This section evolves as we iterate** — update it whenever the user gives feedback on a draft that reveals a preference not yet captured here, so the same correction doesn't need repeating.
+
+**Process:** User writes raw, stream-of-consciousness drafts — messy on purpose, real thoughts and technical content dumped first. Claude's job is structure, clarity, and flow, not a rewrite. The result should read like the user spent an hour editing their own rambling voice memo into readable prose — not like it was generated from a content brief.
+
+**Tone:**
+- Casual, conversational, a little self-deprecating — not academic, not corporate, not "content marketing" voice
+- Honest hedging, not overclaiming: "I'm not saying this is some lifelong passion" / "I'm not claiming to be an expert, but..."
+- Confident about what the user actually knows (real credentials — MSc, published research on this exact topic) without ever sounding arrogant or condescending to the reader
+- Teaching energy — reads like someone who enjoys explaining, not someone reciting facts
+- Dry humor is fine; don't force jokes or reintroduce rambling/filler when cleaning up
+
+**Cut:**
+- Corporate/AI-smoothed phrases: "delve into," "in today's landscape," "it's worth noting that," "navigate the complexities of," em dashes used as a crutch, triplet lists ("clear, concise, and compelling")
+- Hype: "game-changing," "revolutionary," "unprecedented"
+- False modesty or false confidence beyond what the user actually said
+
+**Keep:**
+- The user's hedges and honest asides, even if informal
+- Plain, direct sentences — short over ornate
+- Technical precision — never smooth over accuracy for style; if a caveat is needed to be correct, keep it, just phrase it cleanly
+- The user's actual reasoning/logic flow — don't reorder their explanation to fit a "better" structure unless it genuinely improves clarity; ask if unsure
+
+**Rigor bar:**
+- Every technical claim must be accurate — no smoothing over details for readability
+- Explain jargon the first time it's used, assume zero prior knowledge — but don't re-explain what's already covered in earlier posts; reference back instead
+
 ## Constraints
 
 - **Budget**: Effectively $0 for hosting — must use a free static hosting tier (Cloudflare Pages chosen). Domain registration is a separate, small, one-time-ish cost the user will handle themselves.
@@ -70,6 +98,9 @@ This document evolves at phase transitions and milestone boundaries.
 4. Decisions to log? → Add to Key Decisions
 5. "What This Is" still accurate? → Update if drifted
 
+**Any time** (not tied to phase transitions):
+- User gives feedback on a cleaned-up draft ("I don't like how you did X") that reveals a preference not yet captured → update Writing Style immediately so the same correction isn't needed twice
+
 **After each milestone** (via `/gsd:complete-milestone`):
 1. Full review of all sections
 2. Core Value check — still the right priority?
@@ -77,4 +108,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-09-03 after initialization*
+*Last updated: 2026-09-03 after adding Writing Style guide*
