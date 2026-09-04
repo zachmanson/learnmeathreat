@@ -1,0 +1,73 @@
+/* Phase 1 UI-SPEC contract for rendered post content: heading anchors,
+   block/inline math, and code blocks. Reuses global.css's --space-* and
+   colour custom properties - no new tokens defined here.
+   Explicitly out of scope this phase: dark mode, custom fonts,
+   copy-to-clipboard, table of contents (Phase 2 / v2 backlog). */
+
+/* --- Heading anchors (CONT-03) --- */
+
+h2,
+h3 {
+  position: relative;
+}
+
+.heading-anchor-link {
+  position: absolute;
+  left: calc(-1 * var(--space-md));
+  transform: translateX(-100%);
+  text-decoration: none;
+}
+
+.heading-anchor {
+  display: inline-block;
+  padding-right: var(--space-sm);
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+.heading-anchor-link:focus-visible .heading-anchor {
+  opacity: 1;
+}
+
+/* --- Math (CONT-02) --- */
+
+.katex-display {
+  margin: var(--space-lg) 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.katex {
+  font-size: 1em;
+}
+
+/* --- Code blocks (CONT-04) --- */
+
+pre {
+  /* Shiki inlines its own background-color/color on the <pre> element
+     itself (per-block, not per-token) - override with !important so the
+     UI-SPEC's light --surface background wins over that inline style.
+     Per-token <span style="color:..."> colours inside are left untouched. */
+  background: var(--surface) !important;
+  padding: var(--space-sm) var(--space-md);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+code {
+  background: var(--surface);
+  padding: 0 var(--space-xs);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 14px;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
