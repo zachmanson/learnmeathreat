@@ -25,7 +25,7 @@ export default defineConfig({
         [rehypeAutolinkHeadings, {
           behavior: 'prepend',
           content: h('span.heading-anchor', '#'),
-          properties: { ariaHidden: 'true', tabIndex: -1, class: 'heading-anchor-link' },
+          properties: { class: 'heading-anchor-link' },
         }],
       ],
     }),
