@@ -30,7 +30,7 @@ A reader with zero background can start at post one and, post by post, actually 
   5. Posts are authored as local Markdown files with typed frontmatter (title, date, tags, excerpt) validated at build time
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Walking skeleton: Astro scaffold, posts collection + Zod schema, seed posts, Layout/nav, homepage, About, dynamic post route (CONT-01, PAGE-01..04)
+- [x] 01-01-PLAN.md — Walking skeleton: Astro scaffold, posts collection + Zod schema, seed posts, Layout/nav, homepage, About, dynamic post route (CONT-01, PAGE-01..04)
 - [ ] 01-02-PLAN.md — Markdown rendering pipeline: unified() processor, KaTeX math, heading anchors, Shiki highlighting, UI-SPEC prose styling (CONT-02..04)
 
 Also produced: `01-SKELETON.md` — architectural contract for all later phases.
@@ -72,14 +72,14 @@ Also produced: `01-SKELETON.md` — architectural contract for all later phases.
   1. Visiting the `*.pages.dev` URL shows a working homepage listing at least one real post, matching the latest git push
   2. Pushing a commit to the git repo triggers an automatic redeploy visible at the `*.pages.dev` URL
   3. Cloudflare Web Analytics tracks pageviews without cookies
-  4. A documented, step-by-step checklist exists for attaching the learnmethethreat.com custom domain once it's registered
+  4. A documented, step-by-step checklist exists for attaching the learnmeathreat.com custom domain once it's registered
 **Plans**: TBD
 
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffolding & Core Content Pipeline | 0/2 | Planned | - |
+| 1. Scaffolding & Core Content Pipeline | 1/2 | In Progress|  |
 | 2. Visual Design & Theming | 0/TBD | Not started | - |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
