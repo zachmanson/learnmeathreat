@@ -27,6 +27,14 @@
   grid-area: right;
 }
 
+.right-nav-title {
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 var(--space-md) 0;
+}
+
 /* Sticky/scroll behaviour is Claude's Discretion (not locked by CONTEXT.md) -
    keeps the sidebar contents reachable alongside a long article without
    requiring the reader to scroll back to the top. */

@@ -1,0 +1,104 @@
+---
+// Per-page "On this page" outline with IntersectionObserver scroll-spy
+// (D-08..D-11). Markup only - all styling lives in src/styles/nav-sidebars.css
+// per the plan's interfaces contract, matching LeftNavSidebar.astro's
+// precedent (the grid parent needs to reach into this component's markup,
+// so no scoped Astro style block here).
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+
+// Build a nested outline from the flat headings array (already filtered to
+// depth 2/3 by the caller - this is the single source of truth, no second
+// heading-collection pass is performed here). Each depth-2 heading starts a
+// new top-level item; each depth-3 heading nests under the most recent
+// depth-2 item. A depth-3 heading appearing before any depth-2 heading is
+// promoted to top level rather than dropped.
+type OutlineItem = { slug: string; text: string; children: OutlineItem[] };
+
+const outline: OutlineItem[] = [];
+for (const heading of headings) {
+  if (heading.depth === 2) {
+    outline.push({ slug: heading.slug, text: heading.text, children: [] });
+  } else {
+    const parent = outline[outline.length - 1];
+    if (parent) {
+      parent.children.push({ slug: heading.slug, text: heading.text, children: [] });
+    } else {
+      outline.push({ slug: heading.slug, text: heading.text, children: [] });
+    }
+  }
+}
+---
+
+<aside class="right-nav" aria-labelledby="on-this-page">
+  <p id="on-this-page" class="right-nav-title">On this page</p>
+  <ul>
+    {outline.map((item) => (
+      <li>
+        <a href={`#${item.slug}`}>{item.text}</a>
+        {item.children.length > 0 && (
+          <ul>
+            {item.children.map((child) => (
+              <li>
+                <a href={`#${child.slug}`}>{child.text}</a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))}
+  </ul>
+</aside>
+
+<script is:inline>
+  // This directive must stay on the tag above — Astro would otherwise
+  // module-wrap/defer this script, but the observer needs the article's
+  // heading elements and the sidebar's own links to already exist in the
+  // DOM (same reasoning as ThemeToggle.astro/LeftNavSidebar.astro's
+  // placement at the bottom of the component, not in Layout's head).
+  const outlineHeadingEls = [...document.querySelectorAll('article :is(h2, h3)[id]')];
+  const outlineLinkMap = new Map(
+    [...document.querySelectorAll('.right-nav a[href^="#"]')].map((a) => [
+      a.getAttribute('href').slice(1),
+      a,
+    ])
+  );
+
+  if (!('IntersectionObserver' in window)) {
+    // Outline links still work as plain in-page anchors, only the
+    // scroll-spy active highlight is lost - fail silently per the
+    // project's error-state convention.
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const link = outlineLinkMap.get(entry.target.id);
+          if (link) {
+            link.classList.toggle('is-active', entry.isIntersecting);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -80% 0px', threshold: 0 }
+    );
+
+    for (const headingEl of outlineHeadingEls) {
+      observer.observe(headingEl);
+    }
+  }
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  for (const link of outlineLinkMap.values()) {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const targetId = link.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      location.hash = targetId;
+      target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    });
+  }
+</script>
