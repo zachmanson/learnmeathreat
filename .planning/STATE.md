@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 02.1 UI-SPEC approved
-last_updated: "2026-09-04T15:29:21.034Z"
-last_activity: 2026-09-04 -- Phase 02.1 planning complete
+last_updated: "2026-09-04T15:34:24.617Z"
+last_activity: 2026-09-04 -- Phase 02.1 execution started
 progress:
   total_phases: 5
   completed_phases: 2
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-03)
 
 **Core value:** A reader with zero background can start at post one and, post by post, actually understand how quantum computing threatens Bitcoin — every concept explained before it's used, math rendered properly, nothing assumed.
-**Current focus:** Phase 02.1 — reading-navigation
+**Current focus:** Phase 02.1 — reading-navigation-collapsible-left-table-of-contents-sideba
 
 ## Current Position
 
-Phase: 02 — COMPLETE
-Plan: 3 of 3
-Status: Ready to execute
-Last activity: 2026-09-04 -- Phase 02.1 planning complete
+Phase: 02.1 (reading-navigation-collapsible-left-table-of-contents-sideba) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 02.1
+Last activity: 2026-09-04 -- Phase 02.1 execution started
 
 Progress: [░░░░░░░░░░] 0%
 
