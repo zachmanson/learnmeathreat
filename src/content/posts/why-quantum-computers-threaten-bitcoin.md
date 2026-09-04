@@ -2,7 +2,7 @@
 title: Why Quantum Computers Threaten Bitcoin
 date: 2026-09-03
 tags: ["Quantum Algorithms"]
-excerpt: "Shor's algorithm can factor the huge numbers that keep Bitcoin's public keys secret, once a quantum computer is big enough to run it."
+excerpt: "Quantum computers can factor the huge numbers that keep Bitcoin public keys secret, once they are big enough to run the algorithm behind it."
 slug: why-quantum-computers-threaten-bitcoin
 draft: false
 ---

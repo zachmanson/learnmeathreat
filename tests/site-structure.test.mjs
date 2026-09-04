@@ -15,7 +15,7 @@ const distDir = path.join(repoRoot, 'dist');
 // The exact excerpt string for the published seed post. Task 2 copies this
 // byte-for-byte into the post's frontmatter `excerpt` field.
 export const PUBLISHED_EXCERPT =
-  "Shor's algorithm can factor the huge numbers that keep Bitcoin's public keys secret, once a quantum computer is big enough to run it.";
+  'Quantum computers can factor the huge numbers that keep Bitcoin public keys secret, once they are big enough to run the algorithm behind it.';
 
 const PUBLISHED_TITLE = 'Why Quantum Computers Threaten Bitcoin';
 const DRAFT_TITLE = "Shor's Algorithm in Plain English";
