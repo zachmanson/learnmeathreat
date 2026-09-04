@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import LeftNavSidebar from '../../components/LeftNavSidebar.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -15,11 +16,14 @@ const { Content } = await render(post);
 ---
 
 <Layout title={post.data.title}>
-  <article>
-    <h1>{post.data.title}</h1>
-    <p class="meta">
-      {post.data.date.toDateString()} &middot; {post.data.tags.join(', ')}
-    </p>
-    <Content />
-  </article>
+  <div class="post-layout">
+    <LeftNavSidebar currentSlug={post.data.slug} currentTags={post.data.tags} />
+    <article>
+      <h1>{post.data.title}</h1>
+      <p class="meta">
+        {post.data.date.toDateString()} &middot; {post.data.tags.join(', ')}
+      </p>
+      <Content />
+    </article>
+  </div>
 </Layout>

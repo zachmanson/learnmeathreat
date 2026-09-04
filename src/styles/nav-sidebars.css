@@ -1,0 +1,157 @@
+/* Implements the 02.1-UI-SPEC.md contract for reading-navigation chrome:
+   the site-wide left table-of-contents sidebar and the per-page right
+   "on this page" sidebar (populated by plan 02.1-03). Defines zero new
+   custom properties - reuses global.css's --space-*, --bg, --accent,
+   --text, --muted tokens exactly, per 02.1-UI-SPEC.md Color/Spacing.
+   This file closes out the ToC scope that prose.css's own header comment
+   deferred to NAV-01 ("table of contents... v2 backlog"). */
+
+.post-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(68ch, 100%) minmax(0, 1fr);
+  grid-template-areas: "left content right";
+  column-gap: var(--space-xl);
+  align-items: start;
+}
+
+.post-layout > article {
+  grid-area: content;
+  min-width: 0;
+}
+
+.left-nav-wrap {
+  grid-area: left;
+}
+
+.right-nav {
+  grid-area: right;
+}
+
+/* Sticky/scroll behaviour is Claude's Discretion (not locked by CONTEXT.md) -
+   keeps the sidebar contents reachable alongside a long article without
+   requiring the reader to scroll back to the top. */
+.left-nav-wrap,
+.right-nav {
+  position: sticky;
+  top: var(--space-lg);
+  max-height: calc(100vh - (2 * var(--space-lg)));
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Default (inactive) link color is --muted, matching the existing
+   .site-header nav a convention; hover/focus promotes to --text. */
+.left-nav a,
+.right-nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.left-nav a:hover,
+.left-nav a:focus-visible,
+.right-nav a:hover,
+.right-nav a:focus-visible {
+  color: var(--text);
+}
+
+/* Current-page / in-view link: accent + weight 600 only - explicitly no
+   border, background, or indicator bar (D-09). */
+.left-nav a[aria-current="page"],
+.right-nav a.is-active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.left-nav summary {
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  padding: var(--space-sm) 0;
+}
+
+.left-nav summary::marker {
+  color: var(--muted);
+}
+
+.left-nav details + details {
+  margin-top: var(--space-lg);
+}
+
+.left-nav ul,
+.right-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.left-nav li + li,
+.right-nav li + li {
+  margin-top: var(--space-sm);
+}
+
+/* Right-sidebar h3 sub-items indent under their preceding h2 (populated by
+   plan 02.1-03). */
+.right-nav ul ul {
+  padding-left: var(--space-md);
+}
+
+/* Mobile left-sidebar toggle - hidden on desktop, shown only below the
+   900px collapse breakpoint (D-13). */
+#left-nav-toggle {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .post-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "left" "content" "right";
+  }
+
+  .left-nav-wrap {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    margin-bottom: var(--space-lg);
+  }
+
+  .left-nav {
+    display: none;
+  }
+
+  .left-nav[data-open="true"] {
+    display: block;
+  }
+
+  /* Hidden entirely on mobile, no toggle (D-11). */
+  .right-nav {
+    display: none;
+  }
+
+  /* Mirrors the sanctioned 44x44 tap-target exception from global.css's
+     #theme-toggle block verbatim (same rationale: utility control, must
+     not compete with the 10% accent budget). */
+  #left-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  #left-nav-toggle:hover,
+  #left-nav-toggle:focus-visible {
+    color: var(--text);
+  }
+
+  #left-nav-toggle svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+}

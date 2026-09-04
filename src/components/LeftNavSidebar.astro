@@ -1,0 +1,101 @@
+---
+// Site-wide chapter table of contents (D-03..D-07). Markup only - all
+// styling lives in src/styles/nav-sidebars.css per the plan's interfaces
+// contract, matching prose.css's precedent (the grid parent needs to reach
+// into this component's markup, so no scoped Astro style block here).
+import { getCollection } from 'astro:content';
+
+interface Props {
+  currentSlug: string;
+  currentTags: string[];
+}
+
+const { currentSlug, currentTags } = Astro.props;
+
+// !data.draft is mandatory (T-02.1-03) so drafts never leak into the
+// site-wide contents.
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  // Oldest-first within a chapter reads like book-chapter order
+  // (RESEARCH.md Assumption A2, Claude's Discretion).
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+
+// Assumption A1 (RESEARCH.md): a post belongs to exactly one chapter, its
+// first tag - avoids the same post appearing in multiple chapters, which
+// would be confusing given the "book chapters" mental model (D-04).
+const chapters = new Map<string, typeof posts>();
+for (const post of posts) {
+  const chapterName = post.data.tags[0] ?? 'Uncategorized';
+  if (!chapters.has(chapterName)) chapters.set(chapterName, []);
+  chapters.get(chapterName)!.push(post);
+}
+
+const currentChapter = currentTags[0] ?? 'Uncategorized';
+---
+
+<div class="left-nav-wrap">
+  <button
+    id="left-nav-toggle"
+    type="button"
+    aria-label="Show contents"
+    aria-expanded="false"
+    aria-controls="site-contents"
+  >
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  <nav id="site-contents" class="left-nav" aria-label="Site contents">
+    {[...chapters.entries()].map(([chapterName, chapterPosts]) => (
+      <details open={chapterName === currentChapter}>
+        <summary>{chapterName}</summary>
+        <ul>
+          {chapterPosts.map((post) => (
+            <li>
+              <a
+                href={`/posts/${post.data.slug}/`}
+                aria-current={post.data.slug === currentSlug ? 'page' : undefined}
+              >
+                {post.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
+    ))}
+  </nav>
+</div>
+
+<script is:inline>
+  // This directive must stay on the tag above — Astro would otherwise
+  // module-wrap/defer this script, but the click handler needs the button
+  // and nav to already exist in the DOM (same reasoning as
+  // ThemeToggle.astro's placement).
+  const leftNavToggleBtn = document.getElementById('left-nav-toggle');
+  const siteContentsNav = document.getElementById('site-contents');
+
+  function updateLeftNavToggleLabel() {
+    const isOpen = siteContentsNav.getAttribute('data-open') === 'true';
+    leftNavToggleBtn.setAttribute('aria-label', isOpen ? 'Hide contents' : 'Show contents');
+    leftNavToggleBtn.setAttribute('aria-expanded', String(isOpen));
+  }
+
+  leftNavToggleBtn.addEventListener('click', () => {
+    const isOpen = siteContentsNav.getAttribute('data-open') === 'true';
+    if (isOpen) {
+      siteContentsNav.removeAttribute('data-open');
+    } else {
+      siteContentsNav.setAttribute('data-open', 'true');
+    }
+    updateLeftNavToggleLabel();
+  });
+</script>
