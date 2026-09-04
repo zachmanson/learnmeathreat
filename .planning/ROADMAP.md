@@ -1,4 +1,4 @@
-# Roadmap: Learn Me the Threat
+# Roadmap: Learn Me a Threat
 
 **Mode:** mvp (Vertical MVP — each phase delivers an end-to-end working slice)
 **Granularity:** coarse

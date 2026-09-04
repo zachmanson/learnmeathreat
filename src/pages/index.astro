@@ -6,8 +6,8 @@ const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title="Learn Me the Threat">
-  <h1>Learn Me the Threat</h1>
+<Layout title="Learn Me a Threat">
+  <h1>Learn Me a Threat</h1>
   <p class="intro">
     A ground-up explainer series on how quantum computing threatens
     Bitcoin, one concept at a time, nothing assumed.

@@ -1,8 +1,8 @@
-# Learn Me the Threat
+# Learn Me a Threat
 
 ## What This Is
 
-A personal blog (learnmethethreat.com) publishing a rigorous, self-contained explainer series on quantum computing threats to cryptocurrencies, starting with Bitcoin. Written in the style of learnmeabitcoin.com: casual tone, ground-up rigor, no prior knowledge assumed — every concept is explained before it's used. The user writes rough drafts (Markdown + LaTeX), Claude helps clean them into polished posts.
+A personal blog (learnmeathreat.com) publishing a rigorous, self-contained explainer series on quantum computing threats to cryptocurrencies, starting with Bitcoin. Written in the style of learnmeabitcoin.com: casual tone, ground-up rigor, no prior knowledge assumed — every concept is explained before it's used. The user writes rough drafts (Markdown + LaTeX), Claude helps clean them into polished posts.
 
 ## Core Value
 
@@ -34,7 +34,7 @@ A reader with zero background can start at post one and, post by post, actually 
 - Comments — reading-only site for v1, avoids moderation overhead
 - Email/newsletter signup — not needed for v1, revisit if audience grows
 - Web-based post editor / CMS — user is comfortable editing Markdown files directly with git; avoids the extra build/auth surface
-- Domain registration itself — hosting is free (Cloudflare Pages), but the learnmethethreat.com domain still needs to be purchased from a registrar (~$10-15/yr); this is a manual account/billing step outside what Claude can do
+- Domain registration itself — hosting is free (Cloudflare Pages), but the learnmeathreat.com domain still needs to be purchased from a registrar (~$10-15/yr); this is a manual account/billing step outside what Claude can do
 
 ## Context
 
@@ -42,7 +42,7 @@ A reader with zero background can start at post one and, post by post, actually 
 - Design reference/tone model: learnmeabitcoin.com — casual voice, rigorous ground-up explanations.
 - Aesthetic goal: "lean and hand-built," not templated — minimal, confident, understated, text is the star.
 - Content pipeline is collaborative: user writes rough thoughts/structure, Claude helps polish into finished posts; both need to be able to edit the same Markdown/LaTeX source files.
-- Domain (learnmethethreat.com) is not yet registered.
+- Domain (learnmeathreat.com) is not yet registered.
 
 ## Writing Style
 

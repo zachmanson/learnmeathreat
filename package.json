@@ -1,5 +1,5 @@
 {
-  "name": "learn-me-the-threat",
+  "name": "learn-me-a-threat",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.0",
-    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/newsreader": "^5.3.0",
     "astro": "^7.3.1",
     "katex": "^0.18.5",
     "rehype-autolink-headings": "^7.1.0",

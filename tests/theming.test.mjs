@@ -134,7 +134,7 @@ test('7. the built stylesheet contains a [data-theme="dark"] selector', () => {
 
 test('8. the built stylesheet contains all five dark hex values', () => {
   const css = readDistCss();
-  const darkHexValues = ['#09090b', '#18181b', '#60a5fa', '#fafafa', '#a1a1aa'];
+  const darkHexValues = ['#1e1e1e', '#2a2a2a', '#34d399', '#fafafa', '#a1a1aa'];
   for (const hex of darkHexValues) {
     assert.match(css, new RegExp(escapeRegExp(hex), 'i'), `built CSS missing dark hex value ${hex}`);
   }
@@ -237,12 +237,12 @@ test('16. prose.css no longer contains the stale "out of scope this phase: dark 
   );
 });
 
-test('17. the built CSS contains IBM Plex Mono inside a font-family declaration', () => {
+test('17. the built CSS contains Newsreader inside a font-family declaration', () => {
   const css = readDistCss();
   assert.match(
     css,
-    /font-family\s*:[^;}]*IBM Plex Mono/i,
-    'built CSS missing a font-family declaration containing IBM Plex Mono'
+    /font-family\s*:[^;}]*Newsreader/i,
+    'built CSS missing a font-family declaration containing Newsreader'
   );
 });
 
@@ -261,40 +261,40 @@ test('19. no built page references fonts.googleapis.com or fonts.gstatic.com', (
   }
 });
 
-test('20. (scope guardrail) only h1 and h2, h3 selectors declare IBM Plex Mono in global.css', () => {
+test('20. (scope guardrail) only h1 and h2, h3 selectors declare Newsreader in global.css', () => {
   const globalCssPath = path.join(repoRoot, 'src', 'styles', 'global.css');
   // Strip /* ... */ comments before splitting into rule blocks so a comment
   // preceding a selector can't be mistaken for part of the selector.
   const css = readFileSync(globalCssPath, 'utf-8').replace(/\/\*[\s\S]*?\*\//g, '');
   const blocks = css.split('}');
   for (const block of blocks) {
-    if (!block.includes('IBM Plex Mono')) continue;
+    if (!block.includes('Newsreader')) continue;
     const braceIndex = block.indexOf('{');
     if (braceIndex === -1) continue;
     const rawSelector = block.slice(0, braceIndex);
     const normalizedSelector = rawSelector.replace(/\s+/g, ' ').trim();
     assert.ok(
       normalizedSelector === 'h1' || normalizedSelector === 'h2, h3',
-      `src/styles/global.css: selector "${normalizedSelector}" declares IBM Plex Mono but is not h1 or ` +
+      `src/styles/global.css: selector "${normalizedSelector}" declares Newsreader but is not h1 or ` +
         `h2, h3 - per D-02/02-UI-SPEC.md's guardrail the mono accent must be confined to headings only`
     );
   }
 });
 
-test('21. (fake-bold guard) every @font-face block naming IBM Plex Mono declares font-weight 600', () => {
+test('21. (fake-bold guard) every @font-face block naming Newsreader declares font-weight 600', () => {
   const css = readDistCss();
   const fontFaceBlocks = css.match(/@font-face\s*\{[^}]*\}/g) || [];
-  const plexBlocks = fontFaceBlocks.filter((block) => block.includes('IBM Plex Mono'));
-  assert.ok(plexBlocks.length > 0, 'expected at least one @font-face block naming IBM Plex Mono in built CSS');
+  const plexBlocks = fontFaceBlocks.filter((block) => block.includes('Newsreader'));
+  assert.ok(plexBlocks.length > 0, 'expected at least one @font-face block naming Newsreader in built CSS');
   for (const block of plexBlocks) {
     assert.match(
       block,
       /font-weight\s*:\s*600/,
-      `@font-face block for IBM Plex Mono does not declare font-weight: 600: ${block}`
+      `@font-face block for Newsreader does not declare font-weight: 600: ${block}`
     );
     assert.ok(
       !/font-weight\s*:\s*400/.test(block) && !/font-weight\s*:\s*700/.test(block),
-      `@font-face block for IBM Plex Mono declares an unimported weight (400 or 700): ${block}`
+      `@font-face block for Newsreader declares an unimported weight (400 or 700): ${block}`
     );
   }
 });

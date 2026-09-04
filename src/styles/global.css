@@ -15,13 +15,14 @@
 }
 
 /* Dark mode is a value swap on the same 5 role names from :root
-   (per 02-UI-SPEC.md Color). --accent is lightened from blue-700 to
-   blue-400 for contrast on near-black (measured ~7.9:1 against #09090B,
-   above the WCAG AA 4.5:1 threshold for body-size link text). */
+   (per 02-UI-SPEC.md Color). --bg is a soft charcoal (Notepad++/VS-Code-style
+   dark, not near-black) and --accent is a muted emerald green rather than
+   blue - measured ~8.7:1 against #1E1E1E, above the WCAG AA 4.5:1 threshold
+   for body-size link text, and well short of saturated "matrix green". */
 [data-theme="dark"] {
-  --bg: #09090B;
-  --surface: #18181B;
-  --accent: #60A5FA;
+  --bg: #1E1E1E;
+  --surface: #2A2A2A;
+  --accent: #34D399;
   --text: #FAFAFA;
   --muted: #A1A1AA;
 }
@@ -46,15 +47,15 @@ pre {
   font-size: 14px;
 }
 
-/* The mono heading accent is deliberately confined to h1-h3 per D-02/D-03
+/* The serif heading accent is deliberately confined to h1-h3 per D-02/D-03
    (02-UI-SPEC.md Typography guardrail) - it must not extend to .site-title,
-   nav, body, meta, or the theme toggle, or it reads as "look, a terminal
-   font" instead of a quiet accent. tests/theming.test.mjs enforces this scope. */
+   nav, body, meta, or the theme toggle, or it reads as a mismatched brand
+   font instead of a quiet accent. tests/theming.test.mjs enforces this scope. */
 h1 {
   font-size: 32px;
   font-weight: 600;
   line-height: 1.2;
-  font-family: 'IBM Plex Mono', ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-family: 'Newsreader', Georgia, "Times New Roman", serif;
 }
 
 h2,
@@ -62,7 +63,7 @@ h3 {
   font-size: 24px;
   font-weight: 600;
   line-height: 1.25;
-  font-family: 'IBM Plex Mono', ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-family: 'Newsreader', Georgia, "Times New Roman", serif;
 }
 
 a {

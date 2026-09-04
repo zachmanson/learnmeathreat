@@ -1,6 +1,6 @@
 # Project Research Summary
 
-**Project:** Learn Me the Threat
+**Project:** Learn Me a Threat
 **Domain:** Personal static Markdown+LaTeX technical blog (long-form, sequential, math-heavy explainer series), deployed to Cloudflare Pages
 **Researched:** 2026-09-03
 **Confidence:** HIGH

@@ -1,4 +1,4 @@
-# Requirements: Learn Me the Threat
+# Requirements: Learn Me a Threat
 
 **Defined:** 2026-09-03
 **Core Value:** A reader with zero background can start at post one and, post by post, actually understand how quantum computing threatens Bitcoin — every concept explained before it's used, math rendered properly, nothing assumed.
@@ -44,7 +44,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **DEPL-01**: Site is deployed on Cloudflare Pages' free tier, auto-deploying on every push to the git repo
 - [ ] **DEPL-02**: Site is reachable at a working `*.pages.dev` URL as an intermediate milestone before the custom domain is attached
-- [ ] **DEPL-03**: Documented steps exist for attaching the learnmethethreat.com custom domain to the deployed site once it's registered (registration itself is a manual, out-of-band step by the user)
+- [ ] **DEPL-03**: Documented steps exist for attaching the learnmeathreat.com custom domain to the deployed site once it's registered (registration itself is a manual, out-of-band step by the user)
 
 ## v2 Requirements
 
@@ -75,7 +75,7 @@ Explicitly excluded. Documented to prevent scope creep.
 | Comments section | Requires moderation and either a backend or third-party embed; no community yet for a single-author launch |
 | Newsletter/email signup | Needs an email provider integration and ongoing list hygiene; RSS feed already covers "notify me of new posts" for this audience |
 | Web-based CMS/editor | Adds a backend, auth surface, and hosting complexity that conflicts with the $0 static-hosting, no-backend constraint; local Markdown + git is the confirmed workflow |
-| Domain registration | Hosting is free, but registering learnmethethreat.com is a manual billing step with a registrar, outside what a build phase can do |
+| Domain registration | Hosting is free, but registering learnmeathreat.com is a manual billing step with a registrar, outside what a build phase can do |
 | Analytics beyond pageviews (heatmaps, session replay) | Conflicts with the privacy-friendly, cookieless requirement |
 
 ## Traceability

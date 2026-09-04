@@ -1,9 +1,9 @@
 <!-- GSD:project-start source:PROJECT.md -->
 ## Project
 
-**Learn Me the Threat**
+**Learn Me a Threat**
 
-A personal blog (learnmethethreat.com) publishing a rigorous, self-contained explainer series on quantum computing threats to cryptocurrencies, starting with Bitcoin. Written in the style of learnmeabitcoin.com: casual tone, ground-up rigor, no prior knowledge assumed — every concept is explained before it's used. The user writes rough drafts (Markdown + LaTeX), Claude helps clean them into polished posts.
+A personal blog (learnmeathreat.com) publishing a rigorous, self-contained explainer series on quantum computing threats to cryptocurrencies, starting with Bitcoin. Written in the style of learnmeabitcoin.com: casual tone, ground-up rigor, no prior knowledge assumed — every concept is explained before it's used. The user writes rough drafts (Markdown + LaTeX), Claude helps clean them into polished posts.
 
 **Core Value:** A reader with zero background can start at post one and, post by post, actually understand how quantum computing threatens Bitcoin — every concept explained before it's used, math rendered properly, nothing assumed.
 
@@ -58,7 +58,7 @@ A personal blog (learnmethethreat.com) publishing a rigorous, self-contained exp
 ## Stack Patterns by Variant
 - Use Astro's Content Collections query API (`getCollection('posts')` + `.filter()` on the `tags` field) to build a tag-index page.
 - Because the tag frontmatter schema is already defined via Zod from day one, no data migration is needed later — the grouping page is purely additive.
-- Cloudflare Pages supports adding a custom domain from the Pages project's "Custom domains" tab once the domain (learnmethethreat.com) is registered and its DNS is on Cloudflare (or a CNAME is pointed at the `*.pages.dev` deployment).
+- Cloudflare Pages supports adding a custom domain from the Pages project's "Custom domains" tab once the domain (learnmeathreat.com) is registered and its DNS is on Cloudflare (or a CNAME is pointed at the `*.pages.dev` deployment).
 - No stack change required — this is a hosting-config step, not a code step.
 ## Version Compatibility
 | Package A | Compatible With | Notes |
@@ -109,7 +109,15 @@ Use these entry points:
 Do not make direct repo edits outside a GSD workflow unless the user explicitly asks to bypass it.
 <!-- GSD:workflow-end -->
 
+## Agent skills
 
+### Issue tracker
+
+Issues are tracked as local markdown files under `.scratch/`. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context layout: `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
 
 <!-- GSD:profile-start -->
 ## Developer Profile
