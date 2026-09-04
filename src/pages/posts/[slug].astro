@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import LeftNavSidebar from '../../components/LeftNavSidebar.astro';
+import RightNavSidebar from '../../components/RightNavSidebar.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -12,7 +13,13 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+// D-08: outline covers only h2/h3 - h4-h6 are excluded even though plan 01
+// numbers them. Note (RESEARCH.md Pitfall 2): headings[].text for a heading
+// containing inline $math$ may come back garbled from KaTeX's dual-
+// representation markup - neither seed post has math in a heading today, so
+// no cleanup pass is added now; revisit when the first such heading ships.
+const outlineHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
 <Layout title={post.data.title}>
@@ -25,5 +32,6 @@ const { Content } = await render(post);
       </p>
       <Content />
     </article>
+    {outlineHeadings.length >= 2 && <RightNavSidebar headings={outlineHeadings} />}
   </div>
 </Layout>
