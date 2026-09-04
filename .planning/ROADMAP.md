@@ -12,6 +12,7 @@ A reader with zero background can start at post one and, post by post, actually 
 
 - [x] **Phase 1: Scaffolding & Core Content Pipeline** - Astro site with real Markdown+LaTeX posts, homepage, about page, and nav, working end-to-end (completed 2026-09-04)
 - [x] **Phase 2: Visual Design & Theming** - Minimal text-first design with accent font and light/dark theme, legible on mobile (completed 2026-09-04)
+- [ ] **Phase 02.1: Reading Navigation** - Sequential heading anchors, site-wide chapter sidebar, and on-this-page outline with scroll-spy (INSERTED, urgent)
 - [ ] **Phase 3: Discovery & Distribution Polish** - RSS, sitemap, OG tags, reading time, and 404 page so posts are shareable and discoverable
 - [ ] **Phase 4: Deployment & Custom Domain** - Site live on Cloudflare Pages with analytics and a documented custom-domain attachment path
 
@@ -53,6 +54,25 @@ Plans:
 - [x] 02-03-PLAN.md — IBM Plex Mono heading accent (self-hosted, weight 600, h1-h3 only) + full-phase human visual verification (DSGN-01, DSGN-02, DSGN-04)
 **UI hint**: yes
 
+### Phase 02.1: Reading navigation: collapsible left table-of-contents sidebar, right on-this-page section-header sidebar with scroll-spy, and a shorter stable anchor-link hash scheme for headings (INSERTED)
+
+**Goal**: A reader inside any post can see where that post sits in the whole site (chapter contents on the left), where they are within the post (outline on the right, tracking scroll position), and can share a section link that survives later edits to that heading's wording.
+**Depends on**: Phase 2
+**Requirements**: NAV-01a, NAV-01b, NAV-01c
+**Success Criteria** (what must be TRUE):
+  1. Every post heading (h2-h6) has a short sequential anchor id (`#h-1`, `#h-2`, ...); the existing hover-reveal `#` link points at it, and no text-derived slugs remain
+  2. On desktop, a left sidebar on post pages lists every published post grouped into tag-derived chapters, with only the current post's chapter expanded and the current post's link marked
+  3. On desktop, a right "On this page" sidebar lists the current post's h2/h3 headings (h3 nested), and the in-view section is highlighted with accent color + bold only
+  4. Posts with fewer than 2 qualifying headings render no right sidebar; below 900px the right sidebar is gone entirely and the left sidebar is reachable via a single icon toggle
+  5. The post content column is unchanged — still 68ch and page-centered — and the homepage and /about page render with no sidebars
+**Plans**: 3 plans
+
+Plans:
+- [ ] 02.1-01-PLAN.md — Sequential `#h-N` anchor scheme: custom rehype plugin replacing rehype-slug, pipeline rewire, test lock-in (NAV-01a)
+- [ ] 02.1-02-PLAN.md — 3-column grid + left site-wide chapter contents sidebar with `<details>` accordion and mobile toggle (NAV-01b)
+- [ ] 02.1-03-PLAN.md — Right "On this page" outline with IntersectionObserver scroll-spy + full-phase human visual verification (NAV-01c)
+**UI hint**: yes
+
 ### Phase 3: Discovery & Distribution Polish
 **Goal**: Posts are discoverable through standard technical-reader channels (feed readers, search engines, link shares) and unknown URLs are handled gracefully.
 **Mode:** mvp
@@ -85,6 +105,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
 | 2. Visual Design & Theming | 3/3 | Complete   | 2026-09-04 |
+| 02.1 Reading Navigation | 0/3 | Not started | - |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
@@ -92,3 +113,4 @@ Plans:
 *Roadmap created: 2026-09-03*
 *Phase 1 planned: 2026-09-03*
 *Phase 2 planned: 2026-09-04*
+*Phase 02.1 planned: 2026-09-04*

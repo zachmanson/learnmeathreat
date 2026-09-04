@@ -23,6 +23,15 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PAGE-04**: Top nav shows Home and About, present on every page
 - [ ] **PAGE-05**: A custom 404 page is shown for unknown URLs
 
+### Reading Navigation
+
+Added 2026-09-04 when Phase 02.1 was inserted. Pulls v2's NAV-01 forward and expands it into three
+distinct capabilities (see `.planning/phases/02.1-.../02.1-CONTEXT.md` D-01 through D-13).
+
+- [ ] **NAV-01a**: Post heading anchors use short, position-based sequential ids (`#h-1`, `#h-2`, ...) covering h2-h6, so a shared section link survives later rewording of that heading
+- [ ] **NAV-01b**: Post pages show a site-wide table-of-contents sidebar listing every published post, grouped into collapsible chapters derived dynamically from existing tag frontmatter
+- [ ] **NAV-01c**: Post pages show an "on this page" outline of the current post's h2/h3 headings, with the in-view section highlighted as the reader scrolls
+
 ### Design
 
 - [x] **DSGN-01**: Site uses a minimal, text-first visual design — no stock photography, no hero images, no marketing-site styling
@@ -52,7 +61,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ### Navigation Polish
 
-- **NAV-01**: Table of contents on long posts, auto-generated from anchor headings
+- ~~**NAV-01**: Table of contents on long posts, auto-generated from anchor headings~~ — superseded, pulled forward and expanded into v1 NAV-01a/NAV-01b/NAV-01c by inserted Phase 02.1
 - **NAV-02**: Previous/Next post navigation, based on publish-date order
 
 ### Content Growth
@@ -98,6 +107,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DSGN-02 | Phase 2 | Complete |
 | DSGN-03 | Phase 2 | Complete |
 | DSGN-04 | Phase 2 | Complete |
+| NAV-01a | Phase 02.1 | Pending |
+| NAV-01b | Phase 02.1 | Pending |
+| NAV-01c | Phase 02.1 | Pending |
 | DISC-01 | Phase 3 | Pending |
 | DISC-02 | Phase 3 | Pending |
 | DISC-03 | Phase 3 | Pending |
@@ -107,10 +119,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEPL-03 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 21 total
-- Mapped to phases: 21 (roadmap created)
+- v1 requirements: 24 total (21 original + NAV-01a/b/c added with inserted Phase 02.1)
+- Mapped to phases: 24
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-09-03*
-*Last updated: 2026-09-03 after roadmap creation*
+*Last updated: 2026-09-04 — NAV-01a/b/c added for inserted Phase 02.1*
