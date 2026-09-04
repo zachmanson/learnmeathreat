@@ -74,6 +74,10 @@ test('5. at least two <h2> tags carry a non-empty id attribute', () => {
 });
 
 test('6. heading anchor link href matches the first h2 id', () => {
+  // Under the D-01 sequential-id scheme (see src/lib/rehype-sequential-ids.mjs),
+  // the first h2's id is now expected to be "h-1" rather than a text-derived
+  // slug. This assertion logic is scheme-agnostic (it derives the id and
+  // checks the matching href), so it still holds.
   const html = readPostHtml();
   const idMatch = html.match(/<h2[^>]*\sid="([^"]+)"/);
   assert.ok(idMatch, 'expected to find an h2 with an id attribute');
@@ -110,4 +114,36 @@ test('8. no client-side rendering script for katex/mathjax/prism/highlight', () 
   const forbidden = /katex|mathjax|prism|highlight/i;
   const offending = scriptTags.filter((tag) => forbidden.test(tag));
   assert.deepEqual(offending, [], `found client-side rendering script tag(s): ${offending.join(', ')}`);
+});
+
+test('9. heading ids follow the sequential h-N scheme', () => {
+  const html = readPostHtml();
+  const ids = [...html.matchAll(/<h[2-6][^>]*\sid="([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(ids.length >= 2, `expected >= 2 heading ids, found ${ids.length}`);
+  const expected = ids.map((_, i) => `h-${i + 1}`);
+  assert.deepEqual(ids, expected, `expected sequential h-N ids, got ${ids.join(', ')}`);
+});
+
+test('10. no text-derived slug ids remain', () => {
+  const html = readPostHtml();
+  const headingTags = [...html.matchAll(/<h[2-6][^>]*>/g)].map((m) => m[0]);
+  for (const tag of headingTags) {
+    const idMatch = tag.match(/\sid="([^"]+)"/);
+    if (!idMatch) continue;
+    assert.match(
+      idMatch[1],
+      /^h-\d+$/,
+      `expected heading id to match ^h-\\d+$, found "${idMatch[1]}" (text-derived slug leaked through)`
+    );
+  }
+});
+
+test('11. h1 carries no h-N id', () => {
+  const html = readPostHtml();
+  const h1Match = html.match(/<h1[^>]*>/);
+  assert.ok(h1Match, 'expected to find an h1 tag');
+  assert.ok(
+    !/\sid="h-/.test(h1Match[0]),
+    `expected h1 to carry no h-N id (D-02), found: ${h1Match[0]}`
+  );
 });
