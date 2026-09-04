@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Layout title="Learn Me the Threat">
+  <h1>Learn Me the Threat</h1>
+  <p class="intro">
+    A ground-up explainer series on how quantum computing threatens
+    Bitcoin, one concept at a time, nothing assumed.
+  </p>
+
+  {posts.length === 0 ? (
+    <div class="empty-state">
+      <h2>No posts yet.</h2>
+      <p>Check back soon &mdash; the first post is on its way.</p>
+    </div>
+  ) : (
+    <ul class="post-list">
+      {posts.map((post) => (
+        <li>
+          <a class="post-title" href={`/posts/${post.data.slug}/`}>{post.data.title}</a>
+          <p class="meta">
+            {post.data.date.toDateString()} &middot; {post.data.tags.join(', ')}
+          </p>
+          <p class="excerpt">{post.data.excerpt}</p>
+        </li>
+      ))}
+    </ul>
+  )}
+</Layout>
+
+<style>
+  .intro {
+    color: var(--muted);
+  }
+
+  .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .post-title {
+    font-size: 24px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .post-list .meta {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.4;
+    margin: var(--space-xs) 0;
+  }
+
+  .post-list .excerpt {
+    margin: 0;
+  }
+</style>
