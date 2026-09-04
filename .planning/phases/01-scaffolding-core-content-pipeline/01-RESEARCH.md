@@ -349,12 +349,13 @@ Astro's default `trailingSlash` config produces clean `/posts/slug/`-style URLs 
 | A2 | Default `output: 'static'` + trailing-slash link convention produces clean `/posts/slug/` URLs without extra `trailingSlash` config | Code Examples | Low — if URLs render as `/posts/slug` (no trailing slash) or double-slash, a one-line `trailingSlash: 'always'` config fixes it; doesn't change the architecture |
 | A3 | Draft posts should be excluded from BOTH the homepage list and direct-URL access (not just the homepage list) | Pattern 2 / D-03 | Medium — CONTEXT.md's D-03 only explicitly requires hiding drafts from the homepage list; whether direct-URL access to a draft post should also 404 is not decided. Recommend confirming with the user during planning; current example filters both for simplicity, but this is a discretionary choice, not a locked decision |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should draft posts be reachable by direct URL, or fully unbuilt?**
    - What we know: D-03 requires drafts hidden from the homepage list.
    - What's unclear: Whether a draft's individual `/posts/slug/` page should still build (accessible only if you know the URL) or be excluded from `getStaticPaths()` entirely (fully absent from `dist/`).
    - Recommendation: Default to excluding drafts from `getStaticPaths()` too (fully unbuilt) — this is the simpler, more defensible "hidden" behavior and matches how D-03 frames the flag ("hide draft posts... until the flag is flipped"). Flag as a quick confirmation item for the planner/user rather than blocking on it.
+   - **RESOLVED:** drafts fully unbuilt — 01-01-PLAN.md Task 2 filters `getStaticPaths()` with `({ data }) => !data.draft`, so a draft produces no file in `dist/` at all.
 
 ## Environment Availability
 
