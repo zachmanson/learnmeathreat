@@ -12,7 +12,7 @@ A reader with zero background can start at post one and, post by post, actually 
 
 - [x] **Phase 1: Scaffolding & Core Content Pipeline** - Astro site with real Markdown+LaTeX posts, homepage, about page, and nav, working end-to-end (completed 2026-09-04)
 - [x] **Phase 2: Visual Design & Theming** - Minimal text-first design with accent font and light/dark theme, legible on mobile (completed 2026-09-04)
-- [ ] **Phase 02.1: Reading Navigation** - Sequential heading anchors, site-wide chapter sidebar, and on-this-page outline with scroll-spy (INSERTED, urgent)
+- [x] **Phase 02.1: Reading Navigation** - Sequential heading anchors, site-wide chapter sidebar, and on-this-page outline with scroll-spy (INSERTED, urgent) (completed 2026-09-04)
 - [ ] **Phase 3: Discovery & Distribution Polish** - RSS, sitemap, OG tags, reading time, and 404 page so posts are shareable and discoverable
 - [ ] **Phase 4: Deployment & Custom Domain** - Site live on Cloudflare Pages with analytics and a documented custom-domain attachment path
 
@@ -70,7 +70,7 @@ Plans:
 Plans:
 - [x] 02.1-01-PLAN.md — Sequential `#h-N` anchor scheme: custom rehype plugin replacing rehype-slug, pipeline rewire, test lock-in (NAV-01a)
 - [x] 02.1-02-PLAN.md — 3-column grid + left site-wide chapter contents sidebar with `<details>` accordion and mobile toggle (NAV-01b)
-- [ ] 02.1-03-PLAN.md — Right "On this page" outline with IntersectionObserver scroll-spy + full-phase human visual verification (NAV-01c)
+- [x] 02.1-03-PLAN.md — Right "On this page" outline with IntersectionObserver scroll-spy + full-phase human visual verification (NAV-01c)
 **UI hint**: yes
 
 ### Phase 3: Discovery & Distribution Polish
@@ -105,7 +105,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
 | 2. Visual Design & Theming | 3/3 | Complete   | 2026-09-04 |
-| 02.1 Reading Navigation | 2/3 | In Progress|  |
+| 02.1 Reading Navigation | 3/3 | Complete   | 2026-09-04 |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
