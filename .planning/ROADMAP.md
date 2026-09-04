@@ -46,7 +46,11 @@ Also produced: `01-SKELETON.md` — architectural contract for all later phases.
   2. Headers render in a distinct monospace or serif accent font, visually separate from body text
   3. User can toggle light/dark theme; math and code blocks stay legible and correctly themed in both modes
   4. Layout is readable and usable on mobile screen widths
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 02-01-PLAN.md — Dark theme vertical slice: [data-theme="dark"] tokens, ThemeToggle component, pre-paint is:inline init script, theming test suite (DSGN-03, DSGN-04)
+- [ ] 02-02-PLAN.md — Dark-mode legibility: dual-theme Shiki config + CSS variable mapping, KaTeX color anchoring + upgrade tripwire (DSGN-03)
+- [ ] 02-03-PLAN.md — IBM Plex Mono heading accent (self-hosted, weight 600, h1-h3 only) + full-phase human visual verification (DSGN-01, DSGN-02, DSGN-04)
 **UI hint**: yes
 
 ### Phase 3: Discovery & Distribution Polish
@@ -80,10 +84,11 @@ Also produced: `01-SKELETON.md` — architectural contract for all later phases.
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
-| 2. Visual Design & Theming | 0/TBD | Not started | - |
+| 2. Visual Design & Theming | 0/3 | Planned | - |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-09-03*
 *Phase 1 planned: 2026-09-03*
+*Phase 2 planned: 2026-09-04*
