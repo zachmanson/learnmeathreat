@@ -14,6 +14,18 @@
   --muted: #71717A;
 }
 
+/* Dark mode is a value swap on the same 5 role names from :root
+   (per 02-UI-SPEC.md Color). --accent is lightened from blue-700 to
+   blue-400 for contrast on near-black (measured ~7.9:1 against #09090B,
+   above the WCAG AA 4.5:1 threshold for body-size link text). */
+[data-theme="dark"] {
+  --bg: #09090B;
+  --surface: #18181B;
+  --accent: #60A5FA;
+  --text: #FAFAFA;
+  --muted: #A1A1AA;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -74,6 +86,7 @@ main {
 
 .site-header nav {
   display: flex;
+  align-items: center;
   gap: var(--space-sm);
   font-size: 14px;
   line-height: 1.4;
@@ -82,4 +95,44 @@ main {
 
 .site-header nav a {
   color: var(--muted);
+}
+
+/* 44x44px is the sanctioned mobile tap-target exception to the 8-point
+   spacing scale (02-UI-SPEC.md Spacing Scale). Uses --muted/--text, not
+   --accent, because it's a utility control and must not compete with
+   the 10% accent budget. */
+.site-header nav #theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.site-header nav #theme-toggle:hover,
+.site-header nav #theme-toggle:focus-visible {
+  color: var(--text);
+}
+
+.site-header nav #theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.icon-sun {
+  display: none;
+}
+
+[data-theme="dark"] .icon-sun {
+  display: block;
+}
+
+[data-theme="dark"] .icon-moon {
+  display: none;
 }
