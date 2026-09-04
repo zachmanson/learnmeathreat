@@ -76,6 +76,12 @@ None yet.
 
 None yet.
 
+## Quick Tasks Completed
+
+| Quick ID | Description | Date | Task Dir |
+|----------|--------------|------|----------|
+| 260904-icf | About page copy | 2026-09-04 | [260904-icf-about-page-copy](./quick/260904-icf-about-page-copy/) |
+
 ## Deferred Items
 
 Items acknowledged and carried forward from previous milestone close:
