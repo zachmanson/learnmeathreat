@@ -9,26 +9,26 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Content Pipeline
 
-- [ ] **CONT-01**: Posts are authored as local Markdown files with frontmatter (title, date, tags, excerpt)
-- [ ] **CONT-02**: Inline (`$..$`) and block (`$$..$$`) LaTeX math in post Markdown renders as typeset equations, in the same font as body text, at build time (no client-side rendering flash)
-- [ ] **CONT-03**: Every heading in a post gets a stable, clickable anchor link (`#id`) that survives future content edits
-- [ ] **CONT-04**: Code blocks in posts render with syntax highlighting
+- [x] **CONT-01**: Posts are authored as local Markdown files with frontmatter (title, date, tags, excerpt)
+- [x] **CONT-02**: Inline (`$..$`) and block (`$$..$$`) LaTeX math in post Markdown renders as typeset equations, in the same font as body text, at build time (no client-side rendering flash)
+- [x] **CONT-03**: Every heading in a post gets a stable, clickable anchor link (`#id`) that survives future content edits
+- [x] **CONT-04**: Code blocks in posts render with syntax highlighting
 - [ ] **CONT-05**: Each post displays an estimated reading time
 
 ### Pages
 
-- [ ] **PAGE-01**: Homepage lists all posts in reverse-chronological order, each showing title and short excerpt
-- [ ] **PAGE-02**: Each post has its own page at a clean URL (e.g. `/posts/how-bitcoin-transactions-work/`)
-- [ ] **PAGE-03**: Static `/about` page exists with user-authored content
-- [ ] **PAGE-04**: Top nav shows Home and About, present on every page
+- [x] **PAGE-01**: Homepage lists all posts in reverse-chronological order, each showing title and short excerpt
+- [x] **PAGE-02**: Each post has its own page at a clean URL (e.g. `/posts/how-bitcoin-transactions-work/`)
+- [x] **PAGE-03**: Static `/about` page exists with user-authored content
+- [x] **PAGE-04**: Top nav shows Home and About, present on every page
 - [ ] **PAGE-05**: A custom 404 page is shown for unknown URLs
 
 ### Design
 
-- [ ] **DSGN-01**: Site uses a minimal, text-first visual design — no stock photography, no hero images, no marketing-site styling
-- [ ] **DSGN-02**: Headers use a distinct monospace or serif accent font, separate from body text
-- [ ] **DSGN-03**: Site supports a light/dark theme toggle, and math/code rendering is legible and correctly themed in both modes
-- [ ] **DSGN-04**: Layout is readable on mobile screens
+- [x] **DSGN-01**: Site uses a minimal, text-first visual design — no stock photography, no hero images, no marketing-site styling
+- [x] **DSGN-02**: Headers use a distinct monospace or serif accent font, separate from body text
+- [x] **DSGN-03**: Site supports a light/dark theme toggle, and math/code rendering is legible and correctly themed in both modes
+- [x] **DSGN-04**: Layout is readable on mobile screens
 
 ### Discovery & Sharing
 
@@ -84,20 +84,20 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CONT-01 | Phase 1 | Pending |
-| CONT-02 | Phase 1 | Pending |
-| CONT-03 | Phase 1 | Pending |
-| CONT-04 | Phase 1 | Pending |
+| CONT-01 | Phase 1 | Complete |
+| CONT-02 | Phase 1 | Complete |
+| CONT-03 | Phase 1 | Complete |
+| CONT-04 | Phase 1 | Complete |
 | CONT-05 | Phase 3 | Pending |
-| PAGE-01 | Phase 1 | Pending |
-| PAGE-02 | Phase 1 | Pending |
-| PAGE-03 | Phase 1 | Pending |
-| PAGE-04 | Phase 1 | Pending |
+| PAGE-01 | Phase 1 | Complete |
+| PAGE-02 | Phase 1 | Complete |
+| PAGE-03 | Phase 1 | Complete |
+| PAGE-04 | Phase 1 | Complete |
 | PAGE-05 | Phase 3 | Pending |
-| DSGN-01 | Phase 2 | Pending |
-| DSGN-02 | Phase 2 | Pending |
-| DSGN-03 | Phase 2 | Pending |
-| DSGN-04 | Phase 2 | Pending |
+| DSGN-01 | Phase 2 | Complete |
+| DSGN-02 | Phase 2 | Complete |
+| DSGN-03 | Phase 2 | Complete |
+| DSGN-04 | Phase 2 | Complete |
 | DISC-01 | Phase 3 | Pending |
 | DISC-02 | Phase 3 | Pending |
 | DISC-03 | Phase 3 | Pending |
