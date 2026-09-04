@@ -48,7 +48,7 @@ Also produced: `01-SKELETON.md` — architectural contract for all later phases.
   4. Layout is readable and usable on mobile screen widths
 **Plans**: 3 plans
 Plans:
-- [ ] 02-01-PLAN.md — Dark theme vertical slice: [data-theme="dark"] tokens, ThemeToggle component, pre-paint is:inline init script, theming test suite (DSGN-03, DSGN-04)
+- [x] 02-01-PLAN.md — Dark theme vertical slice: [data-theme="dark"] tokens, ThemeToggle component, pre-paint is:inline init script, theming test suite (DSGN-03, DSGN-04)
 - [ ] 02-02-PLAN.md — Dark-mode legibility: dual-theme Shiki config + CSS variable mapping, KaTeX color anchoring + upgrade tripwire (DSGN-03)
 - [ ] 02-03-PLAN.md — IBM Plex Mono heading accent (self-hosted, weight 600, h1-h3 only) + full-phase human visual verification (DSGN-01, DSGN-02, DSGN-04)
 **UI hint**: yes
@@ -84,7 +84,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
-| 2. Visual Design & Theming | 0/3 | Planned | - |
+| 2. Visual Design & Theming | 1/3 | In Progress|  |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
