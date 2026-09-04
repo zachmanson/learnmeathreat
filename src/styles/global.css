@@ -76,6 +76,16 @@ main {
   margin: 0 auto;
 }
 
+/* Beats the 68ch rule above on specificity (no !important) so post pages'
+   3-column grid (nav-sidebars.css .post-layout) can span wider than 68ch
+   while home/about keep the unmodified 68ch centering (D-07/D-12). The
+   15rem-per-side budget is a first-draft value flagged in RESEARCH.md
+   Open Question 1 for a manual visual check at implementation time. */
+main .post-layout {
+  max-width: calc(68ch + 2 * (15rem + var(--space-xl)));
+  margin: 0 auto;
+}
+
 .site-header {
   margin-top: var(--space-3xl);
   margin-bottom: var(--space-xl);
