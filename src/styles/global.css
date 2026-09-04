@@ -46,10 +46,15 @@ pre {
   font-size: 14px;
 }
 
+/* The mono heading accent is deliberately confined to h1-h3 per D-02/D-03
+   (02-UI-SPEC.md Typography guardrail) - it must not extend to .site-title,
+   nav, body, meta, or the theme toggle, or it reads as "look, a terminal
+   font" instead of a quiet accent. tests/theming.test.mjs enforces this scope. */
 h1 {
   font-size: 32px;
   font-weight: 600;
   line-height: 1.2;
+  font-family: 'IBM Plex Mono', ui-monospace, "SFMono-Regular", Consolas, monospace;
 }
 
 h2,
@@ -57,6 +62,7 @@ h3 {
   font-size: 24px;
   font-weight: 600;
   line-height: 1.25;
+  font-family: 'IBM Plex Mono', ui-monospace, "SFMono-Regular", Consolas, monospace;
 }
 
 a {

@@ -237,6 +237,100 @@ test('16. prose.css no longer contains the stale "out of scope this phase: dark 
   );
 });
 
+test('17. the built CSS contains IBM Plex Mono inside a font-family declaration', () => {
+  const css = readDistCss();
+  assert.match(
+    css,
+    /font-family\s*:[^;}]*IBM Plex Mono/i,
+    'built CSS missing a font-family declaration containing IBM Plex Mono'
+  );
+});
+
+test('18. at least one .woff2 font file is emitted into dist/ (self-hosted, not CDN-linked)', () => {
+  const found = findFilesRecursive(distDir, (name) => name.endsWith('.woff2'));
+  assert.ok(found.length > 0, 'expected at least one .woff2 file somewhere under dist/');
+});
+
+test('19. no built page references fonts.googleapis.com or fonts.gstatic.com', () => {
+  for (const page of PAGES) {
+    const html = readDistFile(page);
+    assert.ok(
+      !/fonts\.googleapis\.com|fonts\.gstatic\.com/.test(html),
+      `${page} references a third-party font CDN (fonts.googleapis.com/fonts.gstatic.com) - D-01 requires self-hosting`
+    );
+  }
+});
+
+test('20. (scope guardrail) only h1 and h2, h3 selectors declare IBM Plex Mono in global.css', () => {
+  const globalCssPath = path.join(repoRoot, 'src', 'styles', 'global.css');
+  // Strip /* ... */ comments before splitting into rule blocks so a comment
+  // preceding a selector can't be mistaken for part of the selector.
+  const css = readFileSync(globalCssPath, 'utf-8').replace(/\/\*[\s\S]*?\*\//g, '');
+  const blocks = css.split('}');
+  for (const block of blocks) {
+    if (!block.includes('IBM Plex Mono')) continue;
+    const braceIndex = block.indexOf('{');
+    if (braceIndex === -1) continue;
+    const rawSelector = block.slice(0, braceIndex);
+    const normalizedSelector = rawSelector.replace(/\s+/g, ' ').trim();
+    assert.ok(
+      normalizedSelector === 'h1' || normalizedSelector === 'h2, h3',
+      `src/styles/global.css: selector "${normalizedSelector}" declares IBM Plex Mono but is not h1 or ` +
+        `h2, h3 - per D-02/02-UI-SPEC.md's guardrail the mono accent must be confined to headings only`
+    );
+  }
+});
+
+test('21. (fake-bold guard) every @font-face block naming IBM Plex Mono declares font-weight 600', () => {
+  const css = readDistCss();
+  const fontFaceBlocks = css.match(/@font-face\s*\{[^}]*\}/g) || [];
+  const plexBlocks = fontFaceBlocks.filter((block) => block.includes('IBM Plex Mono'));
+  assert.ok(plexBlocks.length > 0, 'expected at least one @font-face block naming IBM Plex Mono in built CSS');
+  for (const block of plexBlocks) {
+    assert.match(
+      block,
+      /font-weight\s*:\s*600/,
+      `@font-face block for IBM Plex Mono does not declare font-weight: 600: ${block}`
+    );
+    assert.ok(
+      !/font-weight\s*:\s*400/.test(block) && !/font-weight\s*:\s*700/.test(block),
+      `@font-face block for IBM Plex Mono declares an unimported weight (400 or 700): ${block}`
+    );
+  }
+});
+
+test('22. (DSGN-01 guard) no built page has an <img tag and no built CSS has a background-image', () => {
+  for (const page of PAGES) {
+    const html = readDistFile(page);
+    assert.ok(!/<img[\s>]/i.test(html), `${page} contains an <img> tag - DSGN-01 forbids stock/hero imagery`);
+  }
+  const css = readDistCss();
+  assert.ok(
+    !/background-image\s*:/i.test(css),
+    'built CSS contains a background-image declaration - DSGN-01 forbids stock/hero imagery'
+  );
+});
+
+function findFilesRecursive(dir, matchFn) {
+  const results = [];
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch (err) {
+    if (err.code === 'ENOENT') return results;
+    throw err;
+  }
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results.push(...findFilesRecursive(fullPath, matchFn));
+    } else if (matchFn(entry.name)) {
+      results.push(fullPath);
+    }
+  }
+  return results;
+}
+
 function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
