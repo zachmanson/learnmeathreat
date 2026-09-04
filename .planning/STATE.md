@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Phase 02 UI-SPEC approved
-last_updated: "2026-09-04T14:30:14.847Z"
+stopped_at: Phase 02.1 context gathered
+last_updated: "2026-09-04T14:58:11.069Z"
 last_activity: 2026-09-04 -- Phase 02 marked complete
 progress:
-  total_phases: 4
+  total_phases: 5
   completed_phases: 2
   total_plans: 5
   completed_plans: 5
-  percent: 50
+  percent: 40
 ---
 
 # Project State
@@ -21,7 +21,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-03)
 
 **Core value:** A reader with zero background can start at post one and, post by post, actually understand how quantum computing threatens Bitcoin — every concept explained before it's used, math rendered properly, nothing assumed.
-**Current focus:** Phase 02 — visual-design-theming
+**Current focus:** Phase 02.1 — reading-navigation
 
 ## Current Position
 
@@ -55,6 +55,10 @@ Progress: [░░░░░░░░░░] 0%
 
 ## Accumulated Context
 
+### Roadmap Evolution
+
+- Phase 02.1 inserted after Phase 2: Reading navigation: ToC sidebar, on-this-page sidebar, and shorter anchor hashes - user priority over Phase 3 discovery polish (URGENT)
+
 ### Decisions
 
 Decisions are logged in PROJECT.md Key Decisions table.
@@ -82,6 +86,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-09-04T04:11:32.310Z
-Stopped at: Phase 02 UI-SPEC approved
-Resume file: .planning/phases/02-visual-design-theming/02-UI-SPEC.md
+Last session: 2026-09-04T14:58:11.052Z
+Stopped at: Phase 02.1 context gathered
+Resume file: .planning/phases/02.1-reading-navigation-collapsible-left-table-of-contents-sideba/02.1-CONTEXT.md
