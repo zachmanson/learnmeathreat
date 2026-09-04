@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import rehypeSlug from 'rehype-slug';
+import { rehypeSequentialIds } from './src/lib/rehype-sequential-ids.mjs';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { h } from 'hastscript';
 
@@ -23,7 +23,7 @@ export default defineConfig({
       remarkPlugins: [remarkMath],
       rehypePlugins: [
         rehypeKatex,
-        rehypeSlug, // MUST run before autolink-headings - Pitfall 1
+        rehypeSequentialIds, // MUST run before autolink-headings - Pitfall 1
         [rehypeAutolinkHeadings, {
           behavior: 'prepend',
           content: h('span.heading-anchor', '#'),
