@@ -10,6 +10,15 @@ interface Props {
 
 const { headings } = Astro.props;
 
+// Astro's heading collector reads text from the final rehype tree, which
+// already has rehypeAutolinkHeadings' prepended "#" anchor span as the
+// heading's first child (that span carries no aria-hidden, since the
+// hover-reveal anchor is meant to be in the accessible name). That makes
+// every headings[].text arrive as "#Actual Title" - strip it here, at the
+// point where the outline label is rendered, rather than touching the
+// anchor markup (which is a separate, working feature elsewhere).
+const stripLeadingHash = (text: string) => text.replace(/^#\s*/, '');
+
 // Build a nested outline from the flat headings array (already filtered to
 // depth 2/3 by the caller - this is the single source of truth, no second
 // heading-collection pass is performed here). Each depth-2 heading starts a
@@ -20,14 +29,15 @@ type OutlineItem = { slug: string; text: string; children: OutlineItem[] };
 
 const outline: OutlineItem[] = [];
 for (const heading of headings) {
+  const text = stripLeadingHash(heading.text);
   if (heading.depth === 2) {
-    outline.push({ slug: heading.slug, text: heading.text, children: [] });
+    outline.push({ slug: heading.slug, text, children: [] });
   } else {
     const parent = outline[outline.length - 1];
     if (parent) {
-      parent.children.push({ slug: heading.slug, text: heading.text, children: [] });
+      parent.children.push({ slug: heading.slug, text, children: [] });
     } else {
-      outline.push({ slug: heading.slug, text: heading.text, children: [] });
+      outline.push({ slug: heading.slug, text, children: [] });
     }
   }
 }
