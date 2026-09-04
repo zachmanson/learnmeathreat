@@ -1,8 +1,9 @@
 /* Phase 1 UI-SPEC contract for rendered post content: heading anchors,
    block/inline math, and code blocks. Reuses global.css's --space-* and
    colour custom properties - no new tokens defined here.
-   Explicitly out of scope this phase: dark mode, custom fonts,
-   copy-to-clipboard, table of contents (Phase 2 / v2 backlog). */
+   Dark mode and the accent heading font are in scope as of Phase 2.
+   Explicitly out of scope: copy-to-clipboard, table of contents
+   (v2 backlog per REQUIREMENTS.md POLSH-01 / NAV-01). */
 
 /* --- Heading anchors (CONT-03) --- */
 
@@ -40,17 +41,31 @@ h3:hover .heading-anchor,
   text-align: center;
 }
 
+/* KaTeX 0.18.5 sets `.katex * { border-color: currentColor }` and
+   `.katex svg { fill: currentColor }` (verified in
+   node_modules/katex/dist/katex.css), so fraction bars, overlines/
+   underlines, hlines, rules and square-root SVGs all inherit color from
+   this single declaration - no per-selector border-color overrides are
+   needed. tests/theming.test.mjs pins that currentColor behavior in the
+   installed package (test 15) so a KaTeX upgrade that changes it fails
+   the build loudly instead of shipping invisible fraction bars. */
 .katex {
   font-size: 1em;
+  color: var(--text);
 }
 
 /* --- Code blocks (CONT-04) --- */
 
 pre {
-  /* Shiki inlines its own background-color/color on the <pre> element
-     itself (per-block, not per-token) - override with !important so the
-     UI-SPEC's light --surface background wins over that inline style.
-     Per-token <span style="color:..."> colours inside are left untouched. */
+  /* Under defaultColor: false (Phase 2), Shiki no longer inlines a
+     color or background-color on the <pre> element or its token spans -
+     the !important here is retained only to defend the --surface
+     background against any future re-introduction of an inline
+     background. Per-token colors are now selected from CSS variables in
+     the rules below. The code block background deliberately stays the
+     site's own --surface in BOTH themes (rather than adopting Shiki's
+     own dark theme background, #24292e) so it matches the inline `code`
+     chip background, which also uses --surface. */
   background: var(--surface) !important;
   padding: var(--space-sm) var(--space-md);
   font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
@@ -70,4 +85,19 @@ code {
 pre code {
   background: none;
   padding: 0;
+}
+
+/* .astro-code is Astro's rename of Shiki's default .shiki class - do not
+   search for .shiki in this codebase's built output. */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+}
+
+[data-theme="dark"] .astro-code,
+[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+  font-weight: var(--shiki-dark-font-weight);
+  text-decoration: var(--shiki-dark-text-decoration);
 }

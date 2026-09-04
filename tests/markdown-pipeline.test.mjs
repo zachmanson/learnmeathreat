@@ -85,13 +85,19 @@ test('6. heading anchor link href matches the first h2 id', () => {
   );
 });
 
-test('7. Shiki build-time inline-style syntax highlighting present', () => {
+test('7. Shiki build-time syntax highlighting present', () => {
   const html = readPostHtml();
-  // Primary, stable-across-versions signal: an inline color style inside a <pre> block.
+  // Primary, stable-across-versions signal: a --shiki-light custom property
+  // inside a <pre> block. Phase 2 switched shikiConfig to dual-theme mode
+  // with defaultColor: false (see 02-02-PLAN.md), so Shiki no longer bakes
+  // a single inline `color` into token spans - it emits per-token
+  // --shiki-light/--shiki-dark custom properties instead, consumed by
+  // prose.css. This test asserts build-time highlighting is still present
+  // under the new emission format.
   assert.match(
     html,
-    /<pre[^>]*>[\s\S]*?<span style="color:[^"]*"/,
-    'expected a <span style="color:..."> inside a <pre> block'
+    /<pre[^>]*>[\s\S]*?<span style="[^"]*--shiki-light:[^"]*"/,
+    'expected a <span style="--shiki-light:..."> inside a <pre> block'
   );
   // Secondary hint (not asserted as primary since Shiki's wrapper class name
   // is more likely to shift across versions than the inline-style pattern):

@@ -154,6 +154,89 @@ test('9. the built stylesheet contains a #theme-toggle rule with 44px min-width/
   );
 });
 
+test('10. the built published post HTML contains --shiki-dark: at least once', () => {
+  const html = readDistFile(`posts/${PUBLISHED_SLUG}/index.html`);
+  assert.ok(html.includes('--shiki-dark:'), 'published post HTML missing --shiki-dark: custom property');
+});
+
+test('11. the built published post HTML has no baked-in single-theme class or inline token color', () => {
+  const html = readDistFile(`posts/${PUBLISHED_SLUG}/index.html`);
+  assert.ok(
+    !html.includes('astro-code github-light'),
+    'published post HTML still contains astro-code github-light (single-theme class not removed)'
+  );
+  assert.ok(
+    !/style="color:#/.test(html),
+    'published post HTML still contains an inline style="color:#..." on a token span'
+  );
+});
+
+test('12. the built CSS maps .astro-code to var(--shiki-dark) under [data-theme="dark"]', () => {
+  const css = readDistCss();
+  assert.match(
+    css,
+    /\[data-theme\s*=\s*["']?dark["']?\][^{]*\.astro-code[^{]*\{[^}]*var\(--shiki-dark\)/,
+    'built CSS missing [data-theme="dark"] .astro-code rule declaring var(--shiki-dark)'
+  );
+});
+
+test('13. the built CSS declares var(--shiki-light) on .astro-code', () => {
+  const css = readDistCss();
+  assert.match(
+    css,
+    /\.astro-code[^{]*\{[^}]*var\(--shiki-light\)/,
+    'built CSS missing .astro-code rule declaring var(--shiki-light)'
+  );
+});
+
+test('14. the built CSS declares color: var(--text) on .katex', () => {
+  const css = readDistCss();
+  assert.match(
+    css,
+    /\.katex[^}]*color\s*:\s*var\(--text\)/,
+    'built CSS missing a .katex rule declaring color: var(--text)'
+  );
+});
+
+test('15. (tripwire) installed KaTeX still derives structural-element color from currentColor', () => {
+  const katexCssPath = path.join(repoRoot, 'node_modules', 'katex', 'dist', 'katex.css');
+  let katexCss;
+  try {
+    katexCss = readFileSync(katexCssPath, 'utf-8');
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      throw new Error(`Missing node_modules/katex/dist/katex.css (expected at ${katexCssPath}) - run npm install`);
+    }
+    throw err;
+  }
+  const failureMessage =
+    'KaTeX changed how structural elements derive their color (border-color: currentColor ' +
+    'under .katex * and/or fill: currentColor under .katex svg no longer both present). ' +
+    'src/styles/prose.css now needs explicit per-selector overrides for ' +
+    '.katex .mfrac .frac-line, .katex .katex-overline .overline-line, ' +
+    '.katex .katex-underline .underline-line, .katex .katex-hline, ' +
+    '.katex .katex-hdashline, and .katex .katex-rule.';
+  assert.match(
+    katexCss,
+    /\.katex\s*\*[^}]*border-color\s*:\s*currentColor/,
+    failureMessage
+  );
+  assert.match(
+    katexCss,
+    /\.katex\s+svg[^}]*fill\s*:\s*currentColor/,
+    failureMessage
+  );
+});
+
+test('16. prose.css no longer contains the stale "out of scope this phase: dark mode" comment', () => {
+  const prosePath = path.join(repoRoot, 'src', 'styles', 'prose.css');
+  const proseCss = readFileSync(prosePath, 'utf-8');
+  assert.ok(
+    !proseCss.includes('out of scope this phase: dark mode'),
+    'src/styles/prose.css still contains the stale "out of scope this phase: dark mode" comment'
+  );
+});
+
 function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

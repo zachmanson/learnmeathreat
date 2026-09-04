@@ -10,12 +10,14 @@ import { h } from 'hastscript';
 // https://astro.build/config
 export default defineConfig({
   markdown: {
-    // github-light: Phase 1 UI-SPEC ships a single light surface only
-    // (DSGN-03 dark mode is Phase 2) - Shiki's own default is github-dark,
-    // which would render code blocks with a dark background that clashes
-    // with prose.css's light --surface token (Rule 1 fix).
+    // defaultColor: false makes Shiki emit --shiki-light-*/--shiki-dark-*
+    // custom properties per token instead of baking in a single inline
+    // `color`, which is what lets prose.css select a palette from the
+    // data-theme attribute without re-running the highlighter client-side
+    // (DSGN-03).
     shikiConfig: {
-      theme: 'github-light',
+      themes: { light: 'github-light', dark: 'github-dark' },
+      defaultColor: false,
     },
     processor: unified({
       remarkPlugins: [remarkMath],
