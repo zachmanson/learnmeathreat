@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import 'katex/dist/katex.min.css';
 import '../styles/prose.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
   title: string;
@@ -12,6 +13,28 @@ const { title } = Astro.props;
 
 <html lang="en">
   <head>
+    <script is:inline>
+      // This directive must stay on the tag above and this script must
+      // stay first-in-head so it runs before first paint (prevents a
+      // flash of the wrong theme). Otherwise Astro would module-wrap
+      // and defer it. The 'light'/'dark' allowlist check below is
+      // deliberate tampering defense (threat T-02-01) rather than
+      // defensive noise — a devtools-modified localStorage value falls
+      // back to the OS preference instead of being trusted.
+      let storedTheme = null;
+      try {
+        storedTheme = localStorage.getItem('theme');
+      } catch {
+        storedTheme = null;
+      }
+      const theme =
+        storedTheme === 'light' || storedTheme === 'dark'
+          ? storedTheme
+          : window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
@@ -22,6 +45,7 @@ const { title } = Astro.props;
       <nav>
         <a href="/">Home</a>
         <a href="/about/">About</a>
+        <ThemeToggle />
       </nav>
     </header>
     <main>
