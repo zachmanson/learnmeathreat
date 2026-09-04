@@ -10,7 +10,7 @@ A reader with zero background can start at post one and, post by post, actually 
 
 ## Phases
 
-- [ ] **Phase 1: Scaffolding & Core Content Pipeline** - Astro site with real Markdown+LaTeX posts, homepage, about page, and nav, working end-to-end
+- [x] **Phase 1: Scaffolding & Core Content Pipeline** - Astro site with real Markdown+LaTeX posts, homepage, about page, and nav, working end-to-end (completed 2026-09-04)
 - [ ] **Phase 2: Visual Design & Theming** - Minimal text-first design with accent font and light/dark theme, legible on mobile
 - [ ] **Phase 3: Discovery & Distribution Polish** - RSS, sitemap, OG tags, reading time, and 404 page so posts are shareable and discoverable
 - [ ] **Phase 4: Deployment & Custom Domain** - Site live on Cloudflare Pages with analytics and a documented custom-domain attachment path
@@ -31,7 +31,7 @@ A reader with zero background can start at post one and, post by post, actually 
 **Plans**: 2 plans
 Plans:
 - [x] 01-01-PLAN.md — Walking skeleton: Astro scaffold, posts collection + Zod schema, seed posts, Layout/nav, homepage, About, dynamic post route (CONT-01, PAGE-01..04)
-- [ ] 01-02-PLAN.md — Markdown rendering pipeline: unified() processor, KaTeX math, heading anchors, Shiki highlighting, UI-SPEC prose styling (CONT-02..04)
+- [x] 01-02-PLAN.md — Markdown rendering pipeline: unified() processor, KaTeX math, heading anchors, Shiki highlighting, UI-SPEC prose styling (CONT-02..04)
 
 Also produced: `01-SKELETON.md` — architectural contract for all later phases.
 **UI hint**: yes
@@ -79,7 +79,7 @@ Also produced: `01-SKELETON.md` — architectural contract for all later phases.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffolding & Core Content Pipeline | 1/2 | In Progress|  |
+| 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
 | 2. Visual Design & Theming | 0/TBD | Not started | - |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
