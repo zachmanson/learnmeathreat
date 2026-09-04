@@ -28,7 +28,12 @@ A reader with zero background can start at post one and, post by post, actually 
   3. Every heading in a post has a stable, clickable anchor link, and code blocks render with syntax highlighting
   4. The `/about` page shows user-authored content, and a top nav (Home, About) is present and functional on every page
   5. Posts are authored as local Markdown files with typed frontmatter (title, date, tags, excerpt) validated at build time
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Walking skeleton: Astro scaffold, posts collection + Zod schema, seed posts, Layout/nav, homepage, About, dynamic post route (CONT-01, PAGE-01..04)
+- [ ] 01-02-PLAN.md — Markdown rendering pipeline: unified() processor, KaTeX math, heading anchors, Shiki highlighting, UI-SPEC prose styling (CONT-02..04)
+
+Also produced: `01-SKELETON.md` — architectural contract for all later phases.
 **UI hint**: yes
 
 ### Phase 2: Visual Design & Theming
@@ -74,10 +79,11 @@ A reader with zero background can start at post one and, post by post, actually 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffolding & Core Content Pipeline | 0/TBD | Not started | - |
+| 1. Scaffolding & Core Content Pipeline | 0/2 | Planned | - |
 | 2. Visual Design & Theming | 0/TBD | Not started | - |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-09-03*
+*Phase 1 planned: 2026-09-03*
