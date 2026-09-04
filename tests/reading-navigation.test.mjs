@@ -112,3 +112,72 @@ test('6. nav-sidebars.css declares the 900px collapse and no new tokens', () => 
     'nav-sidebars.css must not contain hardcoded hex color literals'
   );
 });
+
+test('7. right sidebar renders with the On this page title', () => {
+  const html = readHtml(`posts/${POST_SLUG}/index.html`);
+  assert.ok(html.includes('class="right-nav"'), 'expected class="right-nav" in post HTML');
+  assert.ok(html.includes('On this page'), 'expected the "On this page" title string');
+});
+
+function extractRightNavRegion(html) {
+  const start = html.indexOf('class="right-nav"');
+  const end = html.indexOf('</aside>', start);
+  if (start === -1 || end === -1) {
+    throw new Error('Could not find .right-nav region in post HTML');
+  }
+  return html.slice(start, end);
+}
+
+test('8. every outline link resolves to a heading id in the same document', () => {
+  const html = readHtml(`posts/${POST_SLUG}/index.html`);
+  const rightNav = extractRightNavRegion(html);
+  const hrefs = [...rightNav.matchAll(/href="#([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(hrefs.length >= 2, `expected at least 2 outline links, found ${hrefs.length}`);
+  for (const id of hrefs) {
+    assert.ok(
+      new RegExp(`<h[23][^>]*\\sid="${id}"`).test(html),
+      `expected an <h2 or <h3 with id="${id}" in the document`
+    );
+  }
+});
+
+test('9. outline covers only depth 2 and 3', () => {
+  const html = readHtml(`posts/${POST_SLUG}/index.html`);
+  const rightNav = extractRightNavRegion(html);
+  const hrefs = [...rightNav.matchAll(/href="#([^"]+)"/g)].map((m) => m[1]);
+  for (const id of hrefs) {
+    const match = new RegExp(`<h([2-6])[^>]*\\sid="${id}"`).exec(html);
+    assert.ok(match, `expected a heading with id="${id}"`);
+    assert.ok(
+      match[1] === '2' || match[1] === '3',
+      `expected outline id "${id}" to belong to h2/h3, found h${match[1]}`
+    );
+  }
+});
+
+test('10. D-10 gate: fewer than 2 headings renders no right sidebar', () => {
+  // Source-level assertion: the current seed content has no post with fewer
+  // than 2 qualifying headings, so this cannot be asserted against built
+  // output today. Upgrade to a rendered-output assertion once a short post
+  // exists in the seed content.
+  const srcPath = path.join(repoRoot, 'src', 'pages', 'posts', '[slug].astro');
+  const src = readFileSync(srcPath, 'utf-8');
+  assert.match(
+    src,
+    /outlineHeadings\.length >= 2 &&[\s\S]*<RightNavSidebar/,
+    'expected outlineHeadings.length >= 2 && to guard the <RightNavSidebar element'
+  );
+});
+
+test('11. scroll-spy ships as a single inline script with no external dependency', () => {
+  const html = readHtml(`posts/${POST_SLUG}/index.html`);
+  assert.ok(html.includes('IntersectionObserver'), 'expected IntersectionObserver in built HTML');
+  const scriptSrcTags = [...html.matchAll(/<script[^>]*\ssrc=["']([^"']+)["']/g)].map((m) => m[1]);
+  for (const src of scriptSrcTags) {
+    assert.doesNotMatch(
+      src,
+      /scrollspy|gsap|jquery/i,
+      `unexpected third-party scroll library script: ${src}`
+    );
+  }
+});
