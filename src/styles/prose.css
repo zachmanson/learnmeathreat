@@ -1,8 +1,9 @@
 /* Phase 1 UI-SPEC contract for rendered post content: heading anchors,
    block/inline math, and code blocks. Reuses global.css's --space-* and
    colour custom properties - no new tokens defined here.
-   Explicitly out of scope this phase: dark mode, custom fonts,
-   copy-to-clipboard, table of contents (Phase 2 / v2 backlog). */
+   Dark mode and the accent heading font are in scope as of Phase 2.
+   Explicitly out of scope: copy-to-clipboard, table of contents
+   (v2 backlog per REQUIREMENTS.md POLSH-01 / NAV-01). */
 
 /* --- Heading anchors (CONT-03) --- */
 
@@ -40,8 +41,17 @@ h3:hover .heading-anchor,
   text-align: center;
 }
 
+/* KaTeX 0.18.5 sets `.katex * { border-color: currentColor }` and
+   `.katex svg { fill: currentColor }` (verified in
+   node_modules/katex/dist/katex.css), so fraction bars, overlines/
+   underlines, hlines, rules and square-root SVGs all inherit color from
+   this single declaration - no per-selector border-color overrides are
+   needed. tests/theming.test.mjs pins that currentColor behavior in the
+   installed package (test 15) so a KaTeX upgrade that changes it fails
+   the build loudly instead of shipping invisible fraction bars. */
 .katex {
   font-size: 1em;
+  color: var(--text);
 }
 
 /* --- Code blocks (CONT-04) --- */
