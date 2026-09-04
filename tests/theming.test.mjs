@@ -154,6 +154,41 @@ test('9. the built stylesheet contains a #theme-toggle rule with 44px min-width/
   );
 });
 
+test('10. the built published post HTML contains --shiki-dark: at least once', () => {
+  const html = readDistFile(`posts/${PUBLISHED_SLUG}/index.html`);
+  assert.ok(html.includes('--shiki-dark:'), 'published post HTML missing --shiki-dark: custom property');
+});
+
+test('11. the built published post HTML has no baked-in single-theme class or inline token color', () => {
+  const html = readDistFile(`posts/${PUBLISHED_SLUG}/index.html`);
+  assert.ok(
+    !html.includes('astro-code github-light'),
+    'published post HTML still contains astro-code github-light (single-theme class not removed)'
+  );
+  assert.ok(
+    !/style="color:#/.test(html),
+    'published post HTML still contains an inline style="color:#..." on a token span'
+  );
+});
+
+test('12. the built CSS maps .astro-code to var(--shiki-dark) under [data-theme="dark"]', () => {
+  const css = readDistCss();
+  assert.match(
+    css,
+    /\[data-theme\s*=\s*["']?dark["']?\][^{]*\.astro-code[^{]*\{[^}]*var\(--shiki-dark\)/,
+    'built CSS missing [data-theme="dark"] .astro-code rule declaring var(--shiki-dark)'
+  );
+});
+
+test('13. the built CSS declares var(--shiki-light) on .astro-code', () => {
+  const css = readDistCss();
+  assert.match(
+    css,
+    /\.astro-code[^{]*\{[^}]*var\(--shiki-light\)/,
+    'built CSS missing .astro-code rule declaring var(--shiki-light)'
+  );
+});
+
 function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

@@ -47,10 +47,15 @@ h3:hover .heading-anchor,
 /* --- Code blocks (CONT-04) --- */
 
 pre {
-  /* Shiki inlines its own background-color/color on the <pre> element
-     itself (per-block, not per-token) - override with !important so the
-     UI-SPEC's light --surface background wins over that inline style.
-     Per-token <span style="color:..."> colours inside are left untouched. */
+  /* Under defaultColor: false (Phase 2), Shiki no longer inlines a
+     color or background-color on the <pre> element or its token spans -
+     the !important here is retained only to defend the --surface
+     background against any future re-introduction of an inline
+     background. Per-token colors are now selected from CSS variables in
+     the rules below. The code block background deliberately stays the
+     site's own --surface in BOTH themes (rather than adopting Shiki's
+     own dark theme background, #24292e) so it matches the inline `code`
+     chip background, which also uses --surface. */
   background: var(--surface) !important;
   padding: var(--space-sm) var(--space-md);
   font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
@@ -70,4 +75,19 @@ code {
 pre code {
   background: none;
   padding: 0;
+}
+
+/* .astro-code is Astro's rename of Shiki's default .shiki class - do not
+   search for .shiki in this codebase's built output. */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+}
+
+[data-theme="dark"] .astro-code,
+[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+  font-weight: var(--shiki-dark-font-weight);
+  text-decoration: var(--shiki-dark-text-decoration);
 }
