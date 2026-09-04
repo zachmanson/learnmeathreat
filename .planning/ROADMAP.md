@@ -69,7 +69,7 @@ Plans:
 
 Plans:
 - [x] 02.1-01-PLAN.md — Sequential `#h-N` anchor scheme: custom rehype plugin replacing rehype-slug, pipeline rewire, test lock-in (NAV-01a)
-- [ ] 02.1-02-PLAN.md — 3-column grid + left site-wide chapter contents sidebar with `<details>` accordion and mobile toggle (NAV-01b)
+- [x] 02.1-02-PLAN.md — 3-column grid + left site-wide chapter contents sidebar with `<details>` accordion and mobile toggle (NAV-01b)
 - [ ] 02.1-03-PLAN.md — Right "On this page" outline with IntersectionObserver scroll-spy + full-phase human visual verification (NAV-01c)
 **UI hint**: yes
 
@@ -105,7 +105,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
 | 2. Visual Design & Theming | 3/3 | Complete   | 2026-09-04 |
-| 02.1 Reading Navigation | 1/3 | In Progress|  |
+| 02.1 Reading Navigation | 2/3 | In Progress|  |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
