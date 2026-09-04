@@ -11,7 +11,7 @@ A reader with zero background can start at post one and, post by post, actually 
 ## Phases
 
 - [x] **Phase 1: Scaffolding & Core Content Pipeline** - Astro site with real Markdown+LaTeX posts, homepage, about page, and nav, working end-to-end (completed 2026-09-04)
-- [ ] **Phase 2: Visual Design & Theming** - Minimal text-first design with accent font and light/dark theme, legible on mobile
+- [x] **Phase 2: Visual Design & Theming** - Minimal text-first design with accent font and light/dark theme, legible on mobile (completed 2026-09-04)
 - [ ] **Phase 3: Discovery & Distribution Polish** - RSS, sitemap, OG tags, reading time, and 404 page so posts are shareable and discoverable
 - [ ] **Phase 4: Deployment & Custom Domain** - Site live on Cloudflare Pages with analytics and a documented custom-domain attachment path
 
@@ -50,7 +50,7 @@ Also produced: `01-SKELETON.md` — architectural contract for all later phases.
 Plans:
 - [x] 02-01-PLAN.md — Dark theme vertical slice: [data-theme="dark"] tokens, ThemeToggle component, pre-paint is:inline init script, theming test suite (DSGN-03, DSGN-04)
 - [x] 02-02-PLAN.md — Dark-mode legibility: dual-theme Shiki config + CSS variable mapping, KaTeX color anchoring + upgrade tripwire (DSGN-03)
-- [ ] 02-03-PLAN.md — IBM Plex Mono heading accent (self-hosted, weight 600, h1-h3 only) + full-phase human visual verification (DSGN-01, DSGN-02, DSGN-04)
+- [x] 02-03-PLAN.md — IBM Plex Mono heading accent (self-hosted, weight 600, h1-h3 only) + full-phase human visual verification (DSGN-01, DSGN-02, DSGN-04)
 **UI hint**: yes
 
 ### Phase 3: Discovery & Distribution Polish
@@ -84,7 +84,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
-| 2. Visual Design & Theming | 2/3 | In Progress|  |
+| 2. Visual Design & Theming | 3/3 | Complete   | 2026-09-04 |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
