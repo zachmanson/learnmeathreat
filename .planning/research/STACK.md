@@ -86,7 +86,7 @@ This ~10 line config block is the entire "math support" integration. No custom r
 - Because the tag frontmatter schema is already defined via Zod from day one, no data migration is needed later — the grouping page is purely additive.
 
 **If the custom domain is added later:**
-- Cloudflare Pages supports adding a custom domain from the Pages project's "Custom domains" tab once the domain (learnmethethreat.com) is registered and its DNS is on Cloudflare (or a CNAME is pointed at the `*.pages.dev` deployment).
+- Cloudflare Pages supports adding a custom domain from the Pages project's "Custom domains" tab once the domain (learnmeathreat.com) is registered and its DNS is on Cloudflare (or a CNAME is pointed at the `*.pages.dev` deployment).
 - No stack change required — this is a hosting-config step, not a code step.
 
 ## Version Compatibility

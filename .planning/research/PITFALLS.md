@@ -85,13 +85,13 @@ The most commonly reported Cloudflare Pages custom-domain failure: someone manua
 It feels intuitive to "just add a CNAME like any other host" because that's how DNS setup works for most other providers. Cloudflare Pages requires an explicit association step in the Pages dashboard *in addition to* DNS, and the natural order (DNS first, dashboard second) is backwards.
 
 **How to avoid:**
-1. In the Cloudflare Pages project → Custom Domains, add `learnmethethreat.com` (and separately `www.learnmethethreat.com` if both should work) *first*.
+1. In the Cloudflare Pages project → Custom Domains, add `learnmeathreat.com` (and separately `www.learnmeathreat.com` if both should work) *first*.
 2. If the domain's DNS is already managed by Cloudflare (i.e., registered elsewhere but nameservers pointed at Cloudflare), Pages will auto-create the correct DNS record when you add the custom domain — don't hand-create a competing CNAME/A record.
 3. Only fall back to manually creating a CNAME if the zone is NOT on Cloudflare DNS (rare for this setup, since Cloudflare Pages custom domains require the zone to be on Cloudflare).
 
 **Warning signs:**
 - 522 "Connection timed out" or "Error 1000: DNS points to prohibited IP" after adding a CNAME.
-- Root domain (`learnmethethreat.com`) works but `www` doesn't, or vice versa — sign that only one of the two hostnames was added as a Custom Domain.
+- Root domain (`learnmeathreat.com`) works but `www` doesn't, or vice versa — sign that only one of the two hostnames was added as a Custom Domain.
 
 **Phase to address:**
 Deployment/custom-domain phase, explicitly sequenced: (1) get the site building and deployed to the `*.pages.dev` URL first and confirm it works, (2) only then move to custom domain — don't combine these into one step.
@@ -111,7 +111,7 @@ When the domain is registered: (1) add the domain as a zone in Cloudflare (free 
 
 **Warning signs:**
 - Cloudflare zone dashboard shows "Pending Nameserver Update" indefinitely.
-- `dig NS learnmethethreat.com` (or an online DNS checker) shows the registrar's default nameservers instead of Cloudflare's.
+- `dig NS learnmeathreat.com` (or an online DNS checker) shows the registrar's default nameservers instead of Cloudflare's.
 
 **Phase to address:**
 Deployment/custom-domain phase — should be written as an explicit manual checklist item in that phase's plan, not assumed to "just happen" alongside domain purchase.
@@ -121,7 +121,7 @@ Deployment/custom-domain phase — should be written as an explicit manual check
 ### Pitfall 6: SSL/TLS certificate provisioning lag mistaken for a broken deploy
 
 **What goes wrong:**
-After correctly linking a custom domain, Cloudflare needs to provision a Universal SSL certificate for it. This is usually fast (minutes) but can occasionally take up to 24 hours, especially right after a nameserver change. During this window `https://learnmethethreat.com` may show a certificate error or fail to load, which can look like the deployment itself is broken and trigger unnecessary debugging.
+After correctly linking a custom domain, Cloudflare needs to provision a Universal SSL certificate for it. This is usually fast (minutes) but can occasionally take up to 24 hours, especially right after a nameserver change. During this window `https://learnmeathreat.com` may show a certificate error or fail to load, which can look like the deployment itself is broken and trigger unnecessary debugging.
 
 **Why it happens:**
 Certificate issuance is decoupled from DNS propagation and from the Pages deployment itself — three independent async processes (DNS, Pages custom domain routing, SSL cert issuance) that all need to complete, and it's not obvious from the UI which one is still pending.
@@ -228,7 +228,7 @@ Visual design/theming phase, verified on a test post containing both math and co
 ## "Looks Done But Isn't" Checklist
 
 - [ ] **Math rendering:** Test with a paragraph containing 2+ subscripted variables (`$a_{i,j}$`, `$x_1, x_2$`) and nested braces, not just a single simple formula — the simple case often works while the real case (multiple underscores/braces) breaks.
-- [ ] **Custom domain:** Verify both `learnmethethreat.com` and `www.learnmethethreat.com` resolve and serve the site (not just one).
+- [ ] **Custom domain:** Verify both `learnmeathreat.com` and `www.learnmeathreat.com` resolve and serve the site (not just one).
 - [ ] **Dark mode:** Verify a post with both math and a code block in both themes, not just body text.
 - [ ] **Cookieless analytics:** Verify Cloudflare Web Analytics beacon actually appears in Network tab (it's opt-in per zone, easy to think it's on when it isn't).
 - [ ] **Custom 404 page:** Verify a broken/renamed post URL doesn't fall through to Cloudflare's generic error page — a hand-built site with a default 404 undercuts the "hand-built" impression.
@@ -251,7 +251,7 @@ Visual design/theming phase, verified on a test post containing both math and co
 | Client-side vs build-time KaTeX | SSG & tooling selection | View page source on a deployed math post with JS disabled — rendered KaTeX HTML must already be present |
 | KaTeX font/FOUT issues | Initial scaffolding / theming | Compare rendered math visually against katex.org reference; check Network tab for font 404s |
 | DNS/Custom Domain ordering | Deployment / custom domain | Deploy to `*.pages.dev` and confirm working before starting custom domain steps |
-| Registrar nameserver mismatch | Deployment / custom domain | `dig NS learnmethethreat.com` shows Cloudflare nameservers after registrar update |
+| Registrar nameserver mismatch | Deployment / custom domain | `dig NS learnmeathreat.com` shows Cloudflare nameservers after registrar update |
 | SSL provisioning lag mistaken for bug | Deployment / custom domain | Check Pages dashboard "Active" status before troubleshooting browser cert errors |
 | Generic/template-looking design | Visual design / theming | Explicit "does this look hand-built" review against a type-scale/measure/accent-font checklist |
 | Dark mode breaking math/code contrast | Visual design / theming | Toggle theme on a post containing both math and a code block |

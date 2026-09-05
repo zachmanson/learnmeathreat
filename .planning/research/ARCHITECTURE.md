@@ -220,7 +220,7 @@ Static HTML for homepage baked at build time — no runtime data fetch, no clien
 |---------|---------------------|-------|
 | Cloudflare Pages | Git integration (GitHub app + webhook), configured once via dashboard | Framework preset "Astro" auto-fills build command (`npm run build`) and output directory (`dist`) — verify these match after `npm create astro@latest` scaffolding, since preset mismatches are the most common first-deploy failure |
 | Cloudflare Web Analytics | `<script>` beacon snippet added once to `BaseLayout.astro`, token generated in Cloudflare dashboard | No cookies, no separate account/service — satisfies "privacy-friendly, cookieless" requirement without a third-party analytics integration |
-| Custom domain (learnmethethreat.com, not yet registered) | Added later via Cloudflare Pages dashboard "Custom Domains" tab once the domain is purchased | No code/architecture change required — this is a DNS/dashboard step, doesn't affect repo structure |
+| Custom domain (learnmeathreat.com, not yet registered) | Added later via Cloudflare Pages dashboard "Custom Domains" tab once the domain is purchased | No code/architecture change required — this is a DNS/dashboard step, doesn't affect repo structure |
 
 ### Internal Boundaries
 
