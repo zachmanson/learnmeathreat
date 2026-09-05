@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 02.2 context gathered
-last_updated: "2026-09-05T15:56:25.592Z"
-last_activity: 2026-09-05 -- Phase 02.2 planning complete
+last_updated: "2026-09-05T17:35:07.905Z"
+last_activity: 2026-09-05 -- Phase 02.2 execution started
 progress:
   total_phases: 6
   completed_phases: 3
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-03)
 
 **Core value:** A reader with zero background can start at post one and, post by post, actually understand how quantum computing threatens Bitcoin — every concept explained before it's used, math rendered properly, nothing assumed.
-**Current focus:** Phase 02.2 -- content-authoring-primitives-figure-image-support-and-resolv
+**Current focus:** Phase 02.2 — content-authoring-primitives-figure-image-support-and-resolv
 
 ## Current Position
 
-Phase: 02.2 -- NOT STARTED
-Plan: 1 of 3
-Status: Ready to execute
-Last activity: 2026-09-05 -- Phase 02.2 planning complete
+Phase: 02.2 (content-authoring-primitives-figure-image-support-and-resolv) — EXECUTING
+Plan: 1 of 4
+Status: Executing Phase 02.2
+Last activity: 2026-09-05 -- Phase 02.2 execution started
 
 Progress: [░░░░░░░░░░] 0%
 

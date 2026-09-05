@@ -69,7 +69,7 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 02.2-01-PLAN.md — Green test baseline + `remark-directive` install, `remark-directive-to-hast.mjs` transform, and `astro.config.mjs` pipeline wiring (CONT-06, CONT-09, CONT-10)
+- [x] 02.2-01-PLAN.md — Green test baseline + `remark-directive` install, `remark-directive-to-hast.mjs` transform, and `astro.config.mjs` pipeline wiring (CONT-06, CONT-09, CONT-10)
 - [ ] 02.2-02-PLAN.md — DSGN-01 guard rewrite, figure/callout/definition CSS, demo fixture post + assets, and `tests/authoring-primitives.test.mjs` (CONT-06, CONT-07, CONT-09, CONT-10)
 - [ ] 02.2-03-PLAN.md — `rehype-citation` + `references.bib` + `\cite{key}` translation plugin and per-post References section (CONT-08)
 - [ ] 02.2-04-PLAN.md — Full-phase human visual verification of figures, dark-mode invert, callouts, definitions, and References (CONT-06, CONT-08, CONT-09, CONT-10)
@@ -126,7 +126,7 @@ Plans:
 | 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
 | 2. Visual Design & Theming | 3/3 | Complete   | 2026-09-04 |
 | 02.1 Reading Navigation | 3/3 | Complete   | 2026-09-04 |
-| 02.2 Content Authoring Primitives | 0/4 | Not started | - |
+| 02.2 Content Authoring Primitives | 1/4 | In Progress|  |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
