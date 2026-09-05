@@ -2,8 +2,10 @@
 import { defineConfig } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
 import remarkMath from 'remark-math';
+import remarkDirective from 'remark-directive';
 import rehypeKatex from 'rehype-katex';
 import { rehypeSequentialIds } from './src/lib/rehype-sequential-ids.mjs';
+import { remarkDirectiveToHast } from './src/lib/remark-directive-to-hast.mjs';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { h } from 'hastscript';
 
@@ -20,7 +22,7 @@ export default defineConfig({
       defaultColor: false,
     },
     processor: unified({
-      remarkPlugins: [remarkMath],
+      remarkPlugins: [remarkMath, remarkDirective, remarkDirectiveToHast], // remarkDirectiveToHast MUST run after remarkDirective - RESEARCH.md Pattern 1
       rehypePlugins: [
         rehypeKatex,
         rehypeSequentialIds, // MUST run before autolink-headings - Pitfall 1
