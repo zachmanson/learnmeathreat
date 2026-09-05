@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 02.1 UI-SPEC approved
-last_updated: "2026-09-04T16:37:02.197Z"
+status: in_progress
+stopped_at: Phase 02.2 context gathered
+last_updated: "2026-09-05T06:44:37.723Z"
 last_activity: 2026-09-04 -- Phase 02.1 marked complete
 progress:
-  total_phases: 5
+  total_phases: 6
   completed_phases: 3
   total_plans: 8
   completed_plans: 8
-  percent: 60
+  percent: 50
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-03)
 
 **Core value:** A reader with zero background can start at post one and, post by post, actually understand how quantum computing threatens Bitcoin — every concept explained before it's used, math rendered properly, nothing assumed.
-**Current focus:** Phase 02.1 — reading-navigation-collapsible-left-table-of-contents-sideba
+**Current focus:** Phase 02.2 -- content-authoring-primitives-figure-image-support-and-resolv
 
 ## Current Position
 
-Phase: 02.1 — COMPLETE
+Phase: 02.2 -- NOT STARTED
 Plan: 1 of 3
-Status: Phase 02.1 complete
+Status: in_progress
 Last activity: 2026-09-04 -- Phase 02.1 marked complete
 
 Progress: [░░░░░░░░░░] 0%
@@ -58,6 +58,7 @@ Progress: [░░░░░░░░░░] 0%
 ### Roadmap Evolution
 
 - Phase 02.1 inserted after Phase 2: Reading navigation: ToC sidebar, on-this-page sidebar, and shorter anchor hashes - user priority over Phase 3 discovery polish (URGENT)
+- Phase 02.2 inserted after Phase 2: Content authoring primitives: figures/images (resolve DSGN-01 img-guard conflict), citation/bibliography support, note/callout blocks, definition blocks - needed before real posts get written (URGENT)
 
 ### Decisions
 
@@ -92,6 +93,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-09-04T15:10:45.455Z
-Stopped at: Phase 02.1 UI-SPEC approved
-Resume file: .planning/phases/02.1-reading-navigation-collapsible-left-table-of-contents-sideba/02.1-UI-SPEC.md
+Last session: 2026-09-05T06:44:37.707Z
+Stopped at: Phase 02.2 context gathered
+Resume file: .planning/phases/02.2-content-authoring-primitives-figure-image-support-and-resolv/02.2-CONTEXT.md
