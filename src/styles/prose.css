@@ -149,23 +149,48 @@ pre code {
   margin-bottom: 0;
 }
 
+/* Variants are told apart by border style/width, not color alone, since
+   relying on --accent vs --text vs --muted alone reads as "the same" to a
+   colorblind reader. Each variant also gets a text label (below) so the
+   distinction never depends on color perception at all. */
+
 .callout-note {
-  border-left-color: var(--accent);
+  border-left: 3px solid var(--accent);
 }
 
 .callout-warning {
-  border-left-color: var(--text);
+  border-left: 3px dashed var(--text);
 }
 
 .callout-tip {
-  border-left-color: var(--muted);
+  border-left: 3px dotted var(--muted);
+}
+
+.callout > :first-child::before {
+  font-weight: 600;
+}
+
+.callout-note > :first-child::before {
+  content: "Note: ";
+}
+
+.callout-warning > :first-child::before {
+  content: "Warning: ";
+}
+
+.callout-tip > :first-child::before {
+  content: "Tip: ";
 }
 
 /* --- Definitions (CONT-10) --- */
 
 .callout-definition {
-  border-left-color: var(--accent);
-  border-left-width: 5px;
+  border-left: 5px double var(--accent);
+}
+
+.callout-definition > :first-child::before {
+  content: "Definition: ";
+  font-weight: 600;
 }
 
 /* --- Citations and references (CONT-08) --- */
