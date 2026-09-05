@@ -13,7 +13,7 @@ A reader with zero background can start at post one and, post by post, actually 
 - [x] **Phase 1: Scaffolding & Core Content Pipeline** - Astro site with real Markdown+LaTeX posts, homepage, about page, and nav, working end-to-end (completed 2026-09-04)
 - [x] **Phase 2: Visual Design & Theming** - Minimal text-first design with accent font and light/dark theme, legible on mobile (completed 2026-09-04)
 - [x] **Phase 02.1: Reading Navigation** - Sequential heading anchors, site-wide chapter sidebar, and on-this-page outline with scroll-spy (INSERTED, urgent) (completed 2026-09-04)
-- [ ] **Phase 02.2: Content Authoring Primitives** - Figures with auto-numbered captions, `\cite{}` citations from a global `.bib`, callout and definition blocks (INSERTED, urgent)
+- [x] **Phase 02.2: Content Authoring Primitives** - Figures with auto-numbered captions, `\cite{}` citations from a global `.bib`, callout and definition blocks (INSERTED, urgent) (completed 2026-09-05)
 - [ ] **Phase 3: Discovery & Distribution Polish** - RSS, sitemap, OG tags, reading time, and 404 page so posts are shareable and discoverable
 - [ ] **Phase 4: Deployment & Custom Domain** - Site live on Cloudflare Pages with analytics and a documented custom-domain attachment path
 
@@ -72,7 +72,7 @@ Plans:
 - [x] 02.2-01-PLAN.md — Green test baseline + `remark-directive` install, `remark-directive-to-hast.mjs` transform, and `astro.config.mjs` pipeline wiring (CONT-06, CONT-09, CONT-10)
 - [x] 02.2-02-PLAN.md — DSGN-01 guard rewrite, figure/callout/definition CSS, demo fixture post + assets, and `tests/authoring-primitives.test.mjs` (CONT-06, CONT-07, CONT-09, CONT-10)
 - [x] 02.2-03-PLAN.md — `rehype-citation` + `references.bib` + `\cite{key}` translation plugin and per-post References section (CONT-08)
-- [ ] 02.2-04-PLAN.md — Full-phase human visual verification of figures, dark-mode invert, callouts, definitions, and References (CONT-06, CONT-08, CONT-09, CONT-10)
+- [x] 02.2-04-PLAN.md — Full-phase human visual verification of figures, dark-mode invert, callouts, definitions, and References (CONT-06, CONT-08, CONT-09, CONT-10)
 **UI hint**: yes
 
 ### Phase 02.1: Reading navigation: collapsible left table-of-contents sidebar, right on-this-page section-header sidebar with scroll-spy, and a shorter stable anchor-link hash scheme for headings (INSERTED)
@@ -126,7 +126,7 @@ Plans:
 | 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
 | 2. Visual Design & Theming | 3/3 | Complete   | 2026-09-04 |
 | 02.1 Reading Navigation | 3/3 | Complete   | 2026-09-04 |
-| 02.2 Content Authoring Primitives | 3/4 | In Progress|  |
+| 02.2 Content Authoring Primitives | 4/4 | Complete   | 2026-09-05 |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
