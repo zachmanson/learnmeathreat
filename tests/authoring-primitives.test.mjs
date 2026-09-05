@@ -138,3 +138,72 @@ test('8. (D-10/D-12) the fixture page ships no <script> referencing the primitiv
     );
   }
 });
+
+// --- Citations (CONT-08) ---
+//
+// The "bibliography region" selector below (#refs.references.csl-bib-body,
+// .csl-entry) was pinned by inspecting real dist/ output from
+// rehype-citation@2.3.2 during 02.2-03 Task 1 (recorded verbatim in
+// 02.2-03-SUMMARY.md), not guessed from its README. If a future
+// rehype-citation upgrade changes this wrapper markup, these tests should
+// fail loudly rather than silently pass against the wrong region - the
+// same tripwire discipline prose.css already uses for KaTeX's currentColor
+// behavior (see prose.css test 15 in theming.test.mjs).
+
+// D-08 negative control: this is the ONE references.bib entry the fixture
+// post deliberately does NOT cite. Its surname must never appear in the
+// built page's bibliography region. Do not "fix" a failing test here by
+// adding a citation for this key - that would defeat the control.
+const UNCITED_CONTROL_SURNAME = 'Nakamoto';
+
+function extractBibliographyRegion(html) {
+  const start = html.indexOf('<div id="refs"');
+  assert.ok(start !== -1, '(CONT-08) expected a <div id="refs"> bibliography region in the built page');
+  const end = html.indexOf('</article>', start);
+  return html.slice(start, end === -1 ? undefined : end);
+}
+
+test('9. (CONT-08/D-06) no un-translated \\cite{ appears outside a <code> element', () => {
+  const html = readDistFile(`posts/${FIXTURE_SLUG}/index.html`);
+  const withoutCode = html.replace(/<code>[\s\S]*?<\/code>/g, '');
+  assert.ok(
+    !withoutCode.includes('\\cite{'),
+    '(CONT-08/D-06) found an un-translated \\cite{ outside a <code> element - remarkCiteTranslate should have rewritten it to [@key]'
+  );
+});
+
+test('10. (CONT-08/D-06) a \\cite{ written inside inline code stays literal', () => {
+  const html = readDistFile(`posts/${FIXTURE_SLUG}/index.html`);
+  const codeSpans = html.match(/<code>[\s\S]*?<\/code>/g) || [];
+  assert.ok(
+    codeSpans.some((span) => span.includes('\\cite{')),
+    '(CONT-08/D-06) expected at least one <code> element to still contain literal \\cite{ - the deliberate code-span exemption should not translate it'
+  );
+});
+
+test('11. (CONT-08) the bibliography region contains the author surname of each cited entry', () => {
+  const html = readDistFile(`posts/${FIXTURE_SLUG}/index.html`);
+  const bibRegion = extractBibliographyRegion(html);
+  assert.ok(bibRegion.includes('Shor'), '(CONT-08) expected "Shor" in the bibliography region');
+  assert.ok(bibRegion.includes('Grover'), '(CONT-08) expected "Grover" in the bibliography region');
+});
+
+test('12. (CONT-08/D-08) the bibliography region does not contain the uncited entry (negative control)', () => {
+  const html = readDistFile(`posts/${FIXTURE_SLUG}/index.html`);
+  const bibRegion = extractBibliographyRegion(html);
+  assert.ok(
+    !bibRegion.includes(UNCITED_CONTROL_SURNAME),
+    `(CONT-08/D-08) found "${UNCITED_CONTROL_SURNAME}" in the bibliography region - this entry is deliberately uncited by the fixture post and must not appear (per-post scoping)`
+  );
+});
+
+test('13. (CONT-08) a repeated cite key yields exactly one bibliography entry', () => {
+  const html = readDistFile(`posts/${FIXTURE_SLUG}/index.html`);
+  const bibRegion = extractBibliographyRegion(html);
+  const shorEntries = (bibRegion.match(/Polynomial-Time Algorithms for Prime Factorization/g) || []).length;
+  assert.equal(
+    shorEntries,
+    1,
+    `(CONT-08) expected the repeated shor1997 citation to produce exactly 1 bibliography entry, found ${shorEntries}`
+  );
+});

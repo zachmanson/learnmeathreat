@@ -41,4 +41,10 @@ This is a tip. Use it for a shortcut or a "here's an easier way to think about i
 **Elliptic curve:** a curve defined by an equation of the form $y^2 = x^3 + ax + b$, used because certain operations on its points are easy to compute forward and hard to reverse.
 :::
 
+## Citations
+
+Citations use a LaTeX-familiar `\cite{key}` syntax, backed by the project-root `references.bib`. Shor's factoring algorithm \cite{shor1997} is the one this whole series keeps coming back to, and Grover's search algorithm \cite{grover1996} shows up whenever amplitude amplification is relevant. Citing the same key again, like \cite{shor1997}, doesn't add a second entry to the reference list below - it's deduplicated automatically.
+
+Writing the syntax itself inside inline code, like `` `\cite{shor1997}` ``, stays literal on purpose - the translation only touches prose text, not code spans, so you can reference the citation syntax without accidentally triggering a real citation.
+
 That's the full set for now. If a real need for more variants shows up while writing actual posts, we'll add them, but the whole point is to keep this list short.
