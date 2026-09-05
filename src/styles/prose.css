@@ -101,3 +101,69 @@ pre code {
   font-weight: var(--shiki-dark-font-weight);
   text-decoration: var(--shiki-dark-text-decoration);
 }
+
+/* --- Figures (CONT-06) --- */
+
+.content-figure {
+  display: block;
+  margin: var(--space-lg) 0;
+  text-align: center;
+}
+
+.content-figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.content-figure figcaption {
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  margin-top: var(--space-sm);
+}
+
+/* SVG figures are authored as black lines on a transparent background
+   (D-03) - inverting them in dark mode turns the lines white without a
+   second upload. Raster (.png/.jpg) figures never get this class, so
+   photographic/screenshot content is untouched. */
+[data-theme="dark"] .invertible {
+  filter: invert(1);
+}
+
+/* --- Callouts (CONT-09) --- */
+
+.callout {
+  background: var(--surface);
+  border-left: 3px solid var(--muted);
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-lg) 0;
+}
+
+.callout > *:first-child {
+  margin-top: 0;
+}
+
+.callout > *:last-child {
+  margin-bottom: 0;
+}
+
+.callout-note {
+  border-left-color: var(--accent);
+}
+
+.callout-warning {
+  border-left-color: var(--text);
+}
+
+.callout-tip {
+  border-left-color: var(--muted);
+}
+
+/* --- Definitions (CONT-10) --- */
+
+.callout-definition {
+  border-left-color: var(--accent);
+  border-left-width: 5px;
+}

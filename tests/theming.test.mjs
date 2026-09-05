@@ -299,16 +299,33 @@ test('21. (fake-bold guard) every @font-face block naming Newsreader declares fo
   }
 });
 
-test('22. (DSGN-01 guard) no built page has an <img tag and no built CSS has a background-image', () => {
+test('22. (DSGN-01 guard) no marketing/hero <img> outside authored content figures', () => {
   for (const page of PAGES) {
     const html = readDistFile(page);
-    assert.ok(!/<img[\s>]/i.test(html), `${page} contains an <img> tag - DSGN-01 forbids stock/hero imagery`);
+    const withoutContentFigures = html.replace(
+      /<figure class="content-figure">[\s\S]*?<\/figure>/g,
+      ''
+    );
+    assert.ok(
+      !/<img[\s>]/i.test(withoutContentFigures),
+      `${page} contains an <img> tag outside an authored content figure - DSGN-01 forbids stock/hero imagery`
+    );
   }
   const css = readDistCss();
   assert.ok(
     !/background-image\s*:/i.test(css),
     'built CSS contains a background-image declaration - DSGN-01 forbids stock/hero imagery'
   );
+});
+
+test('22b. (DSGN-01 guard) non-post pages never contain any <img> tag', () => {
+  for (const page of ['index.html', 'about/index.html']) {
+    const html = readDistFile(page);
+    assert.ok(
+      !/<img[\s>]/i.test(html),
+      `${page} contains an <img> tag - only post content may contain content figures`
+    );
+  }
 });
 
 function findFilesRecursive(dir, matchFn) {
