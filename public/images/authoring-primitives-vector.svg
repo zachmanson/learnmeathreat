@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 160" width="400" height="160">
+  <rect x="20" y="55" width="120" height="50" fill="none" stroke="#000000" stroke-width="2" />
+  <text x="80" y="85" font-family="monospace" font-size="14" text-anchor="middle" fill="#000000">Markdown</text>
+
+  <line x1="140" y1="80" x2="230" y2="80" stroke="#000000" stroke-width="2" />
+  <polygon points="230,80 218,74 218,86" fill="#000000" />
+
+  <rect x="230" y="55" width="150" height="50" fill="none" stroke="#000000" stroke-width="2" />
+  <text x="305" y="80" font-family="monospace" font-size="14" text-anchor="middle" fill="#000000">Build Pipeline</text>
+  <text x="305" y="96" font-family="monospace" font-size="14" text-anchor="middle" fill="#000000">(remark/rehype)</text>
+</svg>

@@ -1,0 +1,44 @@
+---
+title: Authoring Primitives Reference
+date: 2026-09-05
+tags: ["Quantum Algorithms"]
+excerpt: "A quick cheat-sheet for the figure, callout, and definition blocks available when writing posts."
+slug: authoring-primitives
+draft: false
+---
+
+This one isn't really a post, it's a cheat-sheet I'm keeping around so I remember the exact syntax for the block-level stuff the site supports beyond plain Markdown. If you're reading this and you're not me: hi, this is just plumbing.
+
+## Figures
+
+Figures get a caption and an automatically incrementing "Figure N" label, the same way a LaTeX `figure` environment works. Here's a vector diagram, drawn as black lines on a transparent background so it can invert cleanly in dark mode:
+
+::figure[A vector diagram, inverted in dark mode]{src="/images/authoring-primitives-vector.svg" alt="Box and arrow diagram"}
+
+And here's a raster image. Raster figures don't get inverted, since flipping the colors of a photo or a screenshot would just make it look wrong:
+
+::figure[A raster test swatch, not inverted in dark mode]{src="/images/authoring-primitives-raster.png" alt="Colored test swatch"}
+
+## Callouts
+
+Four flavors of callout exist, each opened and closed explicitly so there's never any ambiguity about where a block starts and stops.
+
+:::note
+This is a note. Use it for a side comment that's useful but not essential to the main flow.
+:::
+
+:::warning
+This is a warning. Use it when skipping this part could actually trip someone up.
+
+It can also hold more than one paragraph, like this second one, and both should render inside the same box.
+:::
+
+:::tip
+This is a tip. Use it for a shortcut or a "here's an easier way to think about it."
+:::
+
+:::definition
+**Elliptic curve:** a curve defined by an equation of the form $y^2 = x^3 + ax + b$, used because certain operations on its points are easy to compute forward and hard to reverse.
+:::
+
+That's the full set for now. If a real need for more variants shows up while writing actual posts, we'll add them, but the whole point is to keep this list short.
