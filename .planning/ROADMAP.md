@@ -12,7 +12,8 @@ A reader with zero background can start at post one and, post by post, actually 
 
 - [x] **Phase 1: Scaffolding & Core Content Pipeline** - Astro site with real Markdown+LaTeX posts, homepage, about page, and nav, working end-to-end (completed 2026-09-04)
 - [x] **Phase 2: Visual Design & Theming** - Minimal text-first design with accent font and light/dark theme, legible on mobile (completed 2026-09-04)
-- [x] **Phase 02.1: Reading Navigation** - Sequential heading anchors, site-wide chapter sidebar, and on-this-page outline with scroll-spy (INSERTED, urgent) (completed 2026-09-04)
+- [x] **Phase 02.1: Reading Navigation** - Sequential heading anchors, site-wide chapter sidebar, and on-this-page outline with scroll-spy (INSERTED, urgent) (completed 2026-09-04)
+- [ ] **Phase 02.2: Content Authoring Primitives** - Figures with auto-numbered captions, `\cite{}` citations from a global `.bib`, callout and definition blocks (INSERTED, urgent)
 - [ ] **Phase 3: Discovery & Distribution Polish** - RSS, sitemap, OG tags, reading time, and 404 page so posts are shareable and discoverable
 - [ ] **Phase 4: Deployment & Custom Domain** - Site live on Cloudflare Pages with analytics and a documented custom-domain attachment path
 
@@ -52,6 +53,26 @@ Plans:
 - [x] 02-01-PLAN.md — Dark theme vertical slice: [data-theme="dark"] tokens, ThemeToggle component, pre-paint is:inline init script, theming test suite (DSGN-03, DSGN-04)
 - [x] 02-02-PLAN.md — Dark-mode legibility: dual-theme Shiki config + CSS variable mapping, KaTeX color anchoring + upgrade tripwire (DSGN-03)
 - [x] 02-03-PLAN.md — IBM Plex Mono heading accent (self-hosted, weight 600, h1-h3 only) + full-phase human visual verification (DSGN-01, DSGN-02, DSGN-04)
+**UI hint**: yes
+
+### Phase 02.2: Content authoring primitives: figure/image support (and resolving the DSGN-01 img-guard test conflict), citation/bibliography support (\cite-style), callout/note admonition blocks, definition blocks, and similar Markdown authoring extensions needed before real posts get written (INSERTED)
+
+**Goal**: An author writing a post in plain Markdown can drop in a captioned, auto-numbered figure that reads correctly in both light and dark mode, cite a source with `\cite{key}` against one global `references.bib` and get a formatted mark plus an auto-built References section, and wrap explanations in explicitly-fenced note/warning/tip/definition boxes — with DSGN-01's "no marketing imagery" guard still enforced by a test rather than deleted.
+**Depends on**: Phase 2
+**Requirements**: CONT-06, CONT-07, CONT-08, CONT-09, CONT-10
+**Success Criteria** (what must be TRUE):
+  1. `::figure[caption]{src="..." alt="..."}` renders `<figure class="content-figure">` with an `<img>` and a `<figcaption>` reading "Figure N: caption", where N restarts at 1 for each post
+  2. An SVG figure's `<img>` carries the `invertible` class and visibly inverts to light-on-dark in dark mode; a PNG/JPG figure does not carry that class and renders unchanged in both themes
+  3. `npm test` passes with a rewritten DSGN-01 guard that fails on any `<img>` outside an authored content figure, on any `<img>` at all on non-post pages, and on any CSS `background-image` — the original guard's intent is preserved, not weakened
+  4. `\cite{key}` in a post renders a formatted citation mark resolved from the project-root `references.bib`, and that post's built page ends with a References section listing only the entries that post cites
+  5. `:::note`, `:::warning`, `:::tip`, and `:::definition` blocks, each explicitly closed by a bare `:::`, render as distinctly styled boxes built only from the existing `--bg`/`--surface`/`--accent`/`--text`/`--muted` tokens, with zero new client JS in the built output
+**Plans**: 4 plans
+
+Plans:
+- [ ] 02.2-01-PLAN.md — Green test baseline + `remark-directive` install, `remark-directive-to-hast.mjs` transform, and `astro.config.mjs` pipeline wiring (CONT-06, CONT-09, CONT-10)
+- [ ] 02.2-02-PLAN.md — DSGN-01 guard rewrite, figure/callout/definition CSS, demo fixture post + assets, and `tests/authoring-primitives.test.mjs` (CONT-06, CONT-07, CONT-09, CONT-10)
+- [ ] 02.2-03-PLAN.md — `rehype-citation` + `references.bib` + `\cite{key}` translation plugin and per-post References section (CONT-08)
+- [ ] 02.2-04-PLAN.md — Full-phase human visual verification of figures, dark-mode invert, callouts, definitions, and References (CONT-06, CONT-08, CONT-09, CONT-10)
 **UI hint**: yes
 
 ### Phase 02.1: Reading navigation: collapsible left table-of-contents sidebar, right on-this-page section-header sidebar with scroll-spy, and a shorter stable anchor-link hash scheme for headings (INSERTED)
@@ -97,7 +118,6 @@ Plans:
   2. Pushing a commit to the git repo triggers an automatic redeploy visible at the `*.pages.dev` URL
   3. Cloudflare Web Analytics tracks pageviews without cookies
   4. A documented, step-by-step checklist exists for attaching the learnmeathreat.com custom domain once it's registered
-**Plans**: TBD
 
 ## Progress
 
@@ -106,6 +126,7 @@ Plans:
 | 1. Scaffolding & Core Content Pipeline | 2/2 | Complete   | 2026-09-04 |
 | 2. Visual Design & Theming | 3/3 | Complete   | 2026-09-04 |
 | 02.1 Reading Navigation | 3/3 | Complete   | 2026-09-04 |
+| 02.2 Content Authoring Primitives | 0/4 | Not started | - |
 | 3. Discovery & Distribution Polish | 0/TBD | Not started | - |
 | 4. Deployment & Custom Domain | 0/TBD | Not started | - |
 
@@ -114,3 +135,4 @@ Plans:
 *Phase 1 planned: 2026-09-03*
 *Phase 2 planned: 2026-09-04*
 *Phase 02.1 planned: 2026-09-04*
+*Phase 02.2 planned: 2026-09-05*

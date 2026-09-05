@@ -15,6 +15,17 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **CONT-04**: Code blocks in posts render with syntax highlighting
 - [ ] **CONT-05**: Each post displays an estimated reading time
 
+### Content Authoring Primitives
+
+Added 2026-09-05 when Phase 02.2 was inserted. Covers the Markdown authoring extensions real posts
+need before they get written (see `.planning/phases/02.2-.../02.2-CONTEXT.md` D-01 through D-12).
+
+- [ ] **CONT-06**: Posts can embed a figure (`::figure[caption]{src alt}`) that renders as image + auto-numbered "Figure N" caption restarting at 1 per post; SVG figures auto-invert in dark mode, raster (PNG/JPG) figures do not; PDF is not a supported figure format
+- [ ] **CONT-07**: The DSGN-01 "no marketing imagery" guard is enforced by a test that permits authored content figures inside post body content while still forbidding hero/stock imagery and CSS `background-image`
+- [ ] **CONT-08**: Posts can cite sources with `\cite{key}` against a single project-root `references.bib`, rendering a formatted citation mark plus an auto-generated per-post References section listing only the entries that post actually cites
+- [ ] **CONT-09**: Posts can author `:::note`, `:::warning`, and `:::tip` callout blocks with explicit `:::` close markers, rendering as styled boxes with no client JS
+- [ ] **CONT-10**: Posts can author `:::definition` blocks with explicit `:::` close markers, rendering as a styled term/definition box with no client JS
+
 ### Pages
 
 - [x] **PAGE-01**: Homepage lists all posts in reverse-chronological order, each showing title and short excerpt
@@ -86,6 +97,9 @@ Explicitly excluded. Documented to prevent scope creep.
 | Web-based CMS/editor | Adds a backend, auth surface, and hosting complexity that conflicts with the $0 static-hosting, no-backend constraint; local Markdown + git is the confirmed workflow |
 | Domain registration | Hosting is free, but registering learnmeathreat.com is a manual billing step with a registrar, outside what a build phase can do |
 | Analytics beyond pageviews (heatmaps, session replay) | Conflicts with the privacy-friendly, cookieless requirement |
+| PDF as a figure source format | Browsers cannot render `<img src="x.pdf">`; PDF vector exports must be re-exported to SVG before use (Phase 02.2 D-01) |
+| MDX (`@astrojs/mdx`) for authoring primitives | Adds a second content file extension, a second Content Collections glob, and a real Astro integration to maintain; `remark-directive` reaches full parity for figures/callouts/definitions with no new build-tool surface (Phase 02.2 RESEARCH.md Anti-Patterns) |
+| Interactive hover/tooltip definitions | Would require client JS on a zero-JS-by-default site for no reading benefit (Phase 02.2 D-12) |
 
 ## Traceability
 
@@ -98,6 +112,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-03 | Phase 1 | Complete |
 | CONT-04 | Phase 1 | Complete |
 | CONT-05 | Phase 3 | Pending |
+| CONT-06 | Phase 02.2 | Pending |
+| CONT-07 | Phase 02.2 | Pending |
+| CONT-08 | Phase 02.2 | Pending |
+| CONT-09 | Phase 02.2 | Pending |
+| CONT-10 | Phase 02.2 | Pending |
 | PAGE-01 | Phase 1 | Complete |
 | PAGE-02 | Phase 1 | Complete |
 | PAGE-03 | Phase 1 | Complete |
@@ -119,10 +138,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEPL-03 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 24 total (21 original + NAV-01a/b/c added with inserted Phase 02.1)
-- Mapped to phases: 24
+- v1 requirements: 29 total (21 original + NAV-01a/b/c added with inserted Phase 02.1 + CONT-06..CONT-10 added with inserted Phase 02.2)
+- Mapped to phases: 29
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-09-03*
-*Last updated: 2026-09-04 — NAV-01a/b/c added for inserted Phase 02.1*
+*Last updated: 2026-09-05 — CONT-06..CONT-10 added for inserted Phase 02.2*
