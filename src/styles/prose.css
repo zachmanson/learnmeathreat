@@ -167,3 +167,37 @@ pre code {
   border-left-color: var(--accent);
   border-left-width: 5px;
 }
+
+/* --- Citations and references (CONT-08) --- */
+
+/* rehype-citation@2.3.2 emits the bibliography as
+   <div id="refs" class="references csl-bib-body"><div class="csl-entry"
+   id="bib-KEY">...</div></div> - no heading element at all, verified
+   against real build output in 02.2-03-SUMMARY.md. That means it never
+   gets a #h-N id from rehypeSequentialIds and never appears in the
+   on-this-page outline sidebar - no exclusion filter was needed in
+   [slug].astro. */
+.csl-bib-body {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--muted);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.csl-entry {
+  /* Hanging indent so a wrapped second line of a long reference lines up
+     under the start of the title rather than under the entry's own
+     left edge. */
+  padding-left: var(--space-md);
+  text-indent: calc(-1 * var(--space-md));
+  margin: var(--space-sm) 0;
+}
+
+/* Citation marks in body text link to their bibliography entry when
+   linkCitations: true (astro.config.mjs) - style them like any other
+   inline link using the site's existing accent colour. */
+.csl-bib-body a,
+article p a[href^="#bib-"] {
+  color: var(--accent);
+}
