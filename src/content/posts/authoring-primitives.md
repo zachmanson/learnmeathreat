@@ -38,7 +38,7 @@ This is a tip. Use it for a shortcut or a "here's an easier way to think about i
 :::
 
 :::definition
-**Elliptic curve** is a curve defined by an equation of the form $y^2 = x^3 + ax + b$, used because certain operations on its points are easy to compute forward and hard to reverse.
+**Elliptic curve:** a curve defined by an equation of the form $y^2 = x^3 + ax + b$, used because certain operations on its points are easy to compute forward and hard to reverse.
 :::
 
 ## Citations

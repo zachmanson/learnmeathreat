@@ -188,11 +188,6 @@ pre code {
   border-left: 5px double var(--accent);
 }
 
-.callout-definition > :first-child::before {
-  content: "Definition: ";
-  font-weight: 600;
-}
-
 /* --- Citations and references (CONT-08) --- */
 
 /* rehype-citation@2.3.2 emits the bibliography as
