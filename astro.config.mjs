@@ -8,6 +8,7 @@ import rehypeCitation from 'rehype-citation';
 import { rehypeSequentialIds } from './src/lib/rehype-sequential-ids.mjs';
 import { remarkDirectiveToHast } from './src/lib/remark-directive-to-hast.mjs';
 import { remarkCiteTranslate } from './src/lib/remark-cite-translate.mjs';
+import { rehypeCitationBrackets } from './src/lib/rehype-citation-brackets.mjs';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { h } from 'hastscript';
 
@@ -30,9 +31,11 @@ export default defineConfig({
         [rehypeCitation, {
           bibliography: 'references.bib', // MUST run after rehypeKatex, before rehypeSequentialIds - RESEARCH.md Pattern 2 / Pitfall 4
           path: process.cwd(),
+          csl: 'vancouver', // numeric [1], [2]... in order of first citation per page, per user request
           suppressBibliography: false,
           linkCitations: true,
         }],
+        rehypeCitationBrackets, // MUST run after rehypeCitation - rewrites its "(1)" marks to "[1]"
         rehypeSequentialIds, // MUST run before autolink-headings - Pitfall 1
         [rehypeAutolinkHeadings, {
           behavior: 'prepend',
