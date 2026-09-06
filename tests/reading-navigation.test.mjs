@@ -71,8 +71,10 @@ test('3. chapters render as native details/summary accordions', () => {
   assert.ok(navRegion.includes('<details'), 'expected at least one <details> in left-nav');
   assert.ok(navRegion.includes('<summary'), 'expected at least one <summary> in left-nav');
   const summaryCount = (navRegion.match(/<summary/g) || []).length;
-  // Exactly one chapter exists in the current seed content (Quantum Algorithms).
-  assert.equal(summaryCount, 1, `expected 1 distinct chapter, found ${summaryCount}`);
+  // Two chapters exist in the current seed content (Cryptography,
+  // Quantum Algorithms) since the 260905-rvd quick task added the
+  // Cryptography chapter stub posts.
+  assert.equal(summaryCount, 2, `expected 2 distinct chapters, found ${summaryCount}`);
 });
 
 test("4. the current post's chapter is open and its link marked", () => {
@@ -178,6 +180,79 @@ test('11. scroll-spy ships as a single inline script with no external dependency
       src,
       /scrollspy|gsap|jquery/i,
       `unexpected third-party scroll library script: ${src}`
+    );
+  }
+});
+
+function extractPostNavRegion(html) {
+  const start = html.indexOf('class="post-nav"');
+  const end = html.indexOf('</nav>', start);
+  if (start === -1 || end === -1) {
+    throw new Error('Could not find .post-nav region in post HTML');
+  }
+  return html.slice(start, end);
+}
+
+test('12. first post in reading order has a next link and no prev link', () => {
+  const html = readHtml('posts/cryptography/index.html');
+  const postNav = extractPostNavRegion(html);
+  assert.ok(
+    postNav.includes('href="/posts/asymmetric-and-symmetric-cryptography/"'),
+    'expected next link to /posts/asymmetric-and-symmetric-cryptography/'
+  );
+  assert.ok(
+    postNav.includes('Asymmetric and Symmetric Cryptography'),
+    'expected next link labelled with the adjacent post title'
+  );
+  assert.ok(
+    !postNav.includes('post-nav-prev'),
+    'expected no prev link on the first post in reading order'
+  );
+});
+
+test('13. mid-chapter post links prev and next within the chapter', () => {
+  const html = readHtml('posts/hash-functions/index.html');
+  const postNav = extractPostNavRegion(html);
+  assert.ok(
+    postNav.includes('href="/posts/asymmetric-and-symmetric-cryptography/"'),
+    'expected prev link to /posts/asymmetric-and-symmetric-cryptography/'
+  );
+  assert.ok(
+    postNav.includes('href="/posts/digital-signatures/"'),
+    'expected next link to /posts/digital-signatures/'
+  );
+});
+
+test('14. last post of a chapter flows into the next chapter', () => {
+  const html = readHtml('posts/digital-signatures/index.html');
+  const postNav = extractPostNavRegion(html);
+  assert.ok(
+    postNav.includes('href="/posts/why-quantum-computers-threaten-bitcoin/"'),
+    'expected next link to cross the chapter boundary into Quantum Algorithms'
+  );
+});
+
+test('15. last post overall has a prev link and no next link', () => {
+  const html = readHtml('posts/authoring-primitives/index.html');
+  const postNav = extractPostNavRegion(html);
+  assert.ok(
+    postNav.includes('post-nav-prev'),
+    'expected a prev link on the last post in reading order'
+  );
+  assert.ok(
+    !postNav.includes('post-nav-next'),
+    'expected no next link on the last post in reading order'
+  );
+});
+
+test('16. post-nav never references the draft post', () => {
+  const slugs = nonDraftPostSlugs();
+  for (const slug of slugs) {
+    const html = readHtml(`posts/${slug}/index.html`);
+    const postNav = extractPostNavRegion(html);
+    assert.ok(
+      !postNav.includes('shors-algorithm-in-plain-english'),
+      `expected post-nav on ${slug} to not reference the draft post`
     );
   }
 });

@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import LeftNavSidebar from '../../components/LeftNavSidebar.astro';
 import RightNavSidebar from '../../components/RightNavSidebar.astro';
+import PostNav from '../../components/PostNav.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -31,6 +32,7 @@ const outlineHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
         {post.data.date.toDateString()} &middot; {post.data.tags.join(', ')}
       </p>
       <Content />
+      <PostNav currentSlug={post.data.slug} />
     </article>
     {outlineHeadings.length >= 2 && <RightNavSidebar headings={outlineHeadings} />}
   </div>
