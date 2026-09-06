@@ -101,9 +101,9 @@ test('8. Home and About nav links appear on every page', () => {
 
 test('9. dist/index.html renders chapters in reading order (Cryptography before Quantum Algorithms)', () => {
   const html = readDistFile('index.html');
-  const cryptoMatch = html.match(/<h2[^>]*>Cryptography<\/h2>/);
+  const cryptoMatch = html.match(/<a class="post-title" href="\/posts\/cryptography\/"[^>]*>Cryptography<\/a>/);
   const quantumMatch = html.match(/<h2[^>]*>Quantum Algorithms<\/h2>/);
-  assert.ok(cryptoMatch, 'dist/index.html missing Cryptography chapter heading');
+  assert.ok(cryptoMatch, 'dist/index.html missing Cryptography section post link (its title stands in for the chapter heading)');
   assert.ok(quantumMatch, 'dist/index.html missing Quantum Algorithms chapter heading');
   assert.ok(
     cryptoMatch.index < quantumMatch.index,

@@ -22,7 +22,6 @@ const chapters = await getChapters();
       const { sectionPost, subsectionPosts } = splitChapter(chapterPosts);
       return (
         <section class="chapter">
-          <h2>{chapterName}</h2>
           {sectionPost ? (
             <>
               <ul class="post-list">
@@ -45,7 +44,9 @@ const chapters = await getChapters();
               )}
             </>
           ) : (
-            <ul class="post-list">
+            <>
+              <h2>{chapterName}</h2>
+              <ul class="post-list">
               {chapterPosts.map((post) => (
                 <li>
                   <a class="post-title" href={`/posts/${post.data.slug}/`}>{post.data.title}</a>
@@ -55,7 +56,8 @@ const chapters = await getChapters();
                   <p class="excerpt">{post.data.excerpt}</p>
                 </li>
               ))}
-            </ul>
+              </ul>
+            </>
           )}
         </section>
       );
