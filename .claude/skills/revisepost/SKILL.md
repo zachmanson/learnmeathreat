@@ -29,9 +29,10 @@ Revises a Learn Me a Threat draft for flow, technical accuracy, and voice — wi
 
    If memory has since accumulated more voice/style entries than these four, use the current versions — they're the source of truth, this list is just the known baseline.
 
-3. **Revise for three things, in this order:**
+3. **Revise for these things, in this order:**
    - **Technical accuracy** — verify every factual/technical claim in the draft. If something is wrong or unverifiable, flag it explicitly and ask; do not silently "fix" it into something that sounds plausible.
-   - **Flow** — split run-ons, cut redundant clauses, tighten transitions. Keep the paragraph and section structure the user chose unless it's actively broken.
+   - **Structure/ordering** — rough drafts jump around; reordering paragraphs, sections, or even where an idea gets introduced is fair game, not just sentence-level editing. If reordering would improve the post, do it (or propose it) rather than leaving ideas in the order they were dumped in. Call out any reordering explicitly in the summary of changes so it's not a surprise on read-through.
+   - **Flow** — split run-ons, cut redundant clauses, tighten transitions.
    - **Voice** — keep it blunt and plain. Don't add rhetorical questions, "Let's dive in" framing, scene-setting em dashes, or softening hedges. When unsure whether a change adds polish vs. genuinely improves clarity, prefer cutting over adding flourish.
 
 4. **Show the revision — never overwrite silently.** Present the revised text (inline, or as a diff against the file if working from one), with a short list of what changed and why. Put fact-check flags up front, separate from style edits, so they don't get lost.
@@ -47,6 +48,7 @@ Revises a Learn Me a Threat draft for flow, technical accuracy, and voice — wi
 | A technical claim looks shaky | Flag it explicitly and ask — don't guess a fix |
 | Draft already reads blunt/plain | Leave the phrasing alone — don't polish for polish's sake |
 | Simplification looks intentional (accessibility) | Leave it — that's not a fact-check hit |
+| Ideas are out of order / draft jumps around | Reorder freely — flag the reorder in the change summary, don't just leave it because "that's how they wrote it" |
 
 ## Common Mistakes
 
