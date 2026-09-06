@@ -82,17 +82,33 @@ for (const heading of headings) {
     // scroll-spy active highlight is lost - fail silently per the
     // project's error-state convention.
   } else {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const link = outlineLinkMap.get(entry.target.id);
-          if (link) {
-            link.classList.toggle('is-active', entry.isIntersecting);
-          }
+    // Don't drive the highlight directly off entry.isIntersecting - that
+    // leaves a gap between one heading scrolling past the top-20% trigger
+    // band and the next one reaching it, where nothing is "intersecting"
+    // and the highlight disappears entirely. Instead, treat the observer
+    // firing as a cue to recompute: the active heading is whichever one
+    // has most recently crossed the trigger line, and it stays active
+    // until a later heading crosses it (or an earlier one does, on scroll
+    // back up) - so there's always exactly one active heading once
+    // scrolling has begun, never a blank gap.
+    const triggerLinePx = () => window.innerHeight * 0.2;
+
+    function updateActiveHeading() {
+      let activeId = null;
+      for (const headingEl of outlineHeadingEls) {
+        if (headingEl.getBoundingClientRect().top <= triggerLinePx()) {
+          activeId = headingEl.id;
         }
-      },
-      { rootMargin: '0px 0px -80% 0px', threshold: 0 }
-    );
+      }
+      for (const [id, link] of outlineLinkMap) {
+        link.classList.toggle('is-active', id === activeId);
+      }
+    }
+
+    const observer = new IntersectionObserver(updateActiveHeading, {
+      rootMargin: '0px 0px -80% 0px',
+      threshold: 0,
+    });
 
     for (const headingEl of outlineHeadingEls) {
       observer.observe(headingEl);
