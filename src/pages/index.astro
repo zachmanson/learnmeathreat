@@ -1,9 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
+import { getChapters, splitChapter } from '../lib/chapter-order';
 import Layout from '../layouts/Layout.astro';
 
-const allPosts = await getCollection('posts', ({ data }) => !data.draft);
-const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const chapters = await getChapters();
 ---
 
 <Layout title="Learn Me a Threat">
@@ -13,23 +12,54 @@ const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueO
     Bitcoin, one concept at a time, nothing assumed.
   </p>
 
-  {posts.length === 0 ? (
+  {chapters.size === 0 ? (
     <div class="empty-state">
       <h2>No posts yet.</h2>
       <p>Check back soon &mdash; the first post is on its way.</p>
     </div>
   ) : (
-    <ul class="post-list">
-      {posts.map((post) => (
-        <li>
-          <a class="post-title" href={`/posts/${post.data.slug}/`}>{post.data.title}</a>
-          <p class="meta">
-            {post.data.date.toDateString()} &middot; {post.data.tags.join(', ')}
-          </p>
-          <p class="excerpt">{post.data.excerpt}</p>
-        </li>
-      ))}
-    </ul>
+    [...chapters].map(([chapterName, chapterPosts]) => {
+      const { sectionPost, subsectionPosts } = splitChapter(chapterPosts);
+      return (
+        <section class="chapter">
+          <h2>{chapterName}</h2>
+          {sectionPost ? (
+            <>
+              <ul class="post-list">
+                <li>
+                  <a class="post-title" href={`/posts/${sectionPost.data.slug}/`}>{sectionPost.data.title}</a>
+                  <p class="meta">
+                    {sectionPost.data.date.toDateString()} &middot; {sectionPost.data.tags.join(', ')}
+                  </p>
+                  <p class="excerpt">{sectionPost.data.excerpt}</p>
+                </li>
+              </ul>
+              {subsectionPosts.length > 0 && (
+                <ul class="subsection-list">
+                  {subsectionPosts.map((post) => (
+                    <li>
+                      <a class="post-title" href={`/posts/${post.data.slug}/`}>{post.data.title}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          ) : (
+            <ul class="post-list">
+              {chapterPosts.map((post) => (
+                <li>
+                  <a class="post-title" href={`/posts/${post.data.slug}/`}>{post.data.title}</a>
+                  <p class="meta">
+                    {post.data.date.toDateString()} &middot; {post.data.tags.join(', ')}
+                  </p>
+                  <p class="excerpt">{post.data.excerpt}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      );
+    })
   )}
 </Layout>
 
@@ -62,5 +92,18 @@ const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueO
 
   .post-list .excerpt {
     margin: 0;
+  }
+
+  .chapter + .chapter {
+    margin-top: var(--space-xl);
+  }
+
+  .subsection-list {
+    list-style: none;
+    margin: 0;
+    padding-left: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
   }
 </style>

@@ -22,6 +22,21 @@ const DRAFT_TITLE = "Shor's Algorithm in Plain English";
 const PUBLISHED_SLUG = 'why-quantum-computers-threaten-bitcoin';
 const DRAFT_SLUG = 'shors-algorithm-in-plain-english';
 
+// Chapter-grouped homepage assertions (quick task 260905-svh).
+const CRYPTO_EXCERPT =
+  'The three cryptographic tools Bitcoin leans on, and why you need to understand them before any of the quantum stuff makes sense.';
+const ASYMMETRIC_EXCERPT =
+  'The difference between sharing one secret key and using a public/private key pair, and why Bitcoin relies on the latter.';
+const HASH_FUNCTIONS_EXCERPT =
+  'What a hash function actually does, and why being hard to reverse is the whole point.';
+const DIGITAL_SIGNATURES_EXCERPT =
+  "How you can prove you own a private key without ever revealing it, and why that's what actually authorizes a Bitcoin transaction.";
+const AUTHORING_EXCERPT =
+  'A quick cheat-sheet for the figure, callout, and definition blocks available when writing posts.';
+const ASYMMETRIC_SLUG = 'asymmetric-and-symmetric-cryptography';
+const HASH_FUNCTIONS_SLUG = 'hash-functions';
+const DIGITAL_SIGNATURES_SLUG = 'digital-signatures';
+
 function readDistFile(relPath) {
   const fullPath = path.join(distDir, relPath);
   try {
@@ -82,6 +97,77 @@ test('8. Home and About nav links appear on every page', () => {
     assert.ok(html.includes('href="/"'), `${page} missing href="/"`);
     assert.ok(html.includes('href="/about/"'), `${page} missing href="/about/"`);
   }
+});
+
+test('9. dist/index.html renders chapters in reading order (Cryptography before Quantum Algorithms)', () => {
+  const html = readDistFile('index.html');
+  const cryptoMatch = html.match(/<h2[^>]*>Cryptography<\/h2>/);
+  const quantumMatch = html.match(/<h2[^>]*>Quantum Algorithms<\/h2>/);
+  assert.ok(cryptoMatch, 'dist/index.html missing Cryptography chapter heading');
+  assert.ok(quantumMatch, 'dist/index.html missing Quantum Algorithms chapter heading');
+  assert.ok(
+    cryptoMatch.index < quantumMatch.index,
+    'Cryptography chapter heading should appear before Quantum Algorithms chapter heading'
+  );
+});
+
+test('10. dist/index.html contains the Cryptography section post excerpt', () => {
+  const html = readDistFile('index.html');
+  assert.ok(
+    html.includes(CRYPTO_EXCERPT),
+    'dist/index.html does not contain CRYPTO_EXCERPT'
+  );
+});
+
+test('11. Cryptography subsections are linked, title-only, and in a separate list element', () => {
+  const html = readDistFile('index.html');
+
+  for (const slug of [ASYMMETRIC_SLUG, HASH_FUNCTIONS_SLUG, DIGITAL_SIGNATURES_SLUG]) {
+    assert.ok(
+      html.includes(`href="/posts/${slug}/"`),
+      `dist/index.html missing link to subsection ${slug}`
+    );
+  }
+
+  for (const excerpt of [ASYMMETRIC_EXCERPT, HASH_FUNCTIONS_EXCERPT, DIGITAL_SIGNATURES_EXCERPT]) {
+    assert.ok(
+      !html.includes(excerpt),
+      `dist/index.html unexpectedly contains a subsection excerpt: ${excerpt}`
+    );
+  }
+
+  assert.ok(
+    html.includes('class="subsection-list"'),
+    'dist/index.html missing class="subsection-list"'
+  );
+
+  const subsectionListMatch = html.match(/<ul class="subsection-list"[^>]*>[\s\S]*?<\/ul>/);
+  assert.ok(subsectionListMatch, 'dist/index.html missing a <ul class="subsection-list"> element');
+  const subsectionListHtml = subsectionListMatch[0];
+
+  for (const slug of [ASYMMETRIC_SLUG, HASH_FUNCTIONS_SLUG, DIGITAL_SIGNATURES_SLUG]) {
+    assert.ok(
+      subsectionListHtml.includes(`href="/posts/${slug}/"`),
+      `subsection-list should contain link to ${slug}`
+    );
+  }
+
+  assert.ok(
+    !subsectionListHtml.includes('href="/posts/cryptography/"'),
+    'subsection-list should NOT contain the Cryptography section post link'
+  );
+});
+
+test('12. Quantum Algorithms chapter (flat fallback) keeps full excerpts unchanged', () => {
+  const html = readDistFile('index.html');
+  assert.ok(
+    html.includes(PUBLISHED_EXCERPT),
+    'dist/index.html missing PUBLISHED_EXCERPT for Quantum Algorithms chapter'
+  );
+  assert.ok(
+    html.includes(AUTHORING_EXCERPT),
+    'dist/index.html missing AUTHORING_EXCERPT for Quantum Algorithms chapter'
+  );
 });
 
 function escapeRegExp(str) {
