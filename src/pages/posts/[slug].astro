@@ -1,9 +1,10 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import LeftNavSidebar from '../../components/LeftNavSidebar.astro';
 import RightNavSidebar from '../../components/RightNavSidebar.astro';
 import PostNav from '../../components/PostNav.astro';
+import { getChapters, splitChapter } from '../../lib/chapter-order';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -21,6 +22,14 @@ const { Content, headings } = await render(post);
 // representation markup - neither seed post has math in a heading today, so
 // no cleanup pass is added now; revisit when the first such heading ships.
 const outlineHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+// Guard the chapter lookup so non-section posts do no extra work.
+let subsectionPosts: CollectionEntry<'posts'>[] = [];
+if (post.data.section) {
+  const chapters = await getChapters();
+  const chapterPosts = chapters.get(post.data.tags[0] ?? 'Uncategorized') ?? [];
+  ({ subsectionPosts } = splitChapter(chapterPosts));
+}
 ---
 
 <Layout title={post.data.title}>
@@ -31,6 +40,18 @@ const outlineHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
       <p class="meta">
         {post.data.date.toDateString()} &middot; {post.data.tags.join(', ')}
       </p>
+      {post.data.section && subsectionPosts.length > 0 && (
+        <nav class="chapter-toc" aria-label="In this chapter">
+          <p class="chapter-toc-label">In this chapter</p>
+          <ul>
+            {subsectionPosts.map((subPost) => (
+              <li>
+                <a href={`/posts/${subPost.data.slug}/`}>{subPost.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
       <Content />
       <PostNav currentSlug={post.data.slug} />
     </article>

@@ -256,3 +256,88 @@ test('16. post-nav never references the draft post', () => {
     );
   }
 });
+
+// Chapter accordions are siblings inside the left-nav region, so a plain
+// split on '<details' is sufficient to isolate one chapter's fragment - no
+// HTML parser needed.
+function extractChapterFragment(navRegion, chapterName) {
+  const parts = navRegion.split('<details');
+  const fragment = parts.find((part) => part.includes(`<summary>${chapterName}</summary>`));
+  if (!fragment) {
+    throw new Error(`Could not find chapter accordion for "${chapterName}"`);
+  }
+  return fragment;
+}
+
+test('17. Cryptography chapter is hierarchical', () => {
+  const html = readHtml(`posts/${POST_SLUG}/index.html`);
+  const navRegion = extractLeftNavRegion(html);
+  const fragment = extractChapterFragment(navRegion, 'Cryptography');
+
+  const sectionCount = (fragment.match(/class="nav-section"/g) || []).length;
+  const subsectionCount = (fragment.match(/class="nav-subsection"/g) || []).length;
+  assert.equal(sectionCount, 1, `expected exactly one nav-section, found ${sectionCount}`);
+  assert.equal(subsectionCount, 3, `expected exactly three nav-subsection, found ${subsectionCount}`);
+
+  const sectionIndex = fragment.indexOf('class="nav-section"');
+  const firstSubsectionIndex = fragment.indexOf('class="nav-subsection"');
+  assert.ok(
+    sectionIndex < firstSubsectionIndex,
+    'expected the nav-section marker to appear before the first nav-subsection marker'
+  );
+
+  const sectionLiEnd = fragment.indexOf('</li>', sectionIndex);
+  const sectionLi = fragment.slice(sectionIndex, sectionLiEnd);
+  assert.ok(
+    sectionLi.includes('href="/posts/cryptography/"'),
+    'expected the nav-section li to link to /posts/cryptography/'
+  );
+});
+
+test('18. Quantum Algorithms chapter renders flat', () => {
+  const html = readHtml(`posts/${POST_SLUG}/index.html`);
+  const navRegion = extractLeftNavRegion(html);
+  const fragment = extractChapterFragment(navRegion, 'Quantum Algorithms');
+  assert.ok(!fragment.includes('nav-section'), 'expected no nav-section in the flat-rendered chapter');
+  assert.ok(!fragment.includes('nav-subsection'), 'expected no nav-subsection in the flat-rendered chapter');
+});
+
+test('19. mini-ToC on the section page', () => {
+  const html = readHtml('posts/cryptography/index.html');
+  const start = html.indexOf('class="chapter-toc"');
+  const end = html.indexOf('</nav>', start);
+  assert.notEqual(start, -1, 'expected a .chapter-toc box on the cryptography page');
+  const fragment = html.slice(start, end);
+
+  assert.ok(fragment.includes('In this chapter'), 'expected the "In this chapter" label');
+
+  const hrefs = [...fragment.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(hrefs.length, 3, `expected exactly 3 hrefs in the mini-ToC, found ${hrefs.length}`);
+  assert.ok(hrefs.includes('/posts/asymmetric-and-symmetric-cryptography/'));
+  assert.ok(hrefs.includes('/posts/hash-functions/'));
+  assert.ok(hrefs.includes('/posts/digital-signatures/'));
+  assert.ok(
+    !fragment.includes('href="/posts/cryptography/"'),
+    'expected the mini-ToC to not link to itself'
+  );
+});
+
+test('20. mini-ToC absent on non-section posts', () => {
+  const slugs = nonDraftPostSlugs().filter((slug) => slug !== 'cryptography');
+  for (const slug of slugs) {
+    const html = readHtml(`posts/${slug}/index.html`);
+    assert.ok(!html.includes('chapter-toc'), `expected no chapter-toc on ${slug}`);
+  }
+});
+
+test('21. serif exception stays scoped', () => {
+  const cssPath = path.join(repoRoot, 'src', 'styles', 'nav-sidebars.css');
+  const css = readFileSync(cssPath, 'utf-8');
+  const blocks = css.split('}').filter((block) => block.includes('Newsreader'));
+  assert.equal(blocks.length, 1, `expected exactly one block declaring Newsreader, found ${blocks.length}`);
+  assert.match(
+    blocks[0],
+    /\.left-nav \.nav-section > a\s*\{/,
+    'expected the Newsreader block selector to be .left-nav .nav-section > a'
+  );
+});
