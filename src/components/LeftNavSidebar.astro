@@ -3,7 +3,7 @@
 // styling lives in src/styles/nav-sidebars.css per the plan's interfaces
 // contract, matching prose.css's precedent (the grid parent needs to reach
 // into this component's markup, so no scoped Astro style block here).
-import { getChapters } from '../lib/chapter-order';
+import { getChapters, splitChapter } from '../lib/chapter-order';
 
 interface Props {
   currentSlug: string;
@@ -40,23 +40,49 @@ const currentChapter = currentTags[0] ?? 'Uncategorized';
     </svg>
   </button>
   <nav id="site-contents" class="left-nav" aria-label="Site contents">
-    {[...chapters.entries()].map(([chapterName, chapterPosts]) => (
-      <details open={chapterName === currentChapter}>
-        <summary>{chapterName}</summary>
-        <ul>
-          {chapterPosts.map((post) => (
-            <li>
-              <a
-                href={`/posts/${post.data.slug}/`}
-                aria-current={post.data.slug === currentSlug ? 'page' : undefined}
-              >
-                {post.data.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </details>
-    ))}
+    {[...chapters.entries()].map(([chapterName, chapterPosts]) => {
+      const { sectionPost, subsectionPosts } = splitChapter(chapterPosts);
+      return (
+        <details open={chapterName === currentChapter}>
+          <summary>{chapterName}</summary>
+          <ul>
+            {sectionPost ? (
+              <>
+                <li class="nav-section">
+                  <a
+                    href={`/posts/${sectionPost.data.slug}/`}
+                    aria-current={sectionPost.data.slug === currentSlug ? 'page' : undefined}
+                  >
+                    {sectionPost.data.title}
+                  </a>
+                </li>
+                {subsectionPosts.map((post) => (
+                  <li class="nav-subsection">
+                    <a
+                      href={`/posts/${post.data.slug}/`}
+                      aria-current={post.data.slug === currentSlug ? 'page' : undefined}
+                    >
+                      {post.data.title}
+                    </a>
+                  </li>
+                ))}
+              </>
+            ) : (
+              chapterPosts.map((post) => (
+                <li>
+                  <a
+                    href={`/posts/${post.data.slug}/`}
+                    aria-current={post.data.slug === currentSlug ? 'page' : undefined}
+                  >
+                    {post.data.title}
+                  </a>
+                </li>
+              ))
+            )}
+          </ul>
+        </details>
+      );
+    })}
   </nav>
 </div>
 
