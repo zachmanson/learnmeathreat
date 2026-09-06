@@ -28,7 +28,7 @@ const chapters = await getChapters();
                 <li>
                   <a class="post-title" href={`/posts/${sectionPost.data.slug}/`}>{sectionPost.data.title}</a>
                   <p class="meta">
-                    {sectionPost.data.date.toDateString()} &middot; {sectionPost.data.tags.join(', ')}
+                    {sectionPost.data.tags.join(', ')}
                   </p>
                   <p class="excerpt">{sectionPost.data.excerpt}</p>
                 </li>
@@ -51,7 +51,7 @@ const chapters = await getChapters();
                 <li>
                   <a class="post-title" href={`/posts/${post.data.slug}/`}>{post.data.title}</a>
                   <p class="meta">
-                    {post.data.date.toDateString()} &middot; {post.data.tags.join(', ')}
+                    {post.data.tags.join(', ')}
                   </p>
                   <p class="excerpt">{post.data.excerpt}</p>
                 </li>

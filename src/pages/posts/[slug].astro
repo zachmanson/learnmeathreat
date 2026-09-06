@@ -38,7 +38,7 @@ if (post.data.section) {
     <article>
       <h1>{post.data.title}</h1>
       <p class="meta">
-        {post.data.date.toDateString()} &middot; {post.data.tags.join(', ')}
+        {post.data.tags.join(', ')}
       </p>
       {post.data.section && subsectionPosts.length > 0 && (
         <nav class="chapter-toc" aria-label="In this chapter">
