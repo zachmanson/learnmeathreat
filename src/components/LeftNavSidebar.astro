@@ -44,18 +44,21 @@ const currentChapter = currentTags[0] ?? 'Uncategorized';
       const { sectionPost, subsectionPosts } = splitChapter(chapterPosts);
       return (
         <details open={chapterName === currentChapter}>
-          <summary>{chapterName}</summary>
+          <summary>
+            {sectionPost ? (
+              <a
+                href={`/posts/${sectionPost.data.slug}/`}
+                aria-current={sectionPost.data.slug === currentSlug ? 'page' : undefined}
+              >
+                {sectionPost.data.title}
+              </a>
+            ) : (
+              chapterName
+            )}
+          </summary>
           <ul>
             {sectionPost ? (
               <>
-                <li class="nav-section">
-                  <a
-                    href={`/posts/${sectionPost.data.slug}/`}
-                    aria-current={sectionPost.data.slug === currentSlug ? 'page' : undefined}
-                  >
-                    {sectionPost.data.title}
-                  </a>
-                </li>
                 {subsectionPosts.map((post) => (
                   <li class="nav-subsection">
                     <a

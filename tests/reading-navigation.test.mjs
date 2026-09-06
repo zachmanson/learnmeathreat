@@ -262,7 +262,10 @@ test('16. post-nav never references the draft post', () => {
 // HTML parser needed.
 function extractChapterFragment(navRegion, chapterName) {
   const parts = navRegion.split('<details');
-  const fragment = parts.find((part) => part.includes(`<summary>${chapterName}</summary>`));
+  const fragment = parts.find((part) => {
+    const summaryMatch = part.match(/<summary[^>]*>([\s\S]*?)<\/summary>/);
+    return summaryMatch && summaryMatch[1].includes(chapterName);
+  });
   if (!fragment) {
     throw new Error(`Could not find chapter accordion for "${chapterName}"`);
   }
@@ -274,23 +277,27 @@ test('17. Cryptography chapter is hierarchical', () => {
   const navRegion = extractLeftNavRegion(html);
   const fragment = extractChapterFragment(navRegion, 'Cryptography');
 
-  const sectionCount = (fragment.match(/class="nav-section"/g) || []).length;
-  const subsectionCount = (fragment.match(/class="nav-subsection"/g) || []).length;
-  assert.equal(sectionCount, 1, `expected exactly one nav-section, found ${sectionCount}`);
-  assert.equal(subsectionCount, 3, `expected exactly three nav-subsection, found ${subsectionCount}`);
-
-  const sectionIndex = fragment.indexOf('class="nav-section"');
-  const firstSubsectionIndex = fragment.indexOf('class="nav-subsection"');
+  // The chapter summary itself links to the section post - no separate,
+  // redundant list entry repeating the same title underneath it.
+  const summaryMatch = fragment.match(/<summary[^>]*>([\s\S]*?)<\/summary>/);
+  assert.ok(summaryMatch, 'expected a summary element for the Cryptography chapter');
   assert.ok(
-    sectionIndex < firstSubsectionIndex,
-    'expected the nav-section marker to appear before the first nav-subsection marker'
+    summaryMatch[1].includes('href="/posts/cryptography/"'),
+    'expected the chapter summary to link directly to the section post'
+  );
+  assert.ok(
+    !fragment.includes('class="nav-section"'),
+    'expected no separate nav-section li - the summary link replaces it'
   );
 
-  const sectionLiEnd = fragment.indexOf('</li>', sectionIndex);
-  const sectionLi = fragment.slice(sectionIndex, sectionLiEnd);
+  const subsectionCount = (fragment.match(/class="nav-subsection"/g) || []).length;
+  assert.equal(subsectionCount, 3, `expected exactly three nav-subsection, found ${subsectionCount}`);
+
+  const summaryEndIndex = fragment.indexOf('</summary>');
+  const firstSubsectionIndex = fragment.indexOf('class="nav-subsection"');
   assert.ok(
-    sectionLi.includes('href="/posts/cryptography/"'),
-    'expected the nav-section li to link to /posts/cryptography/'
+    summaryEndIndex < firstSubsectionIndex,
+    'expected subsections to appear after the chapter summary'
   );
 });
 
@@ -300,6 +307,13 @@ test('18. Quantum Algorithms chapter renders flat', () => {
   const fragment = extractChapterFragment(navRegion, 'Quantum Algorithms');
   assert.ok(!fragment.includes('nav-section'), 'expected no nav-section in the flat-rendered chapter');
   assert.ok(!fragment.includes('nav-subsection'), 'expected no nav-subsection in the flat-rendered chapter');
+
+  const summaryMatch = fragment.match(/<summary[^>]*>([\s\S]*?)<\/summary>/);
+  assert.ok(summaryMatch, 'expected a summary element for the Quantum Algorithms chapter');
+  assert.ok(
+    !summaryMatch[1].includes('<a '),
+    'expected a plain-text summary when the chapter has no section post'
+  );
 });
 
 test('19. mini-ToC on the section page', () => {
@@ -337,7 +351,7 @@ test('21. serif exception stays scoped', () => {
   assert.equal(blocks.length, 1, `expected exactly one block declaring Newsreader, found ${blocks.length}`);
   assert.match(
     blocks[0],
-    /\.left-nav \.nav-section > a\s*\{/,
-    'expected the Newsreader block selector to be .left-nav .nav-section > a'
+    /\.left-nav summary a\s*\{/,
+    'expected the Newsreader block selector to be .left-nav summary a'
   );
 });
