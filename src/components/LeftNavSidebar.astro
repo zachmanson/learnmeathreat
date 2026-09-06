@@ -3,7 +3,7 @@
 // styling lives in src/styles/nav-sidebars.css per the plan's interfaces
 // contract, matching prose.css's precedent (the grid parent needs to reach
 // into this component's markup, so no scoped Astro style block here).
-import { getCollection } from 'astro:content';
+import { getChapters } from '../lib/chapter-order';
 
 interface Props {
   currentSlug: string;
@@ -12,22 +12,7 @@ interface Props {
 
 const { currentSlug, currentTags } = Astro.props;
 
-// !data.draft is mandatory (T-02.1-03) so drafts never leak into the
-// site-wide contents.
-const posts = (await getCollection('posts', ({ data }) => !data.draft))
-  // Oldest-first within a chapter reads like book-chapter order
-  // (RESEARCH.md Assumption A2, Claude's Discretion).
-  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
-
-// Assumption A1 (RESEARCH.md): a post belongs to exactly one chapter, its
-// first tag - avoids the same post appearing in multiple chapters, which
-// would be confusing given the "book chapters" mental model (D-04).
-const chapters = new Map<string, typeof posts>();
-for (const post of posts) {
-  const chapterName = post.data.tags[0] ?? 'Uncategorized';
-  if (!chapters.has(chapterName)) chapters.set(chapterName, []);
-  chapters.get(chapterName)!.push(post);
-}
+const chapters = await getChapters();
 
 const currentChapter = currentTags[0] ?? 'Uncategorized';
 ---
