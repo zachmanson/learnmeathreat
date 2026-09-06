@@ -8,10 +8,10 @@ draft: false
 section: true
 ---
 
-This post isn't written yet. Before diving into how quantum computers threaten Bitcoin, there are three cryptographic building blocks worth understanding first: asymmetric and symmetric encryption, hash functions, and digital signatures. This chapter walks through each one from the ground up so nothing later in the series relies on unexplained machinery.
+Before we get into how quantum computers threaten Bitcoin, it helps to cover cryptography first. After all, that's what the "crypto" in "cryptocurrency" stands for. This isn't meant to be a full-on tutorial of cryptography from the ground up, but since Bitcoin and every other cryptocurrency (and literally everything else online) relies on cryptography for security, I'll explain as much as I need to provide the right context. After all, this is a blog about how quantum computers affect cryptocurrencies, and what's being threatened is the underlying cryptography itself. It makes sense that we at least get some idea of how these things work first. It would be like writing a blog on how to crack a safe without first explaining how the safe works. It's precisely because we know how the safe works that we can begin to crack it.
 
-What this chapter will cover:
+Anyways, here is what this section will cover:
 
-- Asymmetric and symmetric cryptography, and why Bitcoin uses one over the other in different places
+- Asymmetric and symmetric cryptography, and which one Bitcoin actually relies on
 - Hash functions, and what makes a function "cryptographically" hard to reverse
 - Digital signatures, and how they let you prove ownership without revealing a secret
