@@ -5,6 +5,7 @@ tags: ["Cryptography"]
 excerpt: "The three cryptographic tools Bitcoin leans on, and why you need to understand them before any of the quantum stuff makes sense."
 slug: cryptography
 draft: false
+section: true
 ---
 
 This post isn't written yet. Before diving into how quantum computers threaten Bitcoin, there are three cryptographic building blocks worth understanding first: asymmetric and symmetric encryption, hash functions, and digital signatures. This chapter walks through each one from the ground up so nothing later in the series relies on unexplained machinery.

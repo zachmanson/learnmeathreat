@@ -11,6 +11,10 @@ const posts = defineCollection({
     excerpt: z.string(),
     slug: z.string(),                  // explicit URL source of truth, survives filename renames
     draft: z.boolean().default(false),
+    // Marks a chapter's intro page. A chapter with no post marked `section:
+    // true` renders flat (unchanged) in the left sidebar and gets no mini
+    // chapter ToC - this default is what keeps existing chapters working.
+    section: z.boolean().default(false),
   }),
 });
 

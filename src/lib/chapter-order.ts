@@ -33,3 +33,29 @@ export async function getReadingOrder(): Promise<CollectionEntry<'posts'>[]> {
   const chapters = await getChapters();
   return [...chapters.values()].flat();
 }
+
+// Partitions one chapter's already-ordered post array into its intro
+// ("section") post and the rest ("subsections"). Takes the array rather than
+// re-deriving grouping itself, so it stays a pure function both
+// LeftNavSidebar (sidebar hierarchy) and [slug].astro (mini chapter ToC) can
+// share without either re-implementing the split.
+//
+// If more than one post in a chapter is marked `section: true`, the first
+// one (in the array's existing order) wins and the rest fall through into
+// subsectionPosts - a build failure over a content typo would be worse than
+// a slightly-off sidebar.
+export function splitChapter(chapterPosts: CollectionEntry<'posts'>[]): {
+  sectionPost: CollectionEntry<'posts'> | null;
+  subsectionPosts: CollectionEntry<'posts'>[];
+} {
+  const sectionIndex = chapterPosts.findIndex((post) => post.data.section === true);
+  if (sectionIndex === -1) {
+    // No post in this chapter has been designated as its intro page yet -
+    // the flat/unchanged rendering path.
+    return { sectionPost: null, subsectionPosts: [...chapterPosts] };
+  }
+
+  const sectionPost = chapterPosts[sectionIndex];
+  const subsectionPosts = chapterPosts.filter((_, i) => i !== sectionIndex);
+  return { sectionPost, subsectionPosts };
+}
