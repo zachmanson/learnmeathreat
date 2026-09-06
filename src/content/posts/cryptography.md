@@ -12,6 +12,6 @@ Before we get into how quantum computers threaten Bitcoin, it helps to cover cry
 
 Anyways, here is what this section will cover:
 
-- Asymmetric and symmetric cryptography, and which one Bitcoin actually relies on
-- Hash functions, and what makes a function "cryptographically" hard to reverse
-- Digital signatures, and how they let you prove ownership without revealing a secret
+- [Asymmetric and symmetric cryptography](/posts/asymmetric-and-symmetric-cryptography/), and which one Bitcoin actually relies on
+- [Hash functions](/posts/hash-functions/), and what makes a function "cryptographically" hard to reverse
+- [Digital signatures](/posts/digital-signatures/), and how they let you prove ownership without revealing a secret
