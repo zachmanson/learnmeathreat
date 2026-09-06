@@ -221,3 +221,43 @@
   color: var(--muted);
   font-weight: 600;
 }
+
+/* Mini "In this chapter" ToC, rendered only on a chapter's section (intro)
+   page. These four box declarations intentionally mirror prose.css's
+   .callout + .callout-note values (background/border-left/padding/margin) -
+   see prose.css as the source of truth if that treatment ever changes.
+   Deliberately NOT using the .callout/.callout-note classes themselves:
+   .callout-note injects a "Note: " ::before pseudo-element label that would
+   be wrong here. */
+.chapter-toc {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-lg) 0;
+}
+
+.chapter-toc-label {
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.chapter-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chapter-toc li + li {
+  margin-top: var(--space-sm);
+}
+
+.chapter-toc a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.chapter-toc a:hover,
+.chapter-toc a:focus-visible {
+  color: var(--text);
+}
