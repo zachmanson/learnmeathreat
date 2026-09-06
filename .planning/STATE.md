@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Quick task 260905-rvd complete
-last_updated: "2026-09-06T00:04:03.436Z"
-last_activity: 2026-09-06 -- Completed quick task 260905-rvd: Cryptography chapter scaffold + prev/next nav
+stopped_at: Quick task 260905-svh complete
+last_updated: "2026-09-06T00:47:22.480Z"
+last_activity: 2026-09-06 -- Completed quick task 260905-svh: homepage chapter grouping
 progress:
   total_phases: 6
   completed_phases: 4
@@ -84,6 +84,7 @@ None yet.
 | 260904-icf | About page copy | 2026-09-04 | [260904-icf-about-page-copy](./quick/260904-icf-about-page-copy/) |
 | 260905-rvd | Start the Cryptography chapter: scaffold intro post + 3 stub posts (asymmetric/symmetric crypto, hash functions, digital signatures) and add prev/next post navigation in chapter reading order | 2026-09-06 | [260905-rvd-start-the-cryptography-chapter-scaffold-](./quick/260905-rvd-start-the-cryptography-chapter-scaffold-/) |
 | 260905-sdo | Add explicit section/subsection chapter hierarchy: `section` schema field, splitChapter() helper, hierarchical left sidebar, and mini "In this chapter" ToC on section pages | 2026-09-06 | [260905-sdo-add-explicit-section-subsection-hierarch](./quick/260905-sdo-add-explicit-section-subsection-hierarch/) |
+| 260905-svh | Fix homepage post listing to reflect chapter reading order and section/subsection hierarchy instead of reverse-chron | 2026-09-06 | [260905-svh-fix-homepage-post-listing-to-reflect-cha](./quick/260905-svh-fix-homepage-post-listing-to-reflect-cha/) |
 
 ## Deferred Items
 
@@ -95,6 +96,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-09-06T00:04:03.436Z
-Stopped at: Quick task 260905-sdo complete
+Last session: 2026-09-06T00:47:22.480Z
+Stopped at: Quick task 260905-svh complete
 Resume file: .planning/phases/02.2-content-authoring-primitives-figure-image-support-and-resolv/02.2-CONTEXT.md
