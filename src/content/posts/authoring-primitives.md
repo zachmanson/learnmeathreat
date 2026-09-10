@@ -2,7 +2,7 @@
 title: Authoring Primitives Reference
 date: 2026-09-05
 tags: ["Quantum Algorithms"]
-excerpt: "A quick cheat-sheet for the figure, callout, and definition blocks available when writing posts."
+excerpt: "A quick cheat-sheet for the figure, callout, definition, and labeling primitives available when writing posts."
 slug: authoring-primitives
 draft: false
 ---
@@ -14,6 +14,8 @@ This one isn't really a post, it's a cheat-sheet I'm keeping around so I remembe
 Figures get a caption and an automatically incrementing "Figure N" label, the same way a LaTeX `figure` environment works. Here's a vector diagram, drawn as black lines on a transparent background so it can invert cleanly in dark mode:
 
 ::figure[A vector diagram, inverted in dark mode]{src="/images/authoring-primitives-vector.svg" alt="Box and arrow diagram"}
+
+\label{fig-vector-diagram}
 
 And here's a raster image. Raster figures don't get inverted, since flipping the colors of a photo or a screenshot would just make it look wrong:
 
@@ -40,6 +42,34 @@ This is a tip. Use it for a shortcut or a "here's an easier way to think about i
 :::definition
 **Elliptic curve:** a curve defined by an equation of the form $y^2 = x^3 + ax + b$, used because certain operations on its points are easy to compute forward and hard to reverse.
 :::
+
+\label{def-elliptic-curve}
+
+## Equations
+
+Block math gets numbered automatically, whether it's labeled or not:
+
+$$
+E = mc^2
+$$
+
+\label{eq-mass-energy}
+
+$$
+a^2 + b^2 = c^2
+$$
+
+The first one is tagged "(1)" and is referenceable; the second is tagged "(2)" but has no label, so nothing can `\ref` it.
+
+## Labels & References
+
+\label{sec-labels-and-references}
+
+`\label{key}` marks an equation, definition, figure, or heading as referenceable, written as its own line immediately after the thing it labels, the same convention LaTeX's own `\label` uses. `\ref{key}` anywhere in prose then resolves to a link back to it: a number for equations and figures, or the element's own name for definitions and headings.
+
+Referencing things in this same post: \ref{eq-mass-energy}, \ref{fig-vector-diagram}, and \ref{def-elliptic-curve} all resolve locally. Equations and figures can only be `\ref`'d from the post that defines them; definitions and headings, like this section (\ref{sec-labels-and-references}), can be `\ref`'d from anywhere on the site, see `label-ref-cross-post-fixture.md` for that in action.
+
+Writing the syntax itself inside inline code, like `` `\ref{eq-mass-energy}` ``, stays literal on purpose, the same escape hatch `\cite{}` already has.
 
 ## Citations
 

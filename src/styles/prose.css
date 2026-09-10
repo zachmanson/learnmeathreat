@@ -54,6 +54,21 @@ h3:hover .heading-anchor,
   color: var(--text);
 }
 
+/* --- Equation numbering (\label/\ref - see CONTEXT.md "Label") --- */
+
+.katex-display-wrapper {
+  position: relative;
+}
+
+.eq-tag {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.9em;
+}
+
 /* --- Code blocks (CONT-04) --- */
 
 pre {

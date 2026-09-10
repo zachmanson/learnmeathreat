@@ -31,7 +31,7 @@ function readDistFile(relPath) {
 
 test('1. (CONT-06) the fixture page contains at least two content-figure elements', () => {
   const html = readDistFile(`posts/${FIXTURE_SLUG}/index.html`);
-  const matches = html.match(/<figure class="content-figure">/g) || [];
+  const matches = html.match(/<figure class="content-figure"[^>]*>/g) || [];
   assert.ok(
     matches.length >= 2,
     `(CONT-06) expected at least 2 <figure class="content-figure"> elements, found ${matches.length}`

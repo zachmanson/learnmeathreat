@@ -9,6 +9,9 @@ import { rehypeSequentialIds } from './src/lib/rehype-sequential-ids.mjs';
 import { remarkDirectiveToHast } from './src/lib/remark-directive-to-hast.mjs';
 import { remarkCiteTranslate } from './src/lib/remark-cite-translate.mjs';
 import { rehypeCitationBrackets } from './src/lib/rehype-citation-brackets.mjs';
+import { remarkRefResolve } from './src/lib/remark-ref-resolve.mjs';
+import { remarkLabelStrip } from './src/lib/remark-label-strip.mjs';
+import { rehypeEquationNumbering } from './src/lib/rehype-equation-numbering.mjs';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { h } from 'hastscript';
 
@@ -25,9 +28,17 @@ export default defineConfig({
       defaultColor: false,
     },
     processor: unified({
-      remarkPlugins: [remarkCiteTranslate, remarkMath, remarkDirective, remarkDirectiveToHast], // remarkCiteTranslate MUST run before rehypeCitation sees the tree - RESEARCH.md Pattern 2; remarkDirectiveToHast MUST run after remarkDirective - RESEARCH.md Pattern 1
+      remarkPlugins: [
+        remarkCiteTranslate, // MUST run before rehypeCitation sees the tree - RESEARCH.md Pattern 2
+        remarkMath,
+        remarkDirective,
+        remarkDirectiveToHast, // MUST run after remarkDirective - RESEARCH.md Pattern 1
+        remarkRefResolve, // \ref{key} -> link; needs `math`/directive node types to exist for its own registry scan of every post
+        remarkLabelStrip, // removes \label{key} marker paragraphs; must run after remarkMath/remarkDirective
+      ],
       rehypePlugins: [
         rehypeKatex,
+        rehypeEquationNumbering, // MUST run after rehypeKatex - numbers the <span class="katex-display"> it renders
         [rehypeCitation, {
           bibliography: 'references.bib', // MUST run after rehypeKatex, before rehypeSequentialIds - RESEARCH.md Pattern 2 / Pitfall 4
           path: process.cwd(),

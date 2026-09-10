@@ -32,7 +32,7 @@ const HASH_FUNCTIONS_EXCERPT =
 const DIGITAL_SIGNATURES_EXCERPT =
   "How you can prove you own a private key without ever revealing it, and why that's what actually authorizes a Bitcoin transaction.";
 const AUTHORING_EXCERPT =
-  'A quick cheat-sheet for the figure, callout, and definition blocks available when writing posts.';
+  'A quick cheat-sheet for the figure, callout, definition, and labeling primitives available when writing posts.';
 const ASYMMETRIC_SLUG = 'asymmetric-and-symmetric-cryptography';
 const HASH_FUNCTIONS_SLUG = 'hash-functions';
 const DIGITAL_SIGNATURES_SLUG = 'digital-signatures';

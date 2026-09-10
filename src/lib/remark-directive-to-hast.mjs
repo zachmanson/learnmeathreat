@@ -18,7 +18,10 @@
 // `:::tip`, and `:::definition` container (or leaf) directives become
 // `<div class="callout callout-{name}">`, leaving children untouched so
 // nested Markdown (bold, links, inline math, multiple paragraphs) still
-// renders normally.
+// renders normally. Every `:::definition` also gets a sequential
+// `id="def-N"` (mirroring figures' `figureCounter`) so it's a valid
+// \ref target regardless of whether it's actually labeled - see
+// src/lib/label-registry.mjs and CONTEXT.md's "Label registry" entry.
 //
 // Ordering constraint (load-bearing, per RESEARCH.md Pitfall 3): this
 // plugin MUST run after `remarkDirective` in `remarkPlugins` (which
@@ -42,6 +45,7 @@ const CALLOUT_NAMES = new Set(['note', 'warning', 'tip', 'definition']);
 export function remarkDirectiveToHast() {
   return (tree) => {
     let figureCounter = 0;
+    let definitionCounter = 0;
 
     visit(tree, (node) => {
       if (node.type !== 'containerDirective' && node.type !== 'leafDirective') return;
@@ -49,6 +53,10 @@ export function remarkDirectiveToHast() {
       if (CALLOUT_NAMES.has(node.name)) {
         const data = node.data || (node.data = {});
         const hast = h('div', { class: `callout callout-${node.name}` });
+        if (node.name === 'definition') {
+          definitionCounter += 1;
+          hast.properties.id = `def-${definitionCounter}`;
+        }
         data.hName = hast.tagName;
         data.hProperties = hast.properties;
         return;
@@ -60,7 +68,7 @@ export function remarkDirectiveToHast() {
         const isSvg = /\.svg$/i.test(src || '');
         const data = node.data || (node.data = {});
         data.hName = 'figure';
-        data.hProperties = { class: 'content-figure' };
+        data.hProperties = { class: 'content-figure', id: `fig-${figureCounter}` };
         node.children = [
           {
             type: 'element',
