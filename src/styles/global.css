@@ -33,6 +33,11 @@
 
 body {
   margin: 0;
+  /* Mirrors .site-header's margin-top so a page ends with the same
+     breathing room it opens with - without this the last element (the
+     prev/next PostNav) sits flush against the bottom window edge at max
+     scroll, which reads as the page being cut off mid-content. */
+  padding-bottom: var(--space-3xl);
   background: var(--bg);
   color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -88,6 +93,17 @@ main {
 main:has(.post-layout) {
   max-width: calc(68ch + 2 * (15rem + var(--space-xl)));
   margin: 0 auto;
+}
+
+/* Posts with fewer than 2 headings render no RightNavSidebar (see
+   [slug].astro, which sets data-has-right-nav accordingly - CSS can't key
+   off .right-nav's own presence here because :has() cannot nest inside
+   another :has()), so .post-layout below drops its third grid column -
+   main's own budget must shrink to match, or the article sits stranded
+   left of a centered-but-now-half-empty main, looking like it's not using
+   the right side of the page at all. */
+main:has(.post-layout:not([data-has-right-nav])) {
+  max-width: calc(68ch + 15rem + var(--space-xl));
 }
 
 .site-header {

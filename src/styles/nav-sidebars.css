@@ -14,6 +14,22 @@
   align-items: start;
 }
 
+/* No RightNavSidebar means no .right-nav in the DOM ([slug].astro only
+   renders it for posts with 2+ top-level headings, and sets
+   data-has-right-nav to match) - drop the now-empty third column so the
+   article recenters against just the left sidebar instead of leaving a
+   dead strip on the right (paired with the main:has() max-width override
+   in global.css). Scoped to the same breakpoint as the mobile stack below:
+   :not([data-has-right-nav]) has higher specificity than that media
+   query's plain .post-layout, so left unscoped it would win at every
+   width and break the mobile single-column stack too. */
+@media (min-width: 901px) {
+  .post-layout:not([data-has-right-nav]) {
+    grid-template-columns: minmax(0, 1fr) min(68ch, 100%);
+    grid-template-areas: "left content";
+  }
+}
+
 .post-layout > article {
   grid-area: content;
   min-width: 0;

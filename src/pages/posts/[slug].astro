@@ -33,7 +33,7 @@ if (post.data.section) {
 ---
 
 <Layout title={post.data.title}>
-  <div class="post-layout">
+  <div class="post-layout" data-has-right-nav={outlineHeadings.length >= 2 || undefined}>
     <LeftNavSidebar currentSlug={post.data.slug} currentTags={post.data.tags} />
     <article>
       <h1>{post.data.title}</h1>
@@ -58,3 +58,100 @@ if (post.data.section) {
     {outlineHeadings.length >= 2 && <RightNavSidebar headings={outlineHeadings} />}
   </div>
 </Layout>
+
+<script is:inline>
+  // Display-mode equations wider than the post column are shrunk to fit
+  // rather than left to overflow - prose.css clips .katex-display with
+  // overflow-x:hidden by default (not auto: an unneeded scroll affordance
+  // shows a persistent scrollbar-track gutter on Windows' classic
+  // scrollbar style), so if this script never ran, an oversized equation
+  // would just get silently clipped. CSS alone can't measure a KaTeX
+  // span's rendered width against its container, so this does the
+  // measure-and-scale as a small progressive enhancement, the same
+  // "plain JS you can ignore" pattern as RightNavSidebar.astro's
+  // scroll-spy.
+  //
+  // In display mode KaTeX makes .katex itself `display: block` (fills
+  // .katex-display's full width, not sized to content) with
+  // `white-space: nowrap`, so the actual equation ink can extend well
+  // past .katex's own border box in both directions - neither
+  // getBoundingClientRect() on .katex nor its scrollWidth reliably
+  // bounds it. The only robust measurement is the union of every leaf
+  // node's own rect, so that's what this walks, both to size the scale
+  // and to re-center the result: scaling alone (around any single fixed
+  // origin) doesn't reliably land the shrunk content back in the middle
+  // of the container, since KaTeX's own overflow isn't symmetric around
+  // .katex's box center - so the origin is set to the *content's* true
+  // center (not the box's) and a matching translateX recenters that
+  // point in the container, both computed from the same measurement
+  // pass rather than assumed.
+  //
+  // Stretchy glyphs (\overbrace, \underbrace, extensible arrows) are
+  // drawn as an SVG <path> stretched far wider than needed and then
+  // clipped to size by an `overflow: hidden` wrapper - a deliberate
+  // KaTeX technique, not a bug - so a <path>'s own getBoundingClientRect
+  // reports that oversized pre-clip geometry (thousands of px) rather
+  // than what's actually visible. The walk below stops descending at
+  // the first overflow-hidden ancestor and trusts its rect instead,
+  // the same way the browser itself clips the paint.
+  function contentBounds(root) {
+    let left = Infinity;
+    let right = -Infinity;
+    function visit(el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0 || rect.height > 0) {
+        if (rect.left < left) left = rect.left;
+        if (rect.right > right) right = rect.right;
+      }
+      if (getComputedStyle(el).overflow === 'hidden') return;
+      for (const child of el.children) visit(child);
+    }
+    for (const child of root.children) visit(child);
+    return isFinite(left) ? { left, right } : null;
+  }
+
+  function fitDisplayMath() {
+    for (const display of document.querySelectorAll('.katex-display')) {
+      const katexEl = display.querySelector(':scope > .katex');
+      if (!katexEl) continue;
+      katexEl.style.transform = '';
+      katexEl.style.transformOrigin = '';
+
+      const elRect = katexEl.getBoundingClientRect();
+      const bounds = contentBounds(katexEl);
+      const containerRect = display.getBoundingClientRect();
+      if (!bounds) continue;
+
+      // The (N) equation-tag (prose.css .eq-tag) is absolutely positioned
+      // at the wrapper's right edge, on top of .katex-display rather than
+      // beside it, so the equation actually needs to fit in the space to
+      // its left, not the wrapper's full width.
+      const tagEl = display.parentElement.querySelector(':scope > .eq-tag');
+      const tagZone = tagEl ? tagEl.getBoundingClientRect().width + 8 : 0;
+      const availableWidth = containerRect.width - tagZone;
+      if (bounds.right - bounds.left <= availableWidth) continue;
+
+      const scale = availableWidth / (bounds.right - bounds.left);
+      const naturalCenter = (bounds.left + bounds.right) / 2;
+      const desiredCenter = containerRect.left + availableWidth / 2;
+
+      katexEl.style.transformOrigin = `${naturalCenter - elRect.left}px top`;
+      katexEl.style.transform = `translateX(${desiredCenter - naturalCenter}px) scale(${scale})`;
+    }
+  }
+
+  // KaTeX's own math webfonts can still be loading when this first runs,
+  // which would measure pre-metrics widths and produce a wrong scale -
+  // wait for them where the API exists, else just run immediately.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(fitDisplayMath);
+  } else {
+    fitDisplayMath();
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(fitDisplayMath, 150);
+  });
+</script>

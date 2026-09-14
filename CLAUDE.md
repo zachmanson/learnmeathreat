@@ -81,7 +81,24 @@ A personal blog (learnmeathreat.com) publishing a rigorous, self-contained expla
 <!-- GSD:conventions-start source:CONVENTIONS.md -->
 ## Conventions
 
-Conventions not yet established. Will populate as patterns emerge during development.
+### `references.bib` entries
+
+When adding a citation, clean it up rather than pasting the raw BibTeX:
+- Drop the `abstract` field.
+- Page ranges use `--` (e.g. `pages = {19--35}`).
+- Wrap `title` in double braces (`{{...}}`) to protect capitalization (acronyms, proper nouns).
+- Journal names use ISO-4 abbreviation where applicable.
+- Months are written as the first 3 letters + a period (`Jan.`, `Feb.`, `Jun.`, etc.).
+- Watch for fields that duplicate each other (e.g. `publisher = {Springer Berlin Heidelberg}` alongside `address = {Berlin, Heidelberg}`) — drop the redundant one.
+
+**Citation key** = authors' surnames + 2-digit year:
+| Authors | Rule | Example |
+|---|---|---|
+| 1, ≤3-letter feel | first 3 letters of surname + year | `Doe26` |
+| 1, longer surname | same rule still applies | `Gra13` (Gray, 2013) |
+| 2 | first 2 letters of each surname + last 2 digits of year | `WaYu05` (Wang & Yu, 2005) |
+| 3 | first initial of each surname + last 2 digits of year | `WYY05` (Wang, Yin, Yu, 2005) |
+| 4+ | first initial of each, with a `+` after the third | `WYYJ+02` |
 <!-- GSD:conventions-end -->
 
 <!-- GSD:architecture-start source:ARCHITECTURE.md -->
@@ -95,19 +112,6 @@ Architecture not yet mapped. Follow existing patterns found in the codebase.
 
 No project skills found. Add skills to any of: `.claude/skills/`, `.agents/skills/`, `.cursor/skills/`, `.github/skills/`, or `.codex/skills/` with a `SKILL.md` index file.
 <!-- GSD:skills-end -->
-
-<!-- GSD:workflow-start source:GSD defaults -->
-## GSD Workflow Enforcement
-
-Before using Edit, Write, or other file-changing tools, start work through a GSD command so planning artifacts and execution context stay in sync.
-
-Use these entry points:
-- `/gsd-quick` for small fixes, doc updates, and ad-hoc tasks
-- `/gsd-debug` for investigation and bug fixing
-- `/gsd-execute-phase` for planned phase work
-
-Do not make direct repo edits outside a GSD workflow unless the user explicitly asks to bypass it.
-<!-- GSD:workflow-end -->
 
 ## Agent skills
 

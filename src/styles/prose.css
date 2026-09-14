@@ -37,7 +37,19 @@ h3:hover .heading-anchor,
 
 .katex-display {
   margin: var(--space-lg) 0;
-  overflow-x: auto;
+  /* hidden, not auto: an equation that's too wide gets shrunk to fit by
+     the fitDisplayMath script in [slug].astro rather than scrolled, and
+     `overflow-x: auto` shows a persistent scrollbar-track gutter on
+     Windows' classic (non-overlay) scrollbar style even when content
+     doesn't actually overflow - hidden never does that, and since the
+     script always resolves genuine overflow, nothing real ever gets
+     clipped by it. overflow-y must be set too, explicitly: per spec, an
+     element with overflow-x set to anything but visible/clip gets its
+     own overflow-y's `visible` default silently promoted to `auto` -
+     without this line that produced the exact same gutter, vertically,
+     right where .eq-tag's (N) label sits. */
+  overflow-x: hidden;
+  overflow-y: hidden;
   text-align: center;
 }
 
@@ -52,6 +64,40 @@ h3:hover .heading-anchor,
 .katex {
   font-size: 1em;
   color: var(--text);
+}
+
+/* global.css sets `* { box-sizing: border-box }` site-wide. KaTeX's own
+   stylesheet is written assuming content-box sizing for the
+   absolute-position overlay tricks it uses to compose symbols like \neq,
+   \not, and radicals (.rlap/.thinbox/.vbox) - a border-box reset can
+   collapse those elements to zero width. Belt-and-braces: opt every
+   KaTeX-rendered element back out of the global reset so KaTeX's own
+   layout math always holds, independent of any future KaTeX version
+   bump. (The concrete \neq-renders-as-"/=" bug seen in this repo was
+   actually a version mismatch - see the katex dependency note in
+   package.json / CONTEXT.md - but this reset is cheap insurance against
+   the box-sizing class of bug regardless.) */
+.katex,
+.katex * {
+  box-sizing: content-box;
+}
+
+/* --- Tables --- */
+
+table {
+  margin: var(--space-lg) auto;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid var(--muted);
+  padding: var(--space-xs) var(--space-lg);
+  text-align: center;
+}
+
+th {
+  background: var(--surface);
 }
 
 /* --- Equation numbering (\label/\ref - see CONTEXT.md "Label") --- */
