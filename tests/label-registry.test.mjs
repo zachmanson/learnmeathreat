@@ -117,3 +117,15 @@ test('13. a \\ref written inside inline code is not collected (mirrors \\cite\'s
   const tree = parse('Use `\\ref{key}` to reference something.\n');
   assert.deepEqual(scanPostRefs(tree), []);
 });
+
+test('14. an algorithm label resolves to a per-post entry numbered like figures', () => {
+  const tree = parse(
+    ':::algorithm[Keygen]\nProcedure:\n1. step\n:::\n\n:::algorithm[Signing]\nProcedure:\n1. step\n:::\n\n\\label{alg-sign}\n'
+  );
+  const registry = buildRegistryFromPosts([{ slug: 'post-a', tree }]);
+  const entry = registry.get('alg-sign');
+  assert.equal(entry.type, 'algorithm');
+  assert.equal(entry.scope, 'per-post');
+  assert.equal(entry.anchorId, 'alg-2');
+  assert.equal(entry.displayText, 'Algorithm 2');
+});

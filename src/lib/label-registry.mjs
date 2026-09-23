@@ -53,6 +53,7 @@ function walk(node, counters, postSlug, labels) {
     else if (kind === 'equation') counters.equation += 1;
     else if (kind === 'figure') counters.figure += 1;
     else if (kind === 'definition') counters.definition += 1;
+    else if (kind === 'algorithm') counters.algorithm += 1;
 
     if (kind) {
       const next = node.children[i + 1];
@@ -77,6 +78,9 @@ function walk(node, counters, postSlug, labels) {
         } else if (kind === 'figure') {
           anchorId = `fig-${counters.figure}`;
           displayText = `Figure ${counters.figure}`;
+        } else if (kind === 'algorithm') {
+          anchorId = `alg-${counters.algorithm}`;
+          displayText = `Algorithm ${counters.algorithm}`;
         } else if (kind === 'definition') {
           const term = extractDefinitionTerm(child);
           if (!term) {
@@ -122,7 +126,7 @@ export function buildRegistryFromPosts(posts) {
   const labels = new Map();
   const sorted = [...posts].sort((a, b) => a.slug.localeCompare(b.slug));
   for (const { slug, tree } of sorted) {
-    walk(tree, { heading: 0, equation: 0, figure: 0, definition: 0 }, slug, labels);
+    walk(tree, { heading: 0, equation: 0, figure: 0, definition: 0, algorithm: 0 }, slug, labels);
   }
   return labels;
 }

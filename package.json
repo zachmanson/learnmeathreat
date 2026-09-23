@@ -29,5 +29,9 @@
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "rehype-stringify": "^10.0.1",
+    "remark-rehype": "^11.1.2"
   }
 }

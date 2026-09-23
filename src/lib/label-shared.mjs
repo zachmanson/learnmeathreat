@@ -28,13 +28,14 @@ export function labelableKind(node) {
   if (node.type === 'math') return 'equation';
   if (node.type === 'leafDirective' && node.name === 'figure') return 'figure';
   if (node.type === 'containerDirective' && node.name === 'definition') return 'definition';
+  if (node.type === 'containerDirective' && node.name === 'algorithm') return 'algorithm';
   return null;
 }
 
-// Per-post labels (equation, figure) can only be \ref'd from the post that
-// defines them; site-wide labels (definition, heading) can be \ref'd from
-// anywhere (grill-with-docs Q2/Q4).
-export const PER_POST_TYPES = new Set(['equation', 'figure']);
+// Per-post labels (equation, figure, algorithm) can only be \ref'd from the
+// post that defines them; site-wide labels (definition, heading) can be
+// \ref'd from anywhere (grill-with-docs Q2/Q4).
+export const PER_POST_TYPES = new Set(['equation', 'figure', 'algorithm']);
 export const SITE_WIDE_TYPES = new Set(['definition', 'heading']);
 
 export function bareLabelKey(node) {

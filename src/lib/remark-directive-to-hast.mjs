@@ -23,6 +23,15 @@
 // \ref target regardless of whether it's actually labeled - see
 // src/lib/label-registry.mjs and CONTEXT.md's "Label registry" entry.
 //
+// Algorithms: a `:::algorithm[Title]` container directive becomes
+// `<div class="algorithm" id="alg-N">`, numbered per post like figures. The
+// directive label becomes an "Algorithm N: Title" caption. Inside the block,
+// any line starting with `Input:`, `Output:`, or `Procedure:` becomes its own
+// `<p class="algorithm-io">` row with the keyword wrapped in a span, so
+// consecutive keyword lines (which Markdown would otherwise merge into one
+// paragraph) render as separate rows. Everything else - typically an ordered
+// list of steps after `Procedure:` - is left as normal Markdown.
+//
 // Ordering constraint (load-bearing, per RESEARCH.md Pitfall 3): this
 // plugin MUST run after `remarkDirective` in `remarkPlugins` (which
 // produces the `containerDirective`/`leafDirective` nodes this plugin
@@ -41,11 +50,96 @@ import { visit } from 'unist-util-visit';
 import { h } from 'hastscript';
 
 const CALLOUT_NAMES = new Set(['note', 'warning', 'tip', 'definition']);
+const ALGORITHM_KEYWORD = /^(Input|Output|Procedure):[ \t]*/;
+
+function span(className, value) {
+  return {
+    type: 'element',
+    data: { hName: 'span', hProperties: { class: className } },
+    children: [{ type: 'text', value }],
+  };
+}
+
+// Splits a paragraph's inline children at soft line breaks ("\n" inside text
+// nodes), returning one array of inline nodes per source line.
+function splitLines(children) {
+  const lines = [[]];
+  for (const child of children) {
+    if (child.type !== 'text' || !child.value.includes('\n')) {
+      lines[lines.length - 1].push(child);
+      continue;
+    }
+    child.value.split('\n').forEach((piece, i) => {
+      if (i > 0) lines.push([]);
+      if (piece) lines[lines.length - 1].push({ type: 'text', value: piece });
+    });
+  }
+  return lines;
+}
+
+function keywordOf(line) {
+  const first = line[0];
+  if (!first || first.type !== 'text') return null;
+  return ALGORITHM_KEYWORD.exec(first.value);
+}
+
+function keywordRow(line, match) {
+  const rest = [...line];
+  const remainder = rest[0].value.slice(match[0].length);
+  if (remainder) rest[0] = { type: 'text', value: remainder };
+  else rest.shift();
+  return {
+    type: 'paragraph',
+    data: { hProperties: { class: 'algorithm-io' } },
+    children: [span('algorithm-keyword', `${match[1]}:`), ...(rest.length ? [{ type: 'text', value: ' ' }, ...rest] : [])],
+  };
+}
+
+// Rewrites a paragraph containing keyword lines into one paragraph per
+// keyword row. A non-keyword line following a keyword line is treated as a
+// wrapped continuation of that row; lines before the first keyword stay a
+// plain paragraph.
+function splitKeywordParagraph(paragraph) {
+  const lines = splitLines(paragraph.children);
+  if (!lines.some(keywordOf)) return [paragraph];
+
+  const out = [];
+  for (const line of lines) {
+    const match = keywordOf(line);
+    const current = out[out.length - 1];
+    if (match) out.push(keywordRow(line, match));
+    else if (current) current.children.push({ type: 'text', value: '\n' }, ...line);
+    else out.push({ type: 'paragraph', children: line });
+  }
+  return out;
+}
+
+function transformAlgorithm(node, number) {
+  const data = node.data || (node.data = {});
+  data.hName = 'div';
+  data.hProperties = { class: 'algorithm', id: `alg-${number}` };
+
+  const children = [...node.children];
+  const title = children[0]?.data?.directiveLabel ? children.shift().children : [];
+  const caption = {
+    type: 'paragraph',
+    data: { hProperties: { class: 'algorithm-caption' } },
+    children: title.length
+      ? [span('algorithm-number', `Algorithm ${number}:`), { type: 'text', value: ' ' }, ...title]
+      : [span('algorithm-number', `Algorithm ${number}`)],
+  };
+
+  node.children = [
+    caption,
+    ...children.flatMap((child) => (child.type === 'paragraph' ? splitKeywordParagraph(child) : [child])),
+  ];
+}
 
 export function remarkDirectiveToHast() {
   return (tree) => {
     let figureCounter = 0;
     let definitionCounter = 0;
+    let algorithmCounter = 0;
 
     visit(tree, (node) => {
       if (node.type !== 'containerDirective' && node.type !== 'leafDirective') return;
@@ -59,6 +153,12 @@ export function remarkDirectiveToHast() {
         }
         data.hName = hast.tagName;
         data.hProperties = hast.properties;
+        return;
+      }
+
+      if (node.name === 'algorithm' && node.type === 'containerDirective') {
+        algorithmCounter += 1;
+        transformAlgorithm(node, algorithmCounter);
         return;
       }
 

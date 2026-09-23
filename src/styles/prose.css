@@ -249,6 +249,51 @@ pre code {
   border-left: 5px double var(--accent);
 }
 
+/* --- Algorithms --- */
+
+/* Modeled on LaTeX's algorithm float: heavy rule above the caption, light
+   rule under it, heavy rule closing the block. Input/Output/Procedure rows
+   use a hanging indent so a wrapped line lines up after the keyword. */
+.algorithm {
+  border-top: 2px solid var(--text);
+  border-bottom: 2px solid var(--text);
+  margin: var(--space-lg) 0;
+  padding-bottom: var(--space-sm);
+}
+
+.algorithm-caption {
+  border-bottom: 1px solid var(--text);
+  padding: var(--space-xs) 0;
+  margin: 0 0 var(--space-sm);
+}
+
+.algorithm-number,
+.algorithm-keyword {
+  font-weight: 600;
+}
+
+.algorithm-io {
+  margin: var(--space-xs) 0;
+  padding-left: var(--space-lg);
+  text-indent: calc(-1 * var(--space-lg));
+}
+
+.algorithm ol {
+  margin: var(--space-xs) 0 0;
+}
+
+/* Nested lists are loop/branch bodies - a faint guide line shows which
+   steps belong to which block, like algorithmic's indentation. */
+.algorithm ol ol,
+.algorithm ol ul {
+  border-left: 1px solid var(--muted);
+  margin-left: var(--space-xs);
+}
+
+.algorithm > *:last-child {
+  margin-bottom: 0;
+}
+
 /* --- Citations and references (CONT-08) --- */
 
 /* rehype-citation@2.3.2 emits the bibliography as
