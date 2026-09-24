@@ -146,7 +146,7 @@ $$
 
 The mod $n$ can be dropped here because $G$ has order $n$, so $nG = \mathcal{O}$ and multiplying $G$ by any number only depends on that number mod $n$. Applying $F$ to both sides then gives $r' = F(kG) = r$, which is exactly the check in $\texttt{Vrfy}$.
 
-We have reconstructed $kG$, the same point $r$ was computed from in the first place. Why can't this be forged? To produce a signature that passes this check without knowing $d$, the obvious route is to recover $d$ directly from $P = dG$. In other words, given $G$ and $P = dG$, determine $d$. Does this look familiar? This is exactly the \ref{def-ecdlp} that I described earlier. This is an informal argument though, not a proof, and I'll come back to why in the Schnorr section.
+We have reconstructed $kG$, the same point $r$ was computed from in the first place. Why can't this be forged? To produce a signature that passes this check without knowing $d$, the obvious route is to recover $d$ directly from $P = dG$. In other words, given $G$ and $P = dG$, determine $d$. Does this look familiar? This is exactly the \ref{def-ecdlp} that I described earlier. This is an informal argument though, not a proof, and I'll come back to why later.
 
 I'll note that this only demonstrates security against an attacker who has just your public key, but EUF-CMA is stronger, and has to hold even if an attacker has seen any number of your real signatures. The intuition still holds here, because each signature uses a fresh value of $k$, so the attacker can't extract anything useful from your past signatures unless they get lucky enough to guess $k$ outright.
 
