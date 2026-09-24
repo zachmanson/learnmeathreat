@@ -28,6 +28,8 @@ Revises a Learn Me a Threat draft for flow, technical accuracy, and voice — wi
    - No em dashes, ever. Hard rule, not a style preference.
    - Fact-check technical claims, but don't flag a deliberate simplification made for reader accessibility as an error.
    - Avoid the "AI sound": don't tidy sentences into neat parallel constructions ("That's X, and it's also Y") or wrap a paragraph with a punchy aphoristic closer. Both read as machine-generated even when grammatically fine.
+   - Banned AI patterns: no "Ron Weasleyisms" ("Not X, not Y, Z!", "It's not X, it's Y"), no corporate framing ("Here's the sharper read", "the load-bearing piece", "Here's the thing"), no sycophantic beats ("honestly? That's rare"). Never introduce these, and don't use them in the change summary either.
+   - Strunk & White as the mechanics tiebreaker, using the specific rules in the "Strunk & White Rules" section below, but only within what the user could plausibly write. It never overrides the casual tone.
 
    If memory has since accumulated more voice/style entries than these, use the current versions — they're the source of truth, this list is just the known baseline.
 
@@ -41,6 +43,32 @@ Revises a Learn Me a Threat draft for flow, technical accuracy, and voice — wi
 
 5. **Write only on confirmation.** If the user approves and you were working from a file, write the revision back preserving frontmatter exactly, unless the user explicitly asked to change it too.
 
+## Strunk & White Rules
+
+From *The Elements of Style*. Apply these when fixing a sentence that's actually broken or bloated. Don't use them as an excuse to rewrite sentences that already work.
+
+**Apply:**
+- **Omit needless words.** "The fact that", "in order to", "it is important to note that", "what this means is" usually go.
+- **Use the active voice.** "Alice signs the message" over "the message is signed by Alice", unless the actor genuinely doesn't matter.
+- **Put statements in positive form.** "Forgot" over "did not remember", "insecure" over "not very secure".
+- **Use definite, specific, concrete language.** Name the actual thing (the private key, 256 bits) rather than a vague stand-in ("the relevant information").
+- **Make the paragraph the unit of composition.** One idea per paragraph. If a paragraph covers two ideas, split it. This pairs with reordering drafts.
+- **Avoid a succession of loose sentences.** A run of "X, and Y" / "X, so Y" sentences is what the run-on memory is about; vary by splitting.
+- **Keep related words together.** Keep the subject near its verb and the modifier next to what it modifies. Watch for dangling modifiers ("Using a hash function, the signature..." when the signature isn't doing the using).
+- **Express coordinate ideas in similar form.** This applies only to lists and series ("hash it, sign it, send it"). It is NOT permission for rhetorical symmetry or "Not X, but Y" constructions.
+- **Comma basics.** No comma splices (two full sentences joined by just a comma); set off parenthetical phrases with a pair of commas, not one.
+- **Write with nouns and verbs.** Cut stacked adjectives and adverbs that don't carry information.
+- **Do not overstate.** No "incredibly", "fundamentally", "absolutely crucial" unless it's literally true.
+- **Avoid fancy words.** "Use" over "utilize", "show" over "demonstrate", "start" over "commence".
+- **Use figures of speech sparingly.** One analogy that explains something is good (this blog relies on them). Decorative metaphors are not.
+- **Do not explain too much.** Balance this against the blog's core rule that every concept gets explained before it's used. Explain the concept once, then don't re-explain it or add "in other words" restatements.
+
+**Deliberately ignored (they conflict with this blog's voice):**
+- "Do not affect a breezy manner": the blog is casual on purpose.
+- "Do not inject opinion": the user's takes are part of the point.
+- "Avoid qualifiers" ("really", "pretty", "honestly"): cut them when they pile up, but some are part of how the user talks. Leave the occasional one alone.
+- "Place the emphatic words at the end": following this aggressively produces punchy closer sentences, which are banned.
+
 ## Quick Reference
 
 | Situation | Action |
@@ -52,6 +80,7 @@ Revises a Learn Me a Threat draft for flow, technical accuracy, and voice — wi
 | Simplification looks intentional (accessibility) | Leave it — that's not a fact-check hit |
 | Ideas are out of order / draft jumps around | Reorder freely — flag the reorder in the change summary, don't just leave it because "that's how they wrote it" |
 | Revision uses an em dash | Remove it — this is a hard no, not a judgment call |
+| Revision contains "Not X, but Y" / "It's not X, it's Y" | Rewrite to state the true thing directly |
 | Revision reads "too clean" / neatly symmetric | Redo with the lightest touch that fixes the actual problem, don't rewrite for polish |
 
 ## Common Mistakes
