@@ -1,9 +1,12 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { POST_DIRS } from './lib/post-sources.mjs';
 
 const posts = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
+  // Post IDs aren't used for routing (the `slug` field is), so rooting the
+  // glob at the repo and listing each directory is safe.
+  loader: glob({ pattern: POST_DIRS.map((dir) => `${dir}/**/*.md`), base: '.' }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),             // raw YAML strings sort/format wrong otherwise

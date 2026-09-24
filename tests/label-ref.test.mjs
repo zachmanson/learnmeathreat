@@ -14,7 +14,7 @@ import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
-const distDir = path.join(repoRoot, 'dist');
+const distDir = path.join(repoRoot, 'dist-test');
 
 const PRIMARY_SLUG = 'authoring-primitives';
 const CROSS_POST_SLUG = 'label-ref-cross-post-fixture';

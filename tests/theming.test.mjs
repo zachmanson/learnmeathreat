@@ -11,7 +11,7 @@ import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
-const distDir = path.join(repoRoot, 'dist');
+const distDir = path.join(repoRoot, 'dist-test');
 
 const PUBLISHED_SLUG = 'why-quantum-computers-threaten-bitcoin';
 

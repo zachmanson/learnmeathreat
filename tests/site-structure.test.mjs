@@ -10,7 +10,7 @@ import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
-const distDir = path.join(repoRoot, 'dist');
+const distDir = path.join(repoRoot, 'dist-test');
 
 // The exact excerpt string for the published seed post. Task 2 copies this
 // byte-for-byte into the post's frontmatter `excerpt` field.
@@ -59,11 +59,11 @@ test('2. dist/index.html links to the published post clean URL', () => {
   assert.match(html, new RegExp(escapeRegExp(`href="/posts/${PUBLISHED_SLUG}/"`)));
 });
 
-test('3. dist/index.html contains the published post excerpt', () => {
+test('3. dist/index.html lists the published post by title only, without its excerpt', () => {
   const html = readDistFile('index.html');
   assert.ok(
-    html.includes(PUBLISHED_EXCERPT),
-    'dist/index.html does not contain PUBLISHED_EXCERPT'
+    !html.includes(PUBLISHED_EXCERPT),
+    'dist/index.html unexpectedly contains PUBLISHED_EXCERPT (homepage is title-only)'
   );
 });
 
@@ -111,11 +111,15 @@ test('9. dist/index.html renders chapters in reading order (Cryptography before 
   );
 });
 
-test('10. dist/index.html contains the Cryptography section post excerpt', () => {
+test('10. dist/index.html links the Cryptography section post without its excerpt', () => {
   const html = readDistFile('index.html');
   assert.ok(
-    html.includes(CRYPTO_EXCERPT),
-    'dist/index.html does not contain CRYPTO_EXCERPT'
+    html.includes('href="/posts/cryptography/"'),
+    'dist/index.html missing link to the Cryptography section post'
+  );
+  assert.ok(
+    !html.includes(CRYPTO_EXCERPT),
+    'dist/index.html unexpectedly contains CRYPTO_EXCERPT (homepage is title-only)'
   );
 });
 
@@ -158,16 +162,20 @@ test('11. Cryptography subsections are linked, title-only, and in a separate lis
   );
 });
 
-test('12. Quantum Algorithms chapter (flat fallback) keeps full excerpts unchanged', () => {
+test('12. Quantum Algorithms chapter (flat fallback) lists its posts title-only', () => {
   const html = readDistFile('index.html');
-  assert.ok(
-    html.includes(PUBLISHED_EXCERPT),
-    'dist/index.html missing PUBLISHED_EXCERPT for Quantum Algorithms chapter'
-  );
-  assert.ok(
-    html.includes(AUTHORING_EXCERPT),
-    'dist/index.html missing AUTHORING_EXCERPT for Quantum Algorithms chapter'
-  );
+  for (const slug of [PUBLISHED_SLUG, 'authoring-primitives']) {
+    assert.ok(
+      html.includes(`href="/posts/${slug}/"`),
+      `dist/index.html missing link to ${slug} in the Quantum Algorithms chapter`
+    );
+  }
+  for (const excerpt of [PUBLISHED_EXCERPT, AUTHORING_EXCERPT]) {
+    assert.ok(
+      !html.includes(excerpt),
+      `dist/index.html unexpectedly contains a flat-chapter excerpt: ${excerpt}`
+    );
+  }
 });
 
 function escapeRegExp(str) {

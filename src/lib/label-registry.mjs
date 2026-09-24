@@ -28,8 +28,9 @@ import remarkDirective from 'remark-directive';
 import remarkMath from 'remark-math';
 import { visit } from 'unist-util-visit';
 import { labelableKind, bareLabelKey, flattenText, PER_POST_TYPES, REF_PATTERN } from './label-shared.mjs';
+import { POST_DIRS } from './post-sources.mjs';
 
-const POSTS_DIR = path.join(process.cwd(), 'src/content/posts');
+const POSTS_DIRS = POST_DIRS.map((dir) => path.join(process.cwd(), dir));
 
 function extractDefinitionTerm(definitionNode) {
   const firstParagraph = definitionNode.children?.find((child) => child.type === 'paragraph');
@@ -164,10 +165,12 @@ function parseMarkdownBody(content) {
 }
 
 function readPosts() {
-  const files = fs.readdirSync(POSTS_DIR).filter((file) => file.endsWith('.md'));
+  const files = POSTS_DIRS.flatMap((dir) =>
+    fs.readdirSync(dir).filter((file) => file.endsWith('.md')).map((file) => path.join(dir, file))
+  );
   const posts = [];
   for (const file of files) {
-    const raw = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
+    const raw = fs.readFileSync(file, 'utf-8');
     const { data, content } = matter(raw);
     if (data.draft) continue; // draft posts get no route (see [slug].astro) so can't be a \ref target
     if (typeof data.slug !== 'string' || data.slug.length === 0) {

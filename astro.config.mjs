@@ -15,9 +15,11 @@ import { remarkLabelStrip } from './src/lib/remark-label-strip.mjs';
 import { rehypeEquationNumbering } from './src/lib/rehype-equation-numbering.mjs';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { h } from 'hastscript';
+import { OUT_DIR } from './src/lib/post-sources.mjs';
 
 // https://astro.build/config
 export default defineConfig({
+  outDir: OUT_DIR, // dist-test/ when building with fixture posts - see post-sources.mjs
   markdown: {
     // defaultColor: false makes Shiki emit --shiki-light-*/--shiki-dark-*
     // custom properties per token instead of baking in a single inline

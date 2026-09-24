@@ -13,7 +13,7 @@ import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
-const distDir = path.join(repoRoot, 'dist');
+const distDir = path.join(repoRoot, 'dist-test');
 
 const FIXTURE_SLUG = 'authoring-primitives';
 
@@ -204,6 +204,6 @@ test('13. (CONT-08) a repeated cite key yields exactly one bibliography entry', 
   assert.equal(
     shorEntries,
     1,
-    `(CONT-08) expected the repeated shor1997 citation to produce exactly 1 bibliography entry, found ${shorEntries}`
+    `(CONT-08) expected the repeated Sho97 citation to produce exactly 1 bibliography entry, found ${shorEntries}`
   );
 });
