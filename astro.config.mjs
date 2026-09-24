@@ -9,6 +9,7 @@ import { rehypeSequentialIds } from './src/lib/rehype-sequential-ids.mjs';
 import { remarkDirectiveToHast } from './src/lib/remark-directive-to-hast.mjs';
 import { remarkCiteTranslate } from './src/lib/remark-cite-translate.mjs';
 import { rehypeCitationBrackets } from './src/lib/rehype-citation-brackets.mjs';
+import { rehypeCitationLinks } from './src/lib/rehype-citation-links.mjs';
 import { remarkRefResolve } from './src/lib/remark-ref-resolve.mjs';
 import { remarkLabelStrip } from './src/lib/remark-label-strip.mjs';
 import { rehypeEquationNumbering } from './src/lib/rehype-equation-numbering.mjs';
@@ -47,6 +48,7 @@ export default defineConfig({
           linkCitations: true,
         }],
         rehypeCitationBrackets, // MUST run after rehypeCitation - rewrites its "(1)" marks to "[1]"
+        rehypeCitationLinks, // MUST run after rehypeCitation - makes bibliography URLs clickable
         rehypeSequentialIds, // MUST run before autolink-headings - Pitfall 1
         [rehypeAutolinkHeadings, {
           behavior: 'prepend',
