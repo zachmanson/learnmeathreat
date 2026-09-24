@@ -15,13 +15,13 @@ Say you want to spend some bitcoin. You need to produce a message that says "mov
 
 ## Digital signatures
 
-We are already familiar with \ref{def-asymmetric-encryption}: two keys, one public and one private, where anything encrypted with the public key can only be decrypted with the private key. Digital signatures use the same public/private key setup, so it's tempting to assume they are just encryption flipped around: decrypt with the private key to sign, encrypt with the public key to verify. This is a common misconception for people first learning about digital signatures \cite{KaLi14}. It happens to line up for textbook RSA, but it doesn't hold in general, and most signature schemes (including the ones Bitcoin uses) don't have a decryption step to flip in the first place. In other words, signing needs its own definition, separate from encryption. Signing has to guarantee that anyone can verify the signature, but only you could have produced it.
+We are already familiar with \ref{def-asymmetric-encryption}: two keys, one public and one private, where anything encrypted with the public key can only be decrypted with the private key. Digital signatures use the same public/private key setup, so it's tempting to assume they are just encryption flipped around: decrypt with the private key to sign, encrypt with the public key to verify. This is a common misconception for people first learning about digital signatures \cite{KaLi14}. It doesn't hold in general, and most signature schemes (including the ones Bitcoin uses) don't have a decryption step to flip in the first place. In other words, signing needs its own definition, separate from encryption. Signing has to guarantee that anyone can verify the signature, but only you could have produced it.
 
 Following Katz and Lindell again \cite{KaLi14}, let's define a digital signature formally.
 
 :::definition
 **Digital signature:** A digital signature scheme is a 3-tuple of probabilistic polynomial-time algorithms comprising
-1. A key-generation algorithm $\texttt{Gen}(1^n) \to (pk, sk)$ generating a public ($pk$) and private ($sk$) key pair from a security parameter $n$.
+1. A key-generation algorithm $\texttt{Gen}(1^\kappa) \to (pk, sk)$ generating a public ($pk$) and private ($sk$) key pair from a security parameter $\kappa$.
 2. A signing algorithm $\texttt{Sign}_{sk}(m) \to \sigma$ that outputs a signature $\sigma$ from a private key $sk$ and message $m$.
 3. A deterministic verification algorithm $\texttt{Vrfy}_{pk}(m, \sigma) \to \{0, 1\}$ that verifies if $\sigma$ is a valid signature of $m$ under the public key $pk$, with an output of $1$ meaning valid and $0$ meaning invalid.
 :::
@@ -36,7 +36,7 @@ $$
 for every (legal) message $m$.
 :::
 
-To use a signature scheme, the sender runs $\texttt{Gen}(1^n)$ to obtain the public and private keys $(pk, sk)$. The sender is then free to publish $pk$ anywhere they wish. When the sender wants to authenticate a message $m$, they compute
+To use a signature scheme, the sender runs $\texttt{Gen}(1^\kappa)$ to obtain the public and private keys $(pk, sk)$. The sender is then free to publish $pk$ anywhere they wish. When the sender wants to authenticate a message $m$, they compute
 
 $$
 \sigma \gets \texttt{Sign}_{sk}(m)
@@ -45,7 +45,7 @@ $$
 and then send $(m, \sigma)$ to the recipient.
 
 :::note
-Notice $m$ is publicly exposed, along with $\sigma$. This is different from encryption, where $m$ was a secret. This is not an oversight, since a signature isn't hiding anything. Encryption and signatures have two different goals: encryption protects confidentiality, while signatures protect authenticity. The point is that anyone with $pk$, $\sigma$, and $m$ can verify the signature themselves. In this context, $m$ can be anything: a contract, a software update, a message, a vote, etc. For Bitcoin specifically, $m$ is built from the transaction data, which we will learn about in a later post.
+Notice $m$ is publicly exposed, along with $\sigma$. This is different from encryption, where $m$ was a secret. This is on purpose, since a signature isn't hiding anything. Encryption and signatures have two different goals: encryption protects confidentiality, while signatures protect authenticity. The point is that anyone with $pk$, $\sigma$, and $m$ can verify the signature themselves. In this context, $m$ can be anything: a contract, a software update, a message, a vote, etc. For Bitcoin specifically, $m$ is built from the transaction data, which we will learn about in a later post.
 :::
 
 The recipient who knows $pk$ can then check whether
@@ -63,14 +63,14 @@ Up to this point we have (hopefully) gotten a good idea of what it means for som
 Consider an adversary who has seen you sign a bunch of other messages, and now tries to forge your signature on a message you have never signed. The formal name for security against this attack is existential unforgeability under an adaptive chosen-message attack (EUF-CMA) \cite{KaLi14}.
 
 :::note
-"Adaptive chosen-message" here means the attacker gets to pick which messages you sign, and can base each choice on the signatures they have seen so far. It's not "here's a pile of your previous signatures", they get to ask for new ones on demand.
+"Adaptive chosen-message" here means the attacker gets to pick which messages you sign, and can base each choice on the signatures they have seen so far.
 :::
 
 Put simply, a digital signature scheme is EUF-CMA secure if no efficient attacker can produce a valid $(m, \sigma)$ pair on a message $m$ it was never given a signature for, even if it first gets to request signatures on any other messages of its choosing. Without this property, a digital signature doesn't prove authenticity, since someone could forge your signature on a message you never touched.
 
 ## ECDSA
 
-Since the specific signature schemes that Bitcoin employs will be a key point in discussing how exactly quantum computers threaten Bitcoin's security, I think it's worth going into a little bit of depth into how these specific signature schemes work. Luckily, there are only two of interest, and the first that I will discuss is the Elliptic Curve Digital Signature Algorithm (ECDSA).
+Since the specific signature schemes that Bitcoin employs will be a key point in discussing how exactly quantum computers threaten Bitcoin's security, I think it's worth going into how these schemes work in some depth. Luckily, there are only two of interest, and the first that I will discuss is the Elliptic Curve Digital Signature Algorithm (ECDSA).
 
 Bitcoin uses ECDSA over the secp256k1 curve that I introduced in the [asymmetric cryptography post](/posts/asymmetric-and-symmetric-cryptography/). Note that this isn't a Bitcoin-specific invention, but a general-use digital signature scheme that's been standardized by the National Institute of Standards and Technology (NIST) \cite{JMV01}. The curve itself isn't one of NIST's, though. It comes from a separate standard called SEC 2.
 
@@ -156,7 +156,7 @@ $$
 s_1 - s_2 = k^{-1}\left(\operatorname{hash}(m_1) - \operatorname{hash}(m_2)\right) \bmod n.
 $$
 
-Anyone can solve this for $k$, and then for $d$. This isn't hypothetical. Sony signed PlayStation 3 software using the same $k$ every time, and in 2010 their private key was recovered this way \cite{BMS10}. In 2013, a bug in Android's random number generator caused some Bitcoin wallets to reuse $k$, and coins were stolen \cite{BrHe19}.
+Anyone can solve this for $k$, and then for $d$. Sony, for example, signed PlayStation 3 software using the same $k$ every time, and in 2010 their private key was recovered this way \cite{BMS10}. In 2013, a bug in Android's random number generator caused some Bitcoin wallets to reuse $k$, and coins were stolen \cite{BrHe19}.
 
 ## Schnorr Signatures
 
@@ -195,17 +195,17 @@ $$
 
 Thus $I^\prime$ reconstructs to the same point you started with, and therefore $\operatorname{hash}(I', m) = r$ and the verification passes. To fake this without knowing $d$, you would again either have to guess $k$ in advance or recover $d$ directly from $P = dG$, which is the same ECDLP problem as ECDSA. 
 
-What's the point of having two different signature schemes? Isn't one sufficient? Both schemes reduce to the same hard problem: recovering $d$ from $P = dG$ is ECDLP either way. On the foundational level, they're equivalent, right?
+What's the point of having two different signature schemes? Isn't one sufficient? Both schemes reduce to the same hard problem: recovering $d$ from $P = dG$ is ECDLP either way.
 
-Not quite. There's one small step in the middle where they diverge, and it ends up mattering a lot. ECDSA sets $r \gets F(kG)$, which is just the x-coordinate. On the other hand, Schnorr sets $r \gets \operatorname{hash}(I, m)$. It runs $I$ through a hash first, and that is the entire reason why one scheme can be provably secure while the other cannot. 
+However, there's one small step in the middle where they diverge, and it ends up mattering a lot. ECDSA sets $r \gets F(kG)$, which is just the x-coordinate. On the other hand, Schnorr sets $r \gets \operatorname{hash}(I, m)$. It runs $I$ through a hash first, and that's why one scheme can be provably secure while the other cannot. 
 
-Here's why that one step matters so much. A proof of security basically works by imagining an attacker who could forge a signature, then showing that attacker could be turned into a machine that solves ECDLP, which is supposed to be impossible. The trick used to build that machine needs to catch the forger reusing the same $kG$ but ending up with two different values of $r$. If that ever happens, you can subtract the two signing equations, the nonce $k$ cancels out, and you're left holding $d$.
+A proof of security basically works by imagining an attacker who could forge a signature, then showing that attacker could be turned into a machine that solves ECDLP, which is supposed to be impossible. The trick used to build that machine needs to catch the forger reusing the same $kG$ but ending up with two different values of $r$. If that ever happens, you can subtract the two signing equations, the nonce $k$ cancels out, and you're left holding $d$.
 
-For Schnorr, a proof can actually force this to happen, because $r$ comes from a hash, and a hash is exactly the kind of thing a proof is allowed to just reassign (the proof treats the hash as a perfectly random function that it controls). Feed $\operatorname{hash}$ the same $I = kG$ twice and get two different $r$'s back. That's not a contradiction, it's just how hash functions behave. So an attacker who could reliably forge signatures could be forced into producing exactly this situation, two valid responses to the same $kG$, which is enough to extract $d$ directly. That contradicts ECDLP being hard, so no such attacker can exist. Forging a Schnorr signature is provably as hard as solving ECDLP (as long as the hash behaves like that perfectly random function) \cite{PoSt00}.
+For Schnorr, a proof can actually force this to happen, because $r$ comes from a hash, and a hash is exactly the kind of thing a proof is allowed to just reassign (the proof treats the hash as a perfectly random function that it controls). The proof can run the forger twice with the same $I = kG$ and hand back a different $r$ the second time. So an attacker who could reliably forge signatures could be forced into producing exactly this situation, two valid responses to the same $kG$, which is enough to extract $d$ directly. That contradicts ECDLP being hard, so no such attacker can exist. Forging a Schnorr signature is provably as hard as solving ECDLP (as long as the hash behaves like that perfectly random function) \cite{PoSt00}.
 
-ECDSA can't use this same argument. $r$ is just the $x$-coordinate of $kG$, which is a fixed number the moment $kG$ exists. There's no second answer to get. The same $kG$ only ever produces one $r$. So the whole proof technique doesn't work, as there's no way to force two different responses out of a fixed function. This doesn't mean ECDSA is unprovable in principle, just that this specific method doesn't work, and decades later, nobody's found a different one that works from ECDLP alone either.
+ECDSA can't use this same argument. $r$ is just the $x$-coordinate of $kG$, which is fixed the moment $kG$ exists, so there's no way to force a second value of $r$ out of it. This doesn't mean ECDSA is unprovable in principle, just that this specific method doesn't work, and decades later, nobody's found a different one that works from ECDLP alone either.
 
-So from a pure security standpoint, Schnorr wins, and it's older (1989 vs 1992 for ECDSA \cite{JMV01}). If that were the whole story, Bitcoin should have used Schnorr from day one. However, it didn't, and the reason is historical rather than technical. Schnorr patented his scheme \cite{Sch91} shortly after it was published in 1989 \cite{Sch90}. Around that time, NIST needed a standard digital signature algorithm but didn't want to license someone else's patent. So they went with DSA, which is widely seen as designed to get around Schnorr's patent (though Schnorr argued it didn't). ECDSA is DSA carried over to elliptic curves. The key change was swapping Schnorr's hashed $r$ for just the $x$-coordinate of $kG$, which also meant the proof technique above no longer works. The patent expired in 2008, shortly before Bitcoin launched, but by then ECDSA was already the standard, so that's what Bitcoin used. Schnorr signatures were not introduced into Bitcoin until 2021 \cite{WNR20}. 
+So from a pure security standpoint, Schnorr wins, and it's older (1989 vs 1992 for ECDSA \cite{JMV01}). Given that, you'd expect Bitcoin to have used Schnorr from day one. It didn't, and the reason is historical. Schnorr patented his scheme \cite{Sch91} shortly after it was published in 1989 \cite{Sch90}. Around that time, NIST needed a standard digital signature algorithm but didn't want to license someone else's patent. So they went with DSA, which is widely seen as designed to get around Schnorr's patent (though Schnorr argued it didn't). ECDSA is DSA carried over to elliptic curves. The key change was swapping Schnorr's hashed $r$ for just the $x$-coordinate of $kG$, which also meant the proof technique above no longer works. The patent expired in 2008, shortly before Bitcoin launched, but by then ECDSA was already the standard, so that's what Bitcoin used. Schnorr signatures were not introduced into Bitcoin until 2021 \cite{WNR20}. 
 
 The security proof was one reason Bitcoin eventually added Schnorr, but the bigger practical win was a useful property. Schnorr's signing equation
 

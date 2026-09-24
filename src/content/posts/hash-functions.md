@@ -20,9 +20,9 @@ The smarter way is to stop comparing the data itself and instead compare it with
 Hash functions are simply functions that take inputs of any length and give a fixed-length output, where finding two inputs with the same output is meant to be computationally infeasible.
 
 :::definition
-**Hash function:** The $m$-bit hash of a bitstring of arbitrary size is the uniformly distributed mapping  \cite{GGF17}
+**Hash function:** The $\ell$-bit hash of a bitstring of arbitrary size is the uniformly distributed mapping  \cite{GGF17}
 $$
-\operatorname{hash} : \{0, 1\}^* \to \{0, 1\}^m : s \mapsto \operatorname{hash}(s).
+\operatorname{hash} : \{0, 1\}^* \to \{0, 1\}^\ell : s \mapsto \operatorname{hash}(s).
 $$
 :::
 
@@ -45,21 +45,21 @@ The hash functions that are used in cryptography/security are a special class of
 
 It's worth noting that, although this is not a fourth property that must be satisfied, for preimage, second-preimage, and collision resistance to work, the outputs of a hash function need to be unpredictable. What this means is that if you change a single bit of the input, the output should come out completely different, with no obvious structure. If changing the input slightly only nudged the output a little, an attacker could use this information to guide their search for a preimage or collision rather than searching blindly.
 
-Of these properties, collision resistance is the strongest notion of security. If you can find a collision, you get a second-preimage for free. Since hash functions more often than not take a larger input and map it to a smaller output, then by the pigeonhole principle, there must be outputs for which multiple inputs map to it. This is fine, as long as finding those multiple inputs is computationally infeasible. Now suppose you had a tool that breaks preimage resistance. It takes an output $h$ and gives you back an input $m$ such that $\operatorname{hash}(m) = h$. You could pick your own input, $m_1$, compute its hash, $h = \operatorname{hash}(m_1)$, and then feed $h$ into the machine to get $m_2$ such that $\operatorname{hash}(m_2) = h$. With high probability, $m_1 \neq m_2$. In other words, your preimage-breaking tool is now also a second-preimage-breaking tool. With the same logic, if no second-preimage attack exists, then no preimage attack exists, else you could build one with the same trick. To summarize, collision resistance gives you second-preimage resistance, and second-preimage resistance gives you preimage resistance. However, this chain does not work the other way, as this trick relied on picking the input first, which a second-preimage or preimage attacker doesn't have the liberty of.
+Of these properties, collision resistance is the strongest notion of security. If you can find a second-preimage, you get a collision for free. Since hash functions more often than not take a larger input and map it to a smaller output, then by the pigeonhole principle, there must be outputs for which multiple inputs map to it. This is fine, as long as finding those multiple inputs is computationally infeasible. Now suppose you had a tool that breaks preimage resistance. It takes an output $h$ and gives you back an input $m$ such that $\operatorname{hash}(m) = h$. You could pick your own input, $m_1$, compute its hash, $h = \operatorname{hash}(m_1)$, and then feed $h$ into the machine to get $m_2$ such that $\operatorname{hash}(m_2) = h$. With high probability, $m_1 \neq m_2$. In other words, your preimage-breaking tool is now also a second-preimage-breaking tool. With the same logic, if no second-preimage attack exists, then no preimage attack exists, else you could build one with the same trick. To summarize, collision resistance gives you second-preimage resistance, and second-preimage resistance gives you preimage resistance. However, this chain does not work the other way, as this trick relied on picking the input first, which a second-preimage or preimage attacker doesn't have the liberty of.
 
 ## The birthday bound
 
 We have established what collision resistance is, and how it's the strongest notion of security for a hash function, and it turns out there is a nice mathematical bound on exactly how many inputs an attacker needs to check before one of these collisions is found.
 
-For an $m$-bit hash function, there are $2^m$ possible outputs. If an attacker is hunting for a preimage, they are stuck with checking candidate inputs one at a time against the target output. However, finding a collision is different, because the attacker is no longer tied to just one target. The attacker needs any two inputs, out of however many they try, to evaluate to the same output. This is exactly the *birthday problem*, which states: given $k$ people in a room, what are the odds that two of them share the same birthday? Of course we are talking about collisions here and not birthdays, but because these problems are essentially the same, and because the birthday problem is infamous, we call the generic collision-finding attack the birthday attack. For a hash function with $2^m$ possible outputs, after hashing $k$ inputs, the probability that *none* of them collide is roughly
+For an $\ell$-bit hash function, there are $2^\ell$ possible outputs. If an attacker is hunting for a preimage, they are stuck with checking candidate inputs one at a time against the target output. However, finding a collision is different, because the attacker is no longer tied to just one target. The attacker needs any two inputs, out of however many they try, to evaluate to the same output. This is exactly the *birthday problem*, which states: given $q$ people in a room, what are the odds that two of them share the same birthday? Of course we are talking about collisions here and not birthdays, but because these problems are essentially the same, and because the birthday problem is infamous, we call the generic collision-finding attack the birthday attack. For a hash function with $2^\ell$ possible outputs, after hashing $q$ inputs, the probability that *none* of them collide is roughly
 
 $$
-\prod_{i=1}^{k-1} \left(1 - \frac{i}{2^m}\right) \approx \exp\left(-\frac{k^2}{2^{m+1}}\right).
+\prod_{i=1}^{q-1} \left(1 - \frac{i}{2^\ell}\right) \approx \exp\left(-\frac{q^2}{2^{\ell+1}}\right).
 $$
 
-I am not going to prove this to you, because this is not a lesson on combinatorics. This is a well-known bound for a well-known problem. The interesting part comes when we start checking some numbers using this bound. For $k = 2^{m/2}$, the probability of *no* collision is approximately $e^{-1/2} \approx 0.6$. In other words, the attacker has close to a 40% shot at finding a collision after checking only $2^{m/2}$ inputs. That's quadratically fewer than required when finding a preimage. 
+I am not going to prove this to you, because this is not a lesson on combinatorics. This is a well-known bound for a well-known problem. The interesting part comes when we start checking some numbers using this bound. For $q = 2^{\ell/2}$, the probability of *no* collision is approximately $e^{-1/2} \approx 0.6$. In other words, the attacker has close to a 40% shot at finding a collision after checking only $2^{\ell/2}$ inputs. That's quadratically fewer than required when finding a preimage. 
 
-In fact, this is the whole reason why the length of hash function outputs get doubled relative to whatever preimage security you actually want. For example, 128-bit collision needs a 256-bit hash.
+In fact, this is the whole reason why hash function outputs are twice as long as whatever collision security you actually want. For example, 128-bit collision security needs a 256-bit hash.
 
 ## Hash functions that broke
 
