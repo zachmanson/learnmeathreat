@@ -106,6 +106,17 @@ main:has(.post-layout:not([data-has-right-nav])) {
   max-width: calc(68ch + 15rem + var(--space-xl));
 }
 
+/* Below the sidebar breakpoint the content column is as wide as the
+   viewport, so without side padding the text runs edge to edge. Scoped to
+   the same 900px breakpoint as nav-sidebars.css so the desktop measure
+   stays exactly 68ch. */
+@media (max-width: 900px) {
+  .site-header,
+  main {
+    padding-inline: var(--space-md);
+  }
+}
+
 .site-header {
   margin-top: var(--space-3xl);
   margin-bottom: var(--space-xl);
