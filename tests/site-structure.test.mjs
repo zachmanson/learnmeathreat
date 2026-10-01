@@ -85,17 +85,19 @@ test('6. published post page exists and contains its title', () => {
   assert.match(html, new RegExp(escapeRegExp(PUBLISHED_TITLE)));
 });
 
-test('7. About page exists and contains "About"', () => {
-  const html = readDistFile('about/index.html');
-  assert.ok(html.includes('About'));
+test('7. Home page holds the about text and the work-in-progress notice, and no /about/ page is built', () => {
+  const html = readDistFile('index.html');
+  assert.ok(html.includes("I'm Zach."), 'dist/index.html missing the about text');
+  assert.ok(html.includes('work in progress'), 'dist/index.html missing the work-in-progress notice');
+  assert.ok(!existsSync(path.join(distDir, 'about')), 'dist/about/ should no longer be built');
 });
 
-test('8. Home and About nav links appear on every page', () => {
-  const pages = ['index.html', 'about/index.html', `posts/${PUBLISHED_SLUG}/index.html`];
+test('8. Home nav link appears on every page and nothing links to /about/', () => {
+  const pages = ['index.html', `posts/${PUBLISHED_SLUG}/index.html`];
   for (const page of pages) {
     const html = readDistFile(page);
     assert.ok(html.includes('href="/"'), `${page} missing href="/"`);
-    assert.ok(html.includes('href="/about/"'), `${page} missing href="/about/"`);
+    assert.ok(!html.includes('href="/about/"'), `${page} still links to /about/`);
   }
 });
 

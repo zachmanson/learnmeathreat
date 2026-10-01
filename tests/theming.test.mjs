@@ -15,7 +15,7 @@ const distDir = path.join(repoRoot, 'dist-test');
 
 const PUBLISHED_SLUG = 'why-quantum-computers-threaten-bitcoin';
 
-const PAGES = ['index.html', 'about/index.html', `posts/${PUBLISHED_SLUG}/index.html`];
+const PAGES = ['index.html', `posts/${PUBLISHED_SLUG}/index.html`];
 
 function readDistFile(relPath) {
   const fullPath = path.join(distDir, relPath);
@@ -319,7 +319,7 @@ test('22. (DSGN-01 guard) no marketing/hero <img> outside authored content figur
 });
 
 test('22b. (DSGN-01 guard) non-post pages never contain any <img> tag', () => {
-  for (const page of ['index.html', 'about/index.html']) {
+  for (const page of ['index.html']) {
     const html = readDistFile(page);
     assert.ok(
       !/<img[\s>]/i.test(html),

@@ -84,13 +84,10 @@ test("4. the current post's chapter is open and its link marked", () => {
   assert.equal(ariaCurrentCount, 1, `expected exactly one aria-current="page" link, found ${ariaCurrentCount}`);
 });
 
-test('5. sidebars do not appear on home or about', () => {
+test('5. sidebars do not appear on home', () => {
   const home = readHtml('index.html');
-  const about = readHtml('about/index.html');
   assert.ok(!home.includes('post-layout'), 'dist/index.html unexpectedly contains post-layout');
   assert.ok(!home.includes('left-nav'), 'dist/index.html unexpectedly contains left-nav');
-  assert.ok(!about.includes('post-layout'), 'dist/about/index.html unexpectedly contains post-layout');
-  assert.ok(!about.includes('left-nav'), 'dist/about/index.html unexpectedly contains left-nav');
 });
 
 test('6. nav-sidebars.css declares the 900px collapse and no new tokens', () => {

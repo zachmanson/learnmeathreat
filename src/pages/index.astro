@@ -8,6 +8,98 @@ const chapters = await getChapters();
 <Layout title="Learn Me a Threat">
   <h1>Learn Me a Threat</h1>
 
+  <aside class="callout callout-note">
+    <p>
+      This blog is still very much a work in progress. If this is your
+      first time here and you're interested, maybe come back in a few
+      weeks when there's more content.
+    </p>
+  </aside>
+
+  <section class="about">
+    <p>
+      I'm Zach. I just graduated grad school with a Master's degree in
+      Physics, where I spent the last few years studying how quantum
+      computers threaten Bitcoin. Along the way, I picked up a decent sense
+      of how quantum computers affect other cryptocurrencies too.
+    </p>
+    <p>
+      I didn't have some lifelong destiny pulling me toward this, I kind of
+      stumbled into it. I started my Master's mostly because quantum computing
+      was hyped up at the time and I was curious about it after some exposure
+      to it in undergrad research. When it came time to pick a thesis topic, I
+      landed on quantum attacks against Bitcoin for two reasons: it's a real,
+      direct application of quantum computing that anyone can actually
+      understand, not some esoteric thing only other physicists would get the
+      point of. Also, crypto and NFTs were huge at the time too, like Bored
+      Ape NFTs selling for millions of dollars before they became worthless,
+      so that definitely played into it.
+    </p>
+    <p>
+      I knew basically nothing about crypto or Bitcoin going in, but the more
+      I read the more I got hooked on one specific thing about it. This is a
+      system where you're sending money back and forth to total strangers, no
+      bank in the middle, no company you can call if something goes wrong,
+      nobody vouching for anybody. You'd think that means it shouldn't work
+      at all, since nobody actually trusts anybody in it. But it does work,
+      because the trust isn't coming from people or institutions in the first
+      place, it's coming from the math underneath it. Once that clicked for
+      me, I couldn't really let it go, and that fascination is basically what
+      turned into my thesis, which turned into a paper that's on <a
+      href="https://arxiv.org/abs/2607.23952">arXiv</a> now, in the process
+      of getting published.
+    </p>
+    <p>
+      Honestly, the truth is I really like yapping about this stuff, and I
+      don't have an outlet for that anymore. I
+      just find the topic genuinely interesting and like teaching it. Some of
+      my fondest memories from grad school are from teaching, as long as it
+      was on something I actually cared about. This blog is meant to bring
+      that feeling back.
+    </p>
+    <p>
+      Think of this blog as a museum of my thoughts while they're still
+      fresh. If you want to follow along and find it interesting, that's a
+      nice bonus. But I do think there's real value in this content existing
+      on its own. How quantum computers affect cryptocurrencies and
+      blockchains in general is a broader topic than people realize, and the
+      information is scattered across a pile of papers, journals, and
+      reports. I want to be as comprehensive as I can and put it all in one
+      place. I won't cover every single attack or edge case, there's too
+      many, but I want to give a real lay of the land: how each attack
+      works, what's being thought about it, and what could be (or is being)
+      done.
+    </p>
+    <p>
+      You don't need any prior knowledge of Bitcoin, cryptography, or
+      quantum computing. My goal is to make this accessible to anyone,
+      explaining things rigorously from the ground up, in as plain language
+      as I can manage.
+    </p>
+    <p>
+      This blog, and its name, are inspired by <a
+      href="https://learnmeabitcoin.com">learnmeabitcoin.com</a> by Greg
+      Walker. It does a genuinely great job explaining Bitcoin's inner
+      workings in plain language, accessible to basically anyone. I won't go
+      nearly as deep into Bitcoin's mechanics here, that's not really the
+      point. If that's what you're after, go check out Greg's page instead.
+    </p>
+    <p>
+      Last thing, a disclaimer. I dislike writing and I'm slow at it, which
+      sounds a bit paradoxical given that's the whole point of a blog. But
+      I like this stuff more than I dislike writing about it, so writing is
+      just the tax I pay to get this stuff out of my head and into something
+      readable. I use AI
+      (mainly Claude) to help with that part. My process is: write out my
+      raw thoughts and ideas, then use AI to help with structure, clarity,
+      and flow, verifying accuracy along the way. The ideas, rigor, and
+      explanations are mine, but to be precise about it, parts of this blog
+      are AI-assisted. If that's a dealbreaker, no hard feelings.
+    </p>
+  </section>
+
+  <h2 class="contents-heading">Contents</h2>
+
   {chapters.size === 0 ? (
     <div class="empty-state">
       <h2>No posts yet.</h2>
@@ -52,8 +144,8 @@ const chapters = await getChapters();
 </Layout>
 
 <style>
-  .intro {
-    color: var(--muted);
+  .contents-heading {
+    margin-top: var(--space-xl);
   }
 
   .post-list {
