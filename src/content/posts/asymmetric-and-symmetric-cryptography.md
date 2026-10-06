@@ -178,7 +178,7 @@ $$
 31^7 \equiv (-2)^7 = -128 \equiv 4 \pmod{33},
 $$
 
-which is the 4 we started with. Why this always works comes from a result called Euler's theorem, which I'm not going to prove here, but you can try any $m$ from 0 to 32 and it'll come back every time \cite{KaLi14}.
+which is the 4 we started with. Why this works comes from a result called Euler's theorem, which I'm not going to prove here \cite{KaLi14}. Euler's theorem only covers $m$ that share no factors with $N$, like 4. The others, like 3 or 11, still come back, just for a different reason. Any $m$ from 0 to 32 works.
 
 This is where factoring comes in. To find $sk$, we needed that 20, and the only way we got it was from $p_1$ and $p_2$. Someone who only has $pk = (33, 3)$ has to factor 33 first. That's easy for 33, but as we just saw, nobody knows how to do it fast for a big $N$. In fact, finding $sk$ from $(N, e)$ turns out to be just as hard as factoring $N$ \cite{KaLi14}.
 

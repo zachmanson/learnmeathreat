@@ -70,7 +70,7 @@ Put simply, a digital signature scheme is EUF-CMA secure if no efficient attacke
 
 ## Textbook RSA signatures
 
-So what does it look like when a scheme isn't EUF-CMA secure? RSA from the [asymmetric crypto post](/posts/asymmetric-and-symmetric-cryptography/) is a good example, and it actually got attacked recently. Remember the misconception from earlier, that signing is just encryption flipped around? For RSA in its most bare-bones form, usually called textbook RSA, that's actually how it works. You sign a message by raising it to your private exponent,
+So what does it look like when a scheme isn't EUF-CMA secure? RSA from the [asymmetric crypto post](/posts/asymmetric-and-symmetric-cryptography/) is a good example, and it actually got attacked recently. Remember the misconception from earlier, that signing is just encryption flipped around? For RSA in its most bare-bones form, usually called textbook RSA, that's actually how it works. This is probably where the misconception came from \cite{KaLi14}. It's also insecure, which we'll see in a second. You sign a message by raising it to your private exponent,
 
 $$
 \sigma = m^{sk} \bmod N,
@@ -94,9 +94,15 @@ That's what Joux, Naccache, and Thomé worked out back in 2007 \cite{JNT07}. The
 
 For almost 20 years this stayed on paper. Then in September 2026, a team at UC San Diego and INRIA (including Thomé from the original paper) finally pulled it off \cite{SHSH+26}. They took a device that signs with a 1024-bit RSA key, had it sign about $2^{32}$ (around 4 billion) numbers of their choosing, then ran the math on a ton of computers for about five months. On a single processor core it would've taken 1380 years. At the end they had a forged signature on a message the device never signed. They never got $sk$, and they never factored $N$.
 
-To be fair, nobody actually signs with textbook RSA. Real RSA hashes the message and pads it into a fixed format before signing. The product of two formatted messages is basically never a validly formatted message itself, so the multiplying trick falls apart. The researchers had to switch that formatting off on the device to make the attack work. Still, they estimate that if an attacker can get raw RSA signatures on numbers they pick, forging one is somewhere between 30 thousand and a billion times easier than we thought from factoring alone \cite{SHSH+26}.
+To be fair, nobody actually signs with textbook RSA. Real RSA runs the message through a hash function first and signs $\operatorname{hash}(m)$ instead of $m$. Now, to pull off the multiplying trick, you'd need to find some message $m$ with
 
-NIST already plans to phase RSA out, deprecating it after 2030 and disallowing it after 2035 \cite{MPRR+24}. That isn't because of this attack though. It's because of quantum computers (which we'll get to later in the series), and the same plan covers the elliptic curve signatures Bitcoin uses too. The researchers argue their result is one more reason to drop RSA entirely while we're making that switch anyway, this time from a regular, non-quantum attack \cite{SHSH+26}.
+$$
+\operatorname{hash}(m) \equiv \operatorname{hash}(m_1) \operatorname{hash}(m_2) \pmod{N},
+$$
+
+and with a good hash (one whose output is about as big as $N$), nobody knows how to find one \cite{KaLi14}. You no longer get to choose the numbers that actually get signed, which also kills the 2007 attack. The researchers had to switch the hashing off on the device to make it work. Still, they estimate that if an attacker can get raw RSA signatures on numbers they pick, forging one is somewhere between 30 thousand and a billion times easier than we thought from factoring alone \cite{SHSH+26}.
+
+NIST already plans to phase RSA out, and under its current draft, RSA won't be allowed at all after 2035 \cite{MPRR+24}. That isn't because of this attack though. It's because of quantum computers (which we'll get to later in the series), and the same plan covers the elliptic curve signatures Bitcoin uses too. The researchers argue their result is one more reason to drop RSA entirely while we're making that switch anyway, this time from a regular, non-quantum attack \cite{SHSH+26}.
 
 ## ECDSA
 
