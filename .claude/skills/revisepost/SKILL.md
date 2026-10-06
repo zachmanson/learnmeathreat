@@ -1,6 +1,6 @@
 ---
 name: revisepost
-description: Use when the user wants to revise a Learn Me a Threat blog post draft — pasted text, or a reference to a file like "cryptography.md" — for flow, technical accuracy, and matching the user's own writing voice.
+description: Use when the user wants to revise a Learn Me a Threat blog post draft — pasted text, or a reference to a file like "cryptography.md" — for flow, technical accuracy, and matching the user's own writing voice. Also use when drafting new prose for a post (an added example, paragraph, or section).
 ---
 
 # Revise Post
@@ -13,6 +13,7 @@ Revises a Learn Me a Threat draft for flow, technical accuracy, and voice — wi
 
 - User pastes raw draft text and asks for revision, feedback, or cleanup.
 - User names a post file ("revise cryptography.md", "clean up hash-functions", "look at digital-signatures").
+- Claude drafts new prose for a post (e.g. adding a real-world example). Every voice rule below applies to new prose exactly as it does to revisions; drafting from scratch is where the AI sound creeps in most.
 - NOT for scaffolding new posts, frontmatter/schema changes, or site features — that's regular GSD work, not this skill.
 
 ## Process
@@ -29,17 +30,21 @@ Revises a Learn Me a Threat draft for flow, technical accuracy, and voice — wi
    - Fact-check technical claims, but don't flag a deliberate simplification made for reader accessibility as an error.
    - Avoid the "AI sound": don't tidy sentences into neat parallel constructions ("That's X, and it's also Y") or wrap a paragraph with a punchy aphoristic closer. Both read as machine-generated even when grammatically fine.
    - Banned AI patterns: no "Ron Weasleyisms" ("Not X, not Y, Z!", "It's not X, it's Y"), no corporate framing ("Here's the sharper read", "the load-bearing piece", "Here's the thing"), no sycophantic beats ("honestly? That's rare"). Never introduce these, and don't use them in the change summary either.
+   - Plain and specific: every sentence carries a concrete fact or the user's own take. Stock filler sounds informative but says nothing; cut it or swap in a real fact. Typical offenders: vague superlative credentials ("one of the oldest and most widely used schemes out there") canned transitions into an example ("This isn't just a theoretical worry either", "To see why this matters, here's a real example"), and stock tutorial phrasing ("let's see X in action"). Introduce an example plainly in first person, with the actual reason for it ("I'll go through how RSA works with a small example, since it comes up again in the signatures post").
+   - Show, don't tell: when a sentence describes in words what an equation could show ("the private key is another exponent, chosen so that..."), show it. If the equation alone makes it clear, the equation is enough. Use a worked example in small numbers the reader can check by hand (like the mod 11 table or the mod 7 curve) only when the idea is hard to see from the equation alone; run the example first, then give the general equation that explains why it worked. Verify every number in an example with a script before showing it.
+   - Math layout: anything longer than a short inline expression (a quick $x = 5$, a symbol or two) goes on its own line as a `$$...$$` display equation. A display equation is still part of the sentence: the sentence runs into it and, where it makes sense, continues after it ("Encrypting gives $$c = 4^3 \equiv 31 \pmod{33},$$ and decrypting gives back..."). Punctuate it like the words around it, with the comma or period inside the `$$`. Don't introduce it with a colon and a stand-alone label sentence ("signing and verifying look like:").
+   - Reader's vocabulary: name things the way the reader would, using only terms the series has already explained. Unexplained insider terms ("hardware security module", "signing oracle", "CPU core-years") get described plainly instead ("a device whose job is to sign things").
    - Strunk & White as the mechanics tiebreaker, using the specific rules in the "Strunk & White Rules" section below, but only within what the user could plausibly write. It never overrides the casual tone.
 
    If memory has since accumulated more voice/style entries than these, use the current versions — they're the source of truth, this list is just the known baseline.
 
 3. **Revise for these things, in this order:**
    - **Technical accuracy** — verify every factual/technical claim in the draft. If something is wrong or unverifiable, flag it explicitly and ask; do not silently "fix" it into something that sounds plausible.
-   - **Prerequisites** — read every earlier post in the series (by `date` in frontmatter), not just the one being revised. Flag any concept the draft *relies on* that no earlier post (or earlier in this post) explains. A reader should be able to follow every argument using only what came before. A name-drop the reader doesn't need to understand ("this is the assumption RSA is built on") is fine; a sentence whose point depends on knowing it ("it lines up for textbook RSA") is not. Fix by cutting the reference, explaining it inline, or noting it needs an earlier explanation.
+   - **Prerequisites** — read every earlier post in the series (by `date` in frontmatter), not just the one being revised. Flag any concept the draft *relies on* that no earlier post (or earlier in this post) explains. A reader should be able to follow every argument using only what came before. A name-drop the reader doesn't need to understand ("this is the assumption RSA is built on") is fine; a sentence whose point depends on knowing it ("it lines up for textbook RSA") is not. Fix by cutting the reference, explaining it inline, or noting it needs an earlier explanation. Back-references ("from earlier", "as we saw") must point to something an earlier post actually explains, not just names; check the earlier post before writing one.
    - **Notation** — read `docs/notation.md` and check every symbol against it. Flag a global symbol used for something else, or a local variable that shadows a global one in the same post. If the draft introduces a new symbol that later posts will reuse, propose adding it to the table (and update the table once the user approves).
    - **Structure/ordering** — rough drafts jump around; reordering paragraphs, sections, or even where an idea gets introduced is fair game, not just sentence-level editing. If reordering would improve the post, do it (or propose it) rather than leaving ideas in the order they were dumped in. Call out any reordering explicitly in the summary of changes so it's not a surprise on read-through.
    - **Flow** — split run-ons, cut redundant clauses, tighten transitions. Use the lightest touch that actually fixes the problem (fragment, typo, duplicated phrasing, grammar) rather than rewriting into a cleaner or more symmetric version. Repetition or rough rhythm that isn't actually broken is part of the voice — leave it.
-   - **Voice** — keep it blunt and plain. Don't add rhetorical questions, "Let's dive in" framing, em dashes, softening hedges, or a tidy closer sentence that wasn't there in some form already. When unsure whether a change adds polish vs. genuinely improves clarity, prefer cutting over adding flourish.
+   - **Voice** — conversational and rigorous at the same time. Talk to the reader directly ("you", contractions, telling a story in the order it happened), but keep the real math: show the equation that makes the point instead of just describing it, and explain *why* the thing works, not only *that* it does. Rhetorical questions are fine when they set up what comes next ("Does this look familiar?"), not as a dramatic hook. Keep it blunt and plain: no "Let's dive in" framing, em dashes, softening hedges, or a tidy closer sentence that wasn't there in some form already. When unsure whether a change adds polish vs. genuinely improves clarity, prefer cutting over adding flourish.
 
 4. **Show the revision — never overwrite silently.** Present the revised text (inline, or as a diff against the file if working from one), with a short list of what changed and why. Put fact-check flags up front, separate from style edits, so they don't get lost.
 
@@ -83,6 +88,10 @@ From *The Elements of Style*. Apply these when fixing a sentence that's actually
 | Ideas are out of order / draft jumps around | Reorder freely — flag the reorder in the change summary, don't just leave it because "that's how they wrote it" |
 | Revision uses an em dash | Remove it — this is a hard no, not a judgment call |
 | Revision contains "Not X, but Y" / "It's not X, it's Y" | Rewrite to state the true thing directly |
+| A sentence sounds informative but has no specific fact in it | Cut it, or replace it with a concrete fact |
+| A sentence explains a mechanism in the abstract | Show it with the equation; add a small worked example only if the equation alone isn't clear |
+| Inline math longer than a few characters | Move it to its own `$$...$$` display line |
+| Prose uses a term the series hasn't explained | Describe the thing plainly instead |
 | Revision reads "too clean" / neatly symmetric | Redo with the lightest touch that fixes the actual problem, don't rewrite for polish |
 
 ## Common Mistakes
