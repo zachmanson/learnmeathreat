@@ -142,6 +142,46 @@ $$
 
 Much simpler, but the same idea holds. Multiplying two large prime numbers together is fast, and a computer can do this instantly, no matter how large they are. But, hand someone $N$ and tell them to factor it into $p_1$ and $p_2$, there's no shortcut for them to exploit and they are stuck testing candidates again. This is why $p_1$ and $p_2$ need to be prime in the first place, because if $N$ had many factors we could easily shrink the problem down as we found more factors. Nobody has ever found an efficient algorithm to solve this problem either, which is why we still rely on it for encryption today. This is the assumption RSA is built on.
 
+I'll go through how RSA works with a small example, since it comes up again when we get to signatures. Pick two primes, $p_1 = 3$ and $p_2 = 11$, so $N = 33$. Then pick two exponents $e$ and $sk$ that satisfy
+
+$$
+e \cdot sk \equiv 1 \pmod{(p_1 - 1)(p_2 - 1)},
+$$
+
+which here means their product needs to leave a remainder of 1 when divided by 20.
+
+:::note
+$a \equiv b \pmod{N}$ just means $a$ and $b$ leave the same remainder when divided by $N$. For example, $64 \equiv 31 \pmod{33}$, since $64 = 33 + 31$.
+:::
+
+Taking $e = 3$ and $sk = 7$ works, since $3 \cdot 7 = 21$. Your public key is $pk = (N, e) = (33, 3)$, and your private key is $sk = 7$. Encrypting a message $m$ means computing
+
+$$
+c = m^e \bmod N,
+$$
+
+and decrypting means raising $c$ to the power $sk$ instead,
+
+$$
+m = c^{sk} \bmod N.
+$$
+
+Say $m = 4$. Encrypting gives
+
+$$
+c = 4^3 = 64 \equiv 31 \pmod{33},
+$$
+
+and since $31 \equiv -2 \pmod{33}$, decrypting gives
+
+$$
+31^7 \equiv (-2)^7 = -128 \equiv 4 \pmod{33},
+$$
+
+which is the 4 we started with. Why this always works comes from a result called Euler's theorem, which I'm not going to prove here, but you can try any $m$ from 0 to 32 and it'll come back every time \cite{KaLi14}.
+
+This is where factoring comes in. To find $sk$, we needed that 20, and the only way we got it was from $p_1$ and $p_2$. Someone who only has $pk = (33, 3)$ has to factor 33 first. That's easy for 33, but as we just saw, nobody knows how to do it fast for a big $N$. In fact, finding $sk$ from $(N, e)$ turns out to be just as hard as factoring $N$ \cite{KaLi14}.
+
 Every trapdoor function that you will run into in practice more than likely relies on one of these two problems for its cryptographic hardness. However, there's one thing to note here: 'hard' just means that the best known attacks take an infeasible amount of time to work (like on the order of the time until the end of the universe), and exactly how infeasible these attacks are scales with the order of the group or number of bits required to represent the primes. For groups like the example above, the best-known attacks can actually solve these problems in sub-exponential times \cite{KaLi14}, meaning that they are still slower than an efficient (polynomial time) algorithm, but faster than brute force. As a consequence, the order of the group or the size of the primes used for the keys must be large enough to outpace these algorithms. Therefore, we end up with keys of around 2048 bits. For something like Bitcoin, which needs to store and generate a large number of these keys, this size adds up fast and turns into a real bottleneck.
 
 The obvious question to raise from here is: is there some other group we can plug into the DLP that survives these sub-exponential attacks, meaning that we don't need to store such large keys to be safe? Turns out yes, but it's built out of a very different kind of math that we need to introduce first.

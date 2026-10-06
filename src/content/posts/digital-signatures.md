@@ -68,6 +68,36 @@ Consider an adversary who has seen you sign a bunch of other messages, and now t
 
 Put simply, a digital signature scheme is EUF-CMA secure if no efficient attacker can produce a valid $(m, \sigma)$ pair on a message $m$ it was never given a signature for, even if it first gets to request signatures on any other messages of its choosing. Without this property, a digital signature doesn't prove authenticity, since someone could forge your signature on a message you never touched.
 
+## Textbook RSA signatures
+
+So what does it look like when a scheme isn't EUF-CMA secure? RSA from the [asymmetric crypto post](/posts/asymmetric-and-symmetric-cryptography/) is a good example, and it actually got attacked recently. Remember the misconception from earlier, that signing is just encryption flipped around? For RSA in its most bare-bones form, usually called textbook RSA, that's actually how it works. You sign a message by raising it to your private exponent,
+
+$$
+\sigma = m^{sk} \bmod N,
+$$
+
+and anyone with $pk = (N, e)$ can verify it by checking whether
+
+$$
+\sigma^e \equiv m \pmod{N}.
+$$
+
+The problem is that this plays way too nicely with multiplication. Say you get the owner to sign two messages, $m_1$ and $m_2$. Multiplying the two signatures together gives
+
+$$
+\sigma_1 \sigma_2 \equiv m_1^{sk} m_2^{sk} \equiv (m_1 m_2)^{sk} \pmod{N},
+$$
+
+which is a valid signature on $m_1 m_2$, a message they never signed. That alone already breaks EUF-CMA \cite{KaLi14}. It's a pretty limited forgery though, since you only get signatures on products of things you've already had signed. What if you want a signature on one specific message?
+
+That's what Joux, Naccache, and Thomé worked out back in 2007 \cite{JNT07}. The idea is to get signatures on a huge pile of numbers you pick (all of a specific form), then find a way to build your target message out of them by multiplying. Once you have that, you multiply the matching signatures together just like above. Finding that combination is the hard part, and they did it with the same kind of math the best factoring algorithms use. It still takes a long time, but it's faster than the best known way to factor $N$, so forging a signature ends up easier than breaking the key outright.
+
+For almost 20 years this stayed on paper. Then in September 2026, a team at UC San Diego and INRIA (including Thomé from the original paper) finally pulled it off \cite{SHSH+26}. They took a device that signs with a 1024-bit RSA key, had it sign about $2^{32}$ (around 4 billion) numbers of their choosing, then ran the math on a ton of computers for about five months. On a single processor core it would've taken 1380 years. At the end they had a forged signature on a message the device never signed. They never got $sk$, and they never factored $N$.
+
+To be fair, nobody actually signs with textbook RSA. Real RSA hashes the message and pads it into a fixed format before signing. The product of two formatted messages is basically never a validly formatted message itself, so the multiplying trick falls apart. The researchers had to switch that formatting off on the device to make the attack work. Still, they estimate that if an attacker can get raw RSA signatures on numbers they pick, forging one is somewhere between 30 thousand and a billion times easier than we thought from factoring alone \cite{SHSH+26}.
+
+NIST already plans to phase RSA out, deprecating it after 2030 and disallowing it after 2035 \cite{MPRR+24}. That isn't because of this attack though. It's because of quantum computers (which we'll get to later in the series), and the same plan covers the elliptic curve signatures Bitcoin uses too. The researchers argue their result is one more reason to drop RSA entirely while we're making that switch anyway, this time from a regular, non-quantum attack \cite{SHSH+26}.
+
 ## ECDSA
 
 Since the specific signature schemes that Bitcoin employs will be a key point in discussing how exactly quantum computers threaten Bitcoin's security, I think it's worth going into how these schemes work in some depth. Luckily, there are only two of interest, and the first that I will discuss is the Elliptic Curve Digital Signature Algorithm (ECDSA).
