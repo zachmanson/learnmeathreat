@@ -4,7 +4,7 @@ date: 2026-09-24
 tags: ["Bitcoin"]
 excerpt: "How Bitcoin actually works, from keys and transactions to mining, covering just enough to see what quantum computers put at risk."
 slug: bitcoin
-draft: true
+draft: false
 section: true
 ---
 

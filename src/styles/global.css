@@ -52,6 +52,13 @@ pre {
   font-size: 14px;
 }
 
+/* Long unbroken inline code (hex keys and hashes) would otherwise push the
+   page wider than the content column, especially in table cells and on
+   phones. Code blocks (pre) scroll instead, so they're excluded. */
+:not(pre) > code {
+  overflow-wrap: anywhere;
+}
+
 /* The serif heading accent is deliberately confined to h1-h3 per D-02/D-03
    (02-UI-SPEC.md Typography guardrail) - it must not extend to .site-title,
    nav, body, meta, or the theme toggle, or it reads as a mismatched brand
