@@ -21,9 +21,9 @@ In Bitcoin, a private key is just a number $d$ picked at random. Whoever knows $
 I'm keeping the link between $d$ and its bitcoins vague on purpose, since we aren't ready for it yet. The point here is that every bitcoin is tied to a specific $d$, and you'll just have to trust me for now.
 :::
 
-The important thing here is that $d$ must be random. This is the only thing protecting $d$ from anyone else guessing it. If you generated $d$ with a predictable process, like a general-purpose random number generator such as `rand()` in C, then someone could run the same process, get the same $d$, and steal your coins. Instead, you need a random number generator that is cryptographically secure. I'm not going to get into the details of exactly what that means, since it's a whole area of research on its own. The Android bug from the [digital signatures post](/posts/digital-signatures/) is what happens when the random number generator isn't good enough.
+The important thing here is that $d$ must be random. This is the only thing protecting $d$ from anyone else guessing it. If you generated $d$ with a predictable process, like a general-purpose random number generator such as `rand()` in C, then someone could run the same process, get the same $d$, and steal your coins. Instead, you need a random number generator that is cryptographically secure. I'm not going to get into the details of exactly what that means, since it's a whole area of research on its own. In 2013, a [bug in Android's random number generator](/posts/digital-signatures/) got coins stolen from Bitcoin wallets.
 
-To get a little more specific, $d$ is picked uniformly from $\{1, \dots, n - 1\}$, where $n$ is the order of $G$ from the [digital signatures post](/posts/digital-signatures/). For Bitcoin, $n$ is about $1.158 \times 10^{77}$, which is just under $2^{256}$, so every private key fits in a 256-bit number. In hex, that's 64 digits. Here's what a real one looks like \cite{Ant17}:
+To get a little more specific, $d$ is picked uniformly from $\{1, \dots, n - 1\}$, where $n$ is the [order of $G$](/posts/digital-signatures/). For Bitcoin, $n$ is about $1.158 \times 10^{77}$, which is just under $2^{256}$, so every private key fits in a 256-bit number. In hex, that's 64 digits. Here's what a real one looks like \cite{Ant17}:
 
 `1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD`
 
@@ -33,7 +33,7 @@ As long as $d$ stays secret, your coins are safe, so you never show it to anyone
 
 ## From private key to public key
 
-Now that you have a private key, the associated public key is $P = dG$, from the [asymmetric cryptography post](/posts/asymmetric-and-symmetric-cryptography/). Hopefully you recognize this by now. Going from $d$ to $P$ is quick, but going backwards from $P$ to $d$ is the \ref{def-ecdlp}.
+Now that you have a private key, the associated public key is the point $P = dG$ on the [elliptic curve](/posts/asymmetric-and-symmetric-cryptography/). Hopefully you recognize this by now. Going from $d$ to $P$ is quick, but going backwards from $P$ to $d$ is the \ref{def-ecdlp}.
 
 Remember, $P$ is a point $(x, y)$ on the secp256k1 elliptic curve. To share $P$ with anyone, you can't just hand them the point itself. Computers only send bytes, so the public key has to be written as a string of bytes in a format everyone agrees on.
 
@@ -63,21 +63,21 @@ $$
 \operatorname{HASH160}(P) = \operatorname{RIPEMD-160}\left(\operatorname{SHA-256}(P)\right),
 $$
 
-where $P$ is the serialized public key. These are the two hash functions I mentioned at the end of the [hash functions post](/posts/hash-functions/).
+where $P$ is the serialized public key. These are the [two hash functions Bitcoin uses](/posts/hash-functions/) that I mentioned earlier.
 
 :::note
 Satoshi (Bitcoin's creator) never actually explained why Bitcoin uses this combination, so the best I can do is give the reasons people usually point to. $\operatorname{RIPEMD-160}$ has a 160-bit output, which keeps the hash short. Running $\operatorname{SHA-256}$ first means that to get from a hash back to a public key, an attacker would have to reverse both functions, so a break in just one of them isn't enough.
 
-This only helps with going backwards, though. For collisions, the 160-bit output caps things at about $2^{80}$ tries by the birthday bound from the [hash functions post](/posts/hash-functions/).
+This only helps with going backwards, though. For collisions, the 160-bit output caps things at about $2^{80}$ tries by the [birthday bound](/posts/hash-functions/).
 :::
 
-As the name suggests, the output of this hash function is 160 bits, or 20 bytes. One benefit is that 20 bytes is shorter than the 33 or 65 bytes of the compressed or uncompressed public key. Which version of the public key you hash doesn't matter, since both are valid. However, the two versions are different bytes, so they hash to completely different outputs. This means the same public key technically has two valid hashes, depending on which version was hashed.
+As the name suggests, the output of this hash function is 160 bits, or 20 bytes. One benefit is that 20 bytes is shorter than the 33 or 65 bytes of the compressed or uncompressed public key. Which format of the public key you hash doesn't matter, since both are valid. However, the two formats are different bytes, so they hash to completely different outputs. This means the same public key technically has two valid hashes, depending on which format was hashed.
 
-Another benefit of hashing the public key is that it hides the public key itself, at least until the associated coin is spent. This may not seem like a big deal now, but it will become very important once we get into the different quantum threats. Not every type of address does this, which we'll see in the [locking scripts post](/posts/locking-scripts/).
+Another benefit of hashing the public key is that it hides the public key itself, at least until the associated coin is spent. This may not seem like a big deal now, but it will become very important once we get into the different quantum threats. Not every type of address does this. Some [leave the public key in plain view](/posts/locking-scripts/).
 
 ## Addresses
 
-Now that we have a short hashed version of your public key, this is technically enough to give to someone so they can send you bitcoin. However, a 20-byte hash is not something you would want to read out to someone or type by hand. The final step is to encode the hash into an *address*, which is a string of characters representing that hash.
+Now that we have a short hash of your public key, this is technically enough to give to someone so they can send you bitcoin. However, a 20-byte hash is not something you would want to read out to someone or type by hand. The final step is to encode the hash into an *address*, which is a string of characters representing that hash.
 
 The idea is similar to an email address or a URL. If you wanted to go to Google's site, you would type www.google.com, not 142.250.80.46 (or whatever the IP address happens to be). The same goes for email. If you wanted to email Satoshi Nakamoto, for example, you would type in satoshin@gmx.com (at least before that account was hacked), not whatever raw string of bits corresponds to that email.
 
@@ -96,7 +96,7 @@ Base 58 is the same idea as base 10 or base 16, just with 58 digits. These digit
 
 The point of the checksum is to catch typos. When a wallet (the software that stores your private and public keys) reads an address, it recomputes the checksum. If it doesn't match the last 4 bytes of the address, the address is rejected, so you don't send your coins somewhere nobody can spend them.
 
-Base58Check isn't the only encoding. Newer addresses starting with `bc1` use one called Bech32, introduced in 2017 \cite{WuMa17}, or a slightly modified version called Bech32m \cite{Wui20}. It never mixes uppercase and lowercase letters, and its checksum is better at catching typos.
+Base58Check isn't the only encoding. Newer addresses starting with `bc1` use one called Bech32, introduced in 2017 \cite{WuMa17}, or a slightly modified variant called Bech32m \cite{Wui20}. It never mixes uppercase and lowercase letters, and its checksum is better at catching typos.
 
 Here's the whole process from start to finish, using the private key from earlier and its compressed public key \cite{Ant17}.
 
@@ -110,6 +110,6 @@ Here's the whole process from start to finish, using the private key from earlie
 | Version byte, hash, and checksum (25 bytes) | `00BBC1E42A39D05A4CC61752D6963B7F69D09BB27B37FEFCD0` |
 | Address (base 58) | `1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy` |
 
-Addresses come in a few different forms, as I mentioned earlier, but this is the canonical example. Different address types exist because Bitcoin has added new ways of locking up coins over the years, and each one got its own kind of address. I'm not going to go through all of them. I'll only cover the ones that matter for the quantum threat, in the [locking scripts post](/posts/locking-scripts/).
+Addresses come in a few different forms, as I mentioned earlier, but this is the canonical example. Different address types exist because Bitcoin has added new ways of locking up coins over the years, and each one got its own kind of address. I'm not going to go through all of them. I'll only cover the [ones that matter for the quantum threat](/posts/locking-scripts/).
 
 One last thing: I've been saying things like "coins sent to an address" and "coins tied to $d$" this whole post without explaining what that actually means. Your wallet stores your keys, but there's no balance sitting at each address the way there is in a bank account. I'll get into how it actually works, and what the link between keys and bitcoins is, in my next post on [UTXOs](/posts/utxos/).
