@@ -224,7 +224,7 @@ for $\mathbb{Z}_p = \{0, 1, \dots, p - 1\}$. Recall that groups require a binary
 
 Here's what that looks like on an actual curve.
 
-::figure[A visual representation of adding two points on an elliptic curve.]{src="/images/ec-point-addition.svg"}
+::figure[Adding two points on an elliptic curve drawn over the real numbers. The solid line through $P_1$ and $P_2$ hits the curve at a third, unlabeled point. The dashed vertical line reflects that point across the $x$ axis to give $P_3 = P_1 + P_2$. The faint horizontal and vertical lines are the $x$ and $y$ axes.]{src="/images/ec-point-addition.svg"}
 
 \label{fig-ec-point-addition}
 
@@ -244,7 +244,7 @@ $$
 \mathbb{E}(\mathbb{Z}_7) = \{\mathcal{O}, (1, 0), (3, 2), (3, 5), (4, 3), (4, 4)\}.
 $$
 
-::figure[A scatter plot of the elements of $\mathbb{E}(\mathbb{Z}_7$).]{src="/images/plot-points.svg"}
+::figure[The elements of $\mathbb{E}(\mathbb{Z}_7)$ for the curve $y^2 = x^3 + 3x + 3 \pmod{7}$. Each dot is a point plotted at its $(x, y)$ coordinates. The point at infinity $\mathcal{O}$ has no coordinates, so it's drawn as the arrow at the top of the $y$ axis.]{src="/images/plot-points.svg"}
 
 Note that I have silently skipped a step here to show how exactly we get these points from the elliptic curve equation. For each $x$ from 0 to 6, compute $f(x) := x^3+3x+3 \bmod 7$, then ask if $f(x)$ has a square root mod 7. If $f(x)=0$, you get one point, $(x,0)$. If it has a square root $y$, you get two points, $(x,y)$ and $(x,-y \bmod 7)$. If it has no square root, that $x$ isn't on the curve at all. Take $x=3$: $f(3)=39\equiv4\pmod7$, and 4 has square roots 2 and 5 mod 7, giving $(3,2)$ and $(3,5)$, exactly what's in the set above. Same check across all 7 values of $x$ gives you the whole curve.
 
