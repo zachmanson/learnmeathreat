@@ -114,7 +114,7 @@ function path(poly) {
 }
 
 const FILL = {
-  other: `fill="white"`,
+  other: `fill="none"`,
   yours: `fill="${INK}" fill-opacity="0.55"`,
   theirs: `fill="url(#hatch)"`,
 };
@@ -202,12 +202,9 @@ function buildSvg(seed) {
       <path d="M0,0 L8,4 L0,8 Z" fill="${INK}" />
     </marker>
     <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <rect width="6" height="6" fill="white" />
       <line x1="0" y1="0" x2="0" y2="6" stroke="${INK}" stroke-width="2" />
     </pattern>
   </defs>
-  <rect width="${width}" height="${height}" fill="white" />
-
   <g ${at(leftX)}>
     ${before.join("\n    ")}
   </g>
