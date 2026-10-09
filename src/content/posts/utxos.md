@@ -29,7 +29,7 @@ The locking script is written in a small programming language called Script. I'l
 
 ## A UTXO gets spent all at once
 
-A UTXO isn't tied to a person by any kind of ID or account. Whoever can satisfy its locking script can spend it. Nothing gets handed from one person to another either, digital or otherwise.
+A UTXO isn't tied to a person by any kind of ID or account. Whoever can satisfy its locking script can spend it. When you pay someone, no file, token, or any other string of data moves from your wallet to theirs.
 
 You also can't spend part of a UTXO. The whole thing has to be spent at once. So spending bitcoin means unlocking UTXOs with your keys, spending them in full, and creating new UTXOs in their place, each locked to whoever should control it next. The old ones are used up and can never be spent again. How you pay someone less than a whole UTXO comes up with [transactions](/posts/transactions/).
 
