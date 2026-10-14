@@ -27,6 +27,7 @@ Revises a Learn Me a Threat draft for flow, technical accuracy, and voice — wi
 3. **Revise for these things, in this order:**
    - **Technical accuracy** — verify every factual/technical claim in the draft. If something is wrong or unverifiable, flag it explicitly and ask; do not silently "fix" it into something that sounds plausible. When a fix is approved, make it in as few words as the accuracy needs. Fact-check fixes tend to pile on qualifiers ("Strictly speaking"), signposts ("as we're about to see", "which we'll get to below"), and detail the reader doesn't need (exact deprecation tiers); cut those and keep the one corrected fact.
    - **Prerequisites** — read every earlier post in the series (by `date` in frontmatter), not just the one being revised. Flag any concept the draft *relies on* that no earlier post (or earlier in this post) explains. A reader should be able to follow every argument using only what came before. A sentence whose point depends on an unexplained concept ("it lines up for textbook RSA") is never fine. Name-dropping a concept from a later post ("the miner", "more on this in mining") is also out, even with a link and even when the reader doesn't need it: describe the thing plainly with words the series already has ("whoever adds the transaction to the blockchain") and leave it there, without a forward pointer. Fix by cutting the reference, describing it plainly, or noting it needs an earlier explanation. Back-references ("from earlier", "as we saw") must point to something an earlier post actually explains, not just names; check the earlier post before writing one.
+   - **Reader readiness (agent)** — after your own prerequisites pass, spawn one `general-purpose` agent with the prompt in "Reader-readiness agent prompt" below, filling in the post path and the earlier posts in date order. It reads only the earlier posts plus the draft, so it isn't primed by the revision you're doing. Its job is wording, not missing explanations: words, phrases, and ideas the reader hasn't been given yet, even when the point being made is fine (e.g. "block", "the person adding blocks", "two Bitcoins" before forks). Merge its findings into your own; each one gets a plain rewording that keeps the point, built only from words the reader already has. Drop findings that are deliberate simplifications or that an earlier post really does cover (check before dropping). Run it on every full-post revision, not on a pasted paragraph or a short piece of new prose.
    - **Notation** — read `docs/notation.md` and check every symbol against it. Flag a global symbol used for something else, or a local variable that shadows a global one in the same post. If the draft introduces a new symbol that later posts will reuse, propose adding it to the table (and update the table once the user approves).
    - **Structure/ordering** — rough drafts jump around; reordering paragraphs, sections, or even where an idea gets introduced is fair game, not just sentence-level editing. If reordering would improve the post, do it (or propose it) rather than leaving ideas in the order they were dumped in. Call out any reordering explicitly in the summary of changes so it's not a surprise on read-through.
    - **Flow** — split run-ons, cut redundant clauses, tighten transitions. Use the lightest touch that actually fixes the problem (fragment, typo, duplicated phrasing, grammar) rather than rewriting into a cleaner or more symmetric version. Repetition or rough rhythm that isn't actually broken is part of the voice — leave it. Do the since/as, comma, and pronoun passes from Writing Rules here.
@@ -50,6 +51,7 @@ Every rule applies to revisions and to new prose drafted for a post.
 - Plain and specific: every sentence carries a concrete fact or the user's own take. Stock filler sounds informative but says nothing; cut it or swap in a real fact. Typical offenders: vague superlative credentials ("one of the oldest and most widely used schemes out there") canned transitions into an example ("This isn't just a theoretical worry either", "To see why this matters, here's a real example"), and stock tutorial phrasing ("let's see X in action"). Introduce an example plainly in first person, with the actual reason for it ("I'll go through how RSA works with a small example, since it comes up again in the signatures post").
 - When drafting new prose, write in first person and use the user's own habits: "basically", "actually", "I'll note that", "However,", rhetorical questions.
 - Reader's vocabulary: name things the way the reader would, using only terms the series has already explained. Unexplained insider terms ("hardware security module", "signing oracle", "CPU core-years") get described plainly instead ("a device whose job is to sign things").
+- Before the blocks post: "block" is defined in transactions.md only as a group of transactions recorded together, about one every 10 minutes. Use it only where the point is size (the 1 MB limit, weight). Never say "blockchain", and never rely on who makes blocks, how they're chained or numbered, signalling, or forks. Describe those plainly ("whoever records transactions", "different records of which transactions happened") or cut them.
 - Pronouns, as established in `asymmetric-and-symmetric-cryptography.md`: "you" is the reader as protagonist in a scenario ("you want to send someone bitcoin"); "we" is author and reader working through math or reasoning together ("let's look at the group"); "I" is the author commenting on the post itself (scope, asides, opinions: "I'm not going to walk you through..."). Flag mismatches, e.g. "We are back at stage one" should be "You are back at stage one" because it describes the reader's scenario.
 
 ### Mechanics
@@ -84,6 +86,26 @@ Every rule applies to revisions and to new prose drafted for a post.
 ### Figures
 
 - A caption explains everything in the figure and nothing beyond it: what the whole figure shows, what each part or panel is (by its in-figure label), and what every colour, shading, or line style represents. Walk each visual element and check the caption names it. Avoid colours that flip in dark mode (SVGs are inverted): say "unshaded", not "white".
+
+## Reader-readiness agent prompt
+
+Fill in `{POST}` and `{EARLIER_POSTS}` (paths under `src/content/posts/`, oldest first by frontmatter `date`, including `bitcoin.md`-style section intros).
+
+```
+You are checking a blog post for words and ideas its reader isn't ready for yet. The blog is a series meant to be read in order by someone with zero background, and every concept must be explained before it's used.
+
+1. Read these earlier posts, in this order: {EARLIER_POSTS}. As you read, write down a glossary of what the reader actually knows after them: each term or idea, and whether it was explained (what it is and how it works) or only named (mentioned, no explanation). A bullet list of upcoming post titles counts as named only.
+2. Read {POST}. Pretend you only know your glossary, not Bitcoin or cryptography. Go sentence by sentence and flag anything that leans on knowledge outside the glossary or outside what this post itself explained earlier:
+   - terms that were never introduced, or only named (e.g. "block" when the reader only knows the word "blockchain");
+   - roles or actors that haven't appeared ("block producers", "the people adding blocks");
+   - phrasing that assumes a later mechanism ("signal", "locked in", "split off", "two Bitcoins", block numbers, "recorded" used as if the reader knows how recording works);
+   - back-references to something an earlier post or section only named, not explained;
+   - forward pointers or name-drops of later topics.
+   Watch the second half of the post closely; that's where drift usually happens.
+3. Don't flag: things explained earlier in the same post, deliberate simplifications, general English, or math the earlier posts covered.
+
+Report each finding as: line number, the exact quote, what the reader is missing (and whether the glossary has it as named-only or not at all), and a suggested plain rewording that keeps the author's point using only glossary words. Then give the glossary entries you relied on for the borderline calls. Don't edit any files.
+```
 
 ## Strunk & White Rules
 
