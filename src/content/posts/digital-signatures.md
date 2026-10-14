@@ -9,7 +9,7 @@ draft: false
 
 ## The problem hashing doesn't solve
 
-In the [last post](/posts/hash-functions/) I discussed hash functions, and how they can be used to prove that a piece of data hasn't been tampered with. However, on their own, hash functions tell you nothing about who sent the data, or whether they can be trusted.
+I've already gone through [hash functions](/posts/hash-functions/), and how they can be used to prove that a piece of data hasn't been tampered with. However, on their own, hash functions tell you nothing about who sent the data, or whether they can be trusted.
 
 Say you want to spend some bitcoin. You need to produce a message that says "move these coins that I own" in a way that anyone can check is legitimate, but that only you could have produced. Hashing the message alone doesn't do this, since anyone can hash a message. What you need is a way to tie the message to a private key that only you hold, i.e., a digital signature.
 
@@ -45,7 +45,7 @@ $$
 and then send $(m, \sigma)$ to the recipient.
 
 :::note
-Notice $m$ is publicly exposed, along with $\sigma$. This is different from encryption, where $m$ was a secret. This is on purpose, since a signature isn't hiding anything. Encryption and signatures have two different goals: encryption protects confidentiality, while signatures protect authenticity. The point is that anyone with $pk$, $\sigma$, and $m$ can verify the signature themselves. In this context, $m$ can be anything: a contract, a software update, a message, a vote, etc. For Bitcoin specifically, $m$ is built from the transaction data, which we will learn about in a later post.
+Notice $m$ is publicly exposed, along with $\sigma$. This is different from encryption, where $m$ was a secret. This is on purpose, since a signature only has to prove who $m$ came from. The point is that anyone with $pk$, $\sigma$, and $m$ can verify the signature themselves. In this context, $m$ can be anything: a contract, a software update, a message, a vote, etc. For Bitcoin specifically, $m$ is built from the transaction data, which we will learn about in a later post.
 :::
 
 The recipient who knows $pk$ can then check whether
@@ -58,7 +58,7 @@ This way, the receiver can verify that the sender sent $m$, and that $m$ has not
 
 ## What does "secure" mean for signatures?
 
-Up to this point we have (hopefully) gotten a good idea of what it means for something to be secure in the cryptographic sense. The \ref{def-integer-factorization}, the \ref{def-dlp}, and the \ref{def-ecdlp} underlie asymmetric encryption, and preimage and collision resistance (\ref{def-cryptographic-hash-function}) underlie hash functions. However, signatures are a little different. A signature scheme's security isn't just "an attacker can't compute $sk$ from $pk$". That is necessary, but it isn't sufficient.
+Up to this point we have (hopefully) gotten a good idea of what it means for something to be secure in the cryptographic sense. The \ref{def-integer-factorization}, the \ref{def-dlp}, and the \ref{def-ecdlp} underlie asymmetric encryption, and preimage and collision resistance (\ref{def-cryptographic-hash-function}) underlie hash functions. However, signatures are a little different. A secure signature scheme needs more than an attacker being unable to compute $sk$ from $pk$.
 
 Consider an adversary who has seen you sign a bunch of other messages, and now tries to forge your signature on a message you have never signed. The formal name for security against this attack is existential unforgeability under an adaptive chosen-message attack (EUF-CMA) \cite{KaLi14}.
 
@@ -70,7 +70,7 @@ Put simply, a digital signature scheme is EUF-CMA secure if no efficient attacke
 
 ## Textbook RSA signatures
 
-So what does it look like when a scheme isn't EUF-CMA secure? RSA from the [asymmetric crypto post](/posts/asymmetric-and-symmetric-cryptography/) is a good example, and it actually got attacked recently. Remember the misconception from earlier, that signing is just encryption flipped around? For RSA in its most bare-bones form, usually called textbook RSA, that's actually how it works. This is probably where the misconception came from \cite{KaLi14}. It's also insecure, which we'll see in a second. You sign a message by raising it to your private exponent,
+So what does it look like when a scheme isn't EUF-CMA secure? [RSA](/posts/asymmetric-and-symmetric-cryptography/) is a good example, and it actually got attacked recently. Remember the misconception from earlier, that signing is just encryption flipped around? For RSA in its most bare-bones form, usually called textbook RSA, that's actually how it works. This is probably where the misconception came from \cite{KaLi14}. It's also insecure, which we'll see in a second. You sign a message by raising it to your private exponent,
 
 $$
 \sigma = m^{sk} \bmod N,
@@ -92,7 +92,7 @@ which is a valid signature on $m_1 m_2$, a message they never signed. That alone
 
 That's what Joux, Naccache, and Thomé worked out back in 2007 \cite{JNT07}. The idea is to get signatures on a huge pile of numbers you pick (all of a specific form), then find a way to build your target message out of them by multiplying. Once you have that, you multiply the matching signatures together just like above. Finding that combination is the hard part, and they did it with the same kind of math the best factoring algorithms use. It still takes a long time, but it's faster than the best known way to factor $N$, so forging a signature ends up easier than breaking the key outright.
 
-For almost 20 years this stayed on paper. Then in September 2026, a team at UC San Diego and INRIA (including Thomé from the original paper) finally pulled it off \cite{SHSH+26}. They took a device that signs with a 1024-bit RSA key, had it sign about $2^{32}$ (around 4 billion) numbers of their choosing, then ran the math on a ton of computers for about five months. On a single processor core it would've taken 1380 years. At the end they had a forged signature on a message the device never signed. They never got $sk$, and they never factored $N$.
+Nobody actually pulled this off for almost 20 years, until September 2026, when a team at UC San Diego and INRIA (including Thomé from the original paper) did it \cite{SHSH+26}. They took a device that signs with a 1024-bit RSA key, had it sign about $2^{32}$ (around 4 billion) numbers of their choosing, then ran the math on a ton of computers for about five months. On a single processor core it would've taken 1380 years. At the end they had a forged signature on a message the device never signed, without ever getting $sk$ or factoring $N$.
 
 To be fair, nobody actually signs with textbook RSA. Real RSA runs the message through a hash function first and signs $\operatorname{hash}(m)$ instead of $m$. Now, to pull off the multiplying trick, you'd need to find some message $m$ with
 
@@ -102,13 +102,13 @@ $$
 
 and with a good hash (one whose output is about as big as $N$), nobody knows how to find one \cite{KaLi14}. You no longer get to choose the numbers that actually get signed, which also kills the 2007 attack. The researchers had to switch the hashing off on the device to make it work. Still, they estimate that if an attacker can get raw RSA signatures on numbers they pick, forging one is somewhere between 30 thousand and a billion times easier than we thought from factoring alone \cite{SHSH+26}.
 
-NIST already plans to phase RSA out, and under its current draft, RSA won't be allowed at all after 2035 \cite{MPRR+24}. That isn't because of this attack though. It's because of quantum computers (which we'll get to later in the series), and the same plan covers the elliptic curve signatures Bitcoin uses too. The researchers argue their result is one more reason to drop RSA entirely while we're making that switch anyway, this time from a regular, non-quantum attack \cite{SHSH+26}.
+NIST already plans to phase RSA out because of quantum computers (which we'll get to later in the series), and under its current draft, RSA won't be allowed at all after 2035 \cite{MPRR+24}. The same plan covers the elliptic curve signatures Bitcoin uses too. The researchers argue their result is one more reason to drop RSA entirely while we're making that switch anyway, this time from a regular, non-quantum attack \cite{SHSH+26}.
 
 ## ECDSA
 
 Since the specific signature schemes that Bitcoin employs will be a key point in discussing how exactly quantum computers threaten Bitcoin's security, I think it's worth going into how these schemes work in some depth. Luckily, there are only two of interest, and the first that I will discuss is the Elliptic Curve Digital Signature Algorithm (ECDSA).
 
-Bitcoin uses ECDSA over the secp256k1 curve that I introduced in the [asymmetric cryptography post](/posts/asymmetric-and-symmetric-cryptography/). Note that this isn't a Bitcoin-specific invention, but a general-use digital signature scheme that's been standardized by the National Institute of Standards and Technology (NIST) \cite{JMV01}. The curve itself isn't one of NIST's, though. It comes from a separate standard called SEC 2.
+Bitcoin uses ECDSA over the [secp256k1 curve](/posts/asymmetric-and-symmetric-cryptography/). ECDSA is a general-use digital signature scheme standardized by the National Institute of Standards and Technology (NIST) \cite{JMV01}, though the curve itself comes from a separate standard called SEC 2.
 
 As a reminder of my earlier notation, recall that $\mathbb{E}(\mathbb{Z}_p)$ is the elliptic curve group, where $p$ is the 256-bit prime defining secp256k1's underlying field (with $\mathbb{Z}_p = \{0, 1, 2, \dots, p - 1\}$, and $\mathbb{Z}_p^*$ being the same set excluding 0), $G$ is the generator point, and $n$ is the order of $G$ (the size of the group $G$ generates).
 
@@ -243,14 +243,12 @@ ECDSA can't use this same argument. $r$ is just the $x$-coordinate of $kG$, whic
 
 So from a pure security standpoint, Schnorr wins, and it's older (1989 vs 1992 for ECDSA \cite{JMV01}). Given that, you'd expect Bitcoin to have used Schnorr from day one. It didn't, and the reason is historical. Schnorr patented his scheme \cite{Sch91} shortly after it was published in 1989 \cite{Sch90}. Around that time, NIST needed a standard digital signature algorithm but didn't want to license someone else's patent. So they went with DSA, which is widely seen as designed to get around Schnorr's patent (though Schnorr argued it didn't). ECDSA is DSA carried over to elliptic curves. The key change was swapping Schnorr's hashed $r$ for just the $x$-coordinate of $kG$, which also meant the proof technique above no longer works. The patent expired in 2008, shortly before Bitcoin launched, but by then ECDSA was already the standard, so that's what Bitcoin used. Schnorr signatures were not introduced into Bitcoin until 2021 \cite{WNR20}. 
 
-The security proof was one reason Bitcoin eventually added Schnorr, but the bigger practical win was a useful property. Schnorr's signing equation
+The security proof was one reason Bitcoin eventually added Schnorr, but the bigger reason was a practical one. Schnorr's signing equation
 
 $$ 
 s = (rd + k) \bmod n
 $$
 
-is linear in $d$ and $k$, meaning that different people's signing equations can be added together. For example, three people can work together to produce a single $(r, s)$ pair that looks exactly like a one-person signature (this takes a special protocol, not just adding three finished signatures). The analogous step for ECDSA has a $k^{-1}$ sitting in front of it, which breaks this property. This property turned out to be very useful for Bitcoin, and we'll get into exactly why in a later post.
+is linear in $d$ and $k$, meaning that different people's signing equations can be added together. For example, three people can work together to produce a single $(r, s)$ pair that looks exactly like a one-person signature (this takes a special protocol, not just adding three finished signatures). The analogous step for ECDSA has a $k^{-1}$ sitting in front of it, which breaks this property.
 
-## Wrapping up
-
-That was all of the cryptography I had planned to cover. I hope it was useful, and that you now have some idea of what it means for something to be secure, the different ways we can use cryptography to share secrets or authenticate ourselves, and why we trust any of this in the first place. The main thing to remember from this post is that both signature schemes Bitcoin uses come down to the \ref{def-ecdlp}: recovering $d$ from $P = dG$. Next I'm going into Bitcoin itself and how it works.
+That was all of the cryptography I had planned to cover, and I hope it was useful. Both signature schemes Bitcoin uses come down to the \ref{def-ecdlp}: recovering $d$ from $P = dG$. Next I'm going into Bitcoin itself and how it works.

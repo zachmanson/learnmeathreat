@@ -15,7 +15,7 @@ However, spending is only half of it. If someone wants to send you bitcoin, they
 
 ## Your private key is just a number
 
-In Bitcoin, a private key is just a number $d$ picked at random. Whoever knows $d$ can authorize spending the coins tied to it. In other words, whoever owns $d$ owns those bitcoins. That also means if someone else learns your $d$, they can spend your bitcoins. If you lose $d$, no one can get them back for you.
+In Bitcoin, a private key is just a number $d$ picked at random. Whoever knows $d$ can authorize spending the coins tied to it. That also means if someone else learns your $d$, they can spend your bitcoins. If you lose $d$, no one can get them back for you.
 
 :::note
 I'm keeping the link between $d$ and its bitcoins vague on purpose, since we aren't ready for it yet. The point here is that every bitcoin is tied to a specific $d$, and you'll just have to trust me for now.
@@ -27,9 +27,9 @@ To get a little more specific, $d$ is picked uniformly from $\{1, \dots, n - 1\}
 
 `1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD`
 
-Nobody is guessing that number by trying keys one at a time. There is simply not enough time in their life to do it.
+Even at a trillion guesses a second, trying every possible key would take around $10^{57}$ years, so nobody is guessing that number by trying keys one at a time.
 
-As long as $d$ stays secret, your coins are safe, so you never show it to anyone. To actually use it, though, other people need something they can check your signatures against without ever learning $d$. That's your public key.
+As long as $d$ stays secret, your coins are safe, so you never show it to anyone. To actually use it, though, other people need something they can check your signatures against without ever learning $d$, which is what your public key is for.
 
 ## From private key to public key
 
@@ -73,7 +73,7 @@ This only helps with going backwards, though. For collisions, the 160-bit output
 
 As the name suggests, the output of this hash function is 160 bits, or 20 bytes. One benefit is that 20 bytes is shorter than the 33 or 65 bytes of the compressed or uncompressed public key. Which format of the public key you hash doesn't matter, since both are valid. However, the two formats are different bytes, so they hash to completely different outputs. This means the same public key technically has two valid hashes, depending on which format was hashed.
 
-Another benefit of hashing the public key is that it hides the public key itself, at least until the associated coin is spent. This may not seem like a big deal now, but it will become very important once we get into the different quantum threats. Not every type of address does this. Some [leave the public key in plain view](/posts/locking-scripts/).
+Another benefit of hashing the public key is that it hides the public key itself, at least until the associated coin is spent, so nobody can even start trying to recover $d$ from $P$. Not every type of address does this, and some leave the public key in plain view.
 
 ## Addresses
 
@@ -110,6 +110,6 @@ Here's the whole process from start to finish, using the private key from earlie
 | Version byte, hash, and checksum (25 bytes) | `00BBC1E42A39D05A4CC61752D6963B7F69D09BB27B37FEFCD0` |
 | Address (base 58) | `1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy` |
 
-Addresses come in a few different forms, as I mentioned earlier, but this is the canonical example. Different address types exist because Bitcoin has added new ways of locking up coins over the years, and each one got its own kind of address. I'm not going to go through all of them. I'll only cover the [ones that matter for the quantum threat](/posts/locking-scripts/).
+Addresses come in a few different forms, as I mentioned earlier, but this is the canonical example. Different address types exist because Bitcoin has added new ways of locking up coins over the years, and each one got its own kind of address. I'm not going to go through all of them. I'll only cover the ones that matter for the quantum threat.
 
 One last thing: I've been saying things like "coins sent to an address" and "coins tied to $d$" this whole post without explaining what that actually means. Your wallet stores your keys, but there's no balance sitting at each address the way there is in a bank account. I'll get into how it actually works, and what the link between keys and bitcoins is, in my next post on [UTXOs](/posts/utxos/).
