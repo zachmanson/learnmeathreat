@@ -26,7 +26,7 @@ Each output has the same form as a [UTXO](/posts/utxos/). Each input is a 5-tupl
 a 256-bit transaction identifier (`txid`) of the earlier transaction that created the UTXO being spent;\
 a 32-bit index (`vout`) saying which of that transaction's outputs is being spent;\
 a variable-length unlocking script (`scriptSig`) that provides the data the UTXO's locking script needs;\
-a 32-bit sequence number (`nSequence`), used for time locks (including turning `nLockTime` on) and to set flags for other transaction features; and\
+a 32-bit sequence number (`nSequence`), used to delay when the network will accept the transaction (including turning `nLockTime` on) and to set flags for other transaction features; and\
 a witness (`scriptWitness`), a variable-length list of variable-length byte strings that newer kinds of locking script use for unlocking data.
 :::
 
@@ -102,7 +102,7 @@ If you have been checking my work up to now, you might have noticed that if you 
 
 The transaction has no field for the fee \cite{Ant17}. It's just whatever is left over when you subtract the outputs from the inputs. This means that if you forget the change output when building your own transaction by hand, the transaction isn't invalid. It just turns the whole difference into the fee. (Most people never do this, since their wallet handles it.) In the example above, if the transaction had left out output 1, its fee would have been 73,254,831 satoshis, which is about 0.73 bitcoin and a pretty expensive mistake. If the outputs add up to more than the inputs, the fee is negative, and every node rejects the transaction.
 
-So how big should the fee be? Nothing in the protocol sets it, so you pick it yourself by choosing how much to leave over. Only so many transactions can be recorded at a time, so the ones that pay the most for the space they take up get recorded first. That means what really matters is the fee per byte of transaction, and when lots of people are trying to send transactions at once, you have to pay more per byte to get yours in quickly. In practice, your wallet looks at what recent transactions paid and picks a fee for you \cite{Ant17}.
+So how big should the fee be? Nothing in the protocol sets it, so you pick it yourself by choosing how much to leave over. Only so many transactions can be recorded at a time, so the ones that pay the most for the space they take up get recorded first. That means what really matters is the fee per byte of transaction, and when lots of people are trying to send transactions at once, you have to pay more per byte to get yours recorded quickly. In practice, your wallet looks at what recent transactions paid and picks a fee for you \cite{Ant17}.
 
 :::note
 You can also merge your UTXOs on purpose, by spending several of them in a transaction whose only output goes back to you. This is called consolidating. The usual reason is fees: every input makes a transaction bigger, and bigger transactions cost more to send, so people consolidate lots of small UTXOs while fees are low.
@@ -136,14 +136,14 @@ When I explained where the `txid` comes from, I said the witnesses are left out 
 
 Bitcoin didn't always have a witness. Before 2017, all the unlocking data, signatures included, went into `scriptSig`, and the `txid` was the hash of the whole transaction. Remember that $m$ leaves the unlocking data out, so the signature doesn't cover itself. The `txid` did cover it, though. That means if someone could change a signature without breaking it, the `txid` would change too.
 
-For ECDSA, it turns out there's a really simple way to do this \cite{DeWa14}. If $(r, s)$ is a valid signature, then so is $(r, n - s)$. Swapping $s$ for $n - s$ makes $\texttt{Vrfy}$ rebuild $-kG$ instead of $kG$, which is just $kG$ flipped across the $x$ axis. Flipping a point doesn't change its $x$-coordinate, so $\texttt{Vrfy}$ still gets back $r$ and the signature checks out. You don't need the private key for any of this, so anyone who sees your transaction being passed around the network could flip $s$ and pass on their copy instead.
+For ECDSA, it turns out there's a really simple way to do this \cite{DeWa14}. If $(r, s)$ is a valid signature, then so is $(r, n - s)$. Swapping $s$ for $n - s$ makes $\texttt{Vrfy}$ rebuild $-kG$ instead of $kG$, which is just $kG$ flipped across the $x$ axis. Flipping a point doesn't change its $x$-coordinate, so $\texttt{Vrfy}$ still gets back $r$ and the signature checks out. You don't need the private key for any of this, so anyone who sees your transaction before it's recorded could flip $s$ and send their own copy to the network instead.
 
-So now there are two copies of your transaction going around. Both spend the same UTXOs and create the same outputs, so only one of them can be recorded (the other would be a double spend). Either way the person you're paying still gets paid, so why does it matter? If the changed copy is the one that gets recorded, your original `txid` never actually exists. If you'd already made another transaction spending one of its outputs, like your change, that transaction points to a `txid` that doesn't exist, so it's invalid.
+So now there are two copies of your transaction going around. Both spend the same UTXOs and create the same outputs, so only one of them can be recorded (the other would be a double spend). Either way the person you're paying still gets paid, so why does it matter? If the changed copy is the one that gets recorded, your original `txid` never actually exists. You can sign a transaction that spends an output before the transaction that created it is recorded. If you'd already done that with one of its outputs, like your change, the new transaction points to a `txid` that doesn't exist, so it's invalid.
 
 This is called *transaction malleability* \cite{DeWa14}. To be fair, Bitcoin ran fine with it for years, since once a transaction is recorded its `txid` can't change anymore. It only causes trouble when you need to sign a transaction ahead of time that spends the outputs of another transaction that hasn't been recorded yet. For example, say two people want to put bitcoin into a UTXO that needs both of their signatures to spend. Before either of them sends anything, they'd want a refund transaction already signed, so that if one of them disappears, the other's bitcoin isn't stuck forever. That refund points at the first transaction's `txid`, so if that `txid` can change, the refund is useless \cite{ADM+15}.
 
 :::note
-In 2015, nodes started only passing on whichever of $s$ and $n - s$ is smaller, which shut this particular trick down \cite{Bit15}. There were other ways to change `scriptSig` without breaking it though, so malleability as a whole was still a problem.
+In 2015, nodes started refusing to take in a transaction that used the larger of $s$ and $n - s$, which shut this particular trick down \cite{Bit15}. There were other ways to change `scriptSig` without breaking it though, so malleability as a whole was still a problem.
 :::
 
 ## The fight over the size limit
@@ -156,7 +156,7 @@ People who used Bitcoin split into two camps. One side wanted to raise the limit
 
 The reason that matters is that running your own node is how you check for yourself that the bitcoin you're receiving is real. Your node checks every transaction against the rules, so you don't have to take anyone's word for it. If only big companies can afford to run a node, everyone else has to ask one of theirs and trust whatever it says. If those companies ever accepted something that broke the rules, nobody else would be checking.
 
-So why couldn't one side just raise the limit anyway? Every node checks everything that gets recorded against the rules in its own software, and rejects anything that breaks them. If some nodes raised the limit and the rest didn't, the first block over 1 MB would be accepted by one group and rejected by the other. From then on, the two groups would disagree about which transactions happened, and you'd basically have two Bitcoins. So raising the limit only works if nearly everyone switches at once, and the two camps couldn't agree. This argument is now called the *block size war*, and it went on from 2015 until 2017 \cite{Bie21}.
+So why couldn't one side just raise the limit anyway? Every node checks everything that gets recorded against the rules in its own software, and rejects anything that breaks them. If some nodes raised the limit and the rest didn't, the first block over 1 MB would be accepted by one group and rejected by the other. From then on, the two groups would have different records of which transactions happened, so you'd basically have two Bitcoins. So raising the limit only works if nearly everyone switches at once, and the two camps couldn't agree. This argument is now called the *block size war*, and it went on from 2015 until 2017 \cite{Bie21}.
 
 ## SegWit
 
@@ -168,12 +168,12 @@ Addresses starting with `bc1`, like the ones in the example, are for these newer
 
 SegWit also let more transactions fit in a block without changing the 1 MB rule, at least as old software sees it. A node running old software is never even sent the witnesses, so to it, every block still looks like it's under 1 MB \cite{LLW15}. Since old nodes keep accepting the new blocks, SegWit didn't need everyone to upgrade at once.
 
-The big-block side wasn't happy with this. SegWit gave a lot less extra room than they wanted, and it only helped once wallets actually moved to the new addresses. To a lot of them it felt like a cop-out.
+The raise-the-limit side wasn't happy with this. SegWit gave a lot less extra room than they wanted, and it only helped once wallets actually moved to the new addresses. To a lot of them it felt like a cop-out.
 
-Getting SegWit turned on took almost two years. It needed 95% of the people adding blocks to signal that they supported it \cite{WTM+15}. Signalling opened in November 2016, and for months they just didn't. Two things finally got it moving in 2017. In May, a group of companies and block producers agreed on *SegWit2x*, which was a compromise: turn on SegWit now, then raise the limit to 2 MB a few months later. Meanwhile, some users threatened to have their nodes reject any block that wasn't signalling for SegWit after August 1, 2017 \cite{Fry17}. Signalling picked up, and SegWit locked in on August 9 and went live on August 24, 2017, at block 481,824. The 2 MB half of SegWit2x was called off that November, and that's usually counted as the end of the block size war \cite{Bie21}.
+Getting SegWit turned on took almost two years. It needed 95% of whoever records transactions to say they supported it \cite{WTM+15}. They could start saying so in November 2016, and for months they just didn't. Two things finally got it moving in 2017. In May, a group of companies and people recording transactions agreed on *SegWit2x*, which was a compromise: turn on SegWit now, then raise the limit to 2 MB a few months later. Meanwhile, some users threatened to have their nodes reject anything recorded by someone who still hadn't said they supported SegWit after August 1, 2017 \cite{Fry17}. Support picked up, and SegWit went live on August 24, 2017. The 2 MB half of SegWit2x was called off that November, and that's usually counted as the end of the block size war \cite{Bie21}.
 
 :::note
-Not everyone went along with it. On August 1, 2017, a group that wanted bigger blocks split off with 8 MB blocks and no SegWit. That's the two-Bitcoins situation from above, and the side that split off is a separate coin called Bitcoin Cash, which still exists today \cite{Bie21}.
+Not everyone went along with it. On August 1, 2017, a group that wanted bigger blocks switched their nodes to an 8 MB limit and no SegWit. That's the two-Bitcoins situation from above, and their side is a separate coin called Bitcoin Cash, which still exists today \cite{Bie21}.
 :::
 
 ## The witness, byte by byte
