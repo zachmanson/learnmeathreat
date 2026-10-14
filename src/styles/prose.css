@@ -243,6 +243,19 @@ pre code {
   content: "Tip: ";
 }
 
+/* --- Sentence lists --- */
+
+/* Unnumbered lists are written as one running sentence with each item on its
+   own backslash-broken line (see remark-sentence-lists.mjs). Each item is
+   indented to line up with the text of a numbered list (the browser's default
+   40px list padding), with a hanging indent so a wrapped item's later lines
+   sit further in and each item's start stays easy to spot. */
+.sentence-list-item {
+  display: block;
+  padding-inline-start: calc(40px + 1em);
+  text-indent: -1em;
+}
+
 /* --- Definitions (CONT-10) --- */
 
 .callout-definition {

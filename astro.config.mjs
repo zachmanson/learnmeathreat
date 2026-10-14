@@ -12,6 +12,7 @@ import { rehypeCitationBrackets } from './src/lib/rehype-citation-brackets.mjs';
 import { rehypeCitationLinks } from './src/lib/rehype-citation-links.mjs';
 import { remarkRefResolve } from './src/lib/remark-ref-resolve.mjs';
 import { remarkLabelStrip } from './src/lib/remark-label-strip.mjs';
+import { remarkSentenceLists } from './src/lib/remark-sentence-lists.mjs';
 import { rehypeEquationNumbering } from './src/lib/rehype-equation-numbering.mjs';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { h } from 'hastscript';
@@ -38,6 +39,7 @@ export default defineConfig({
         remarkDirectiveToHast, // MUST run after remarkDirective - RESEARCH.md Pattern 1
         remarkRefResolve, // \ref{key} -> link; needs `math`/directive node types to exist for its own registry scan of every post
         remarkLabelStrip, // removes \label{key} marker paragraphs; must run after remarkMath/remarkDirective
+        remarkSentenceLists, // backslash-broken lines -> indented list items
       ],
       rehypePlugins: [
         rehypeKatex,
