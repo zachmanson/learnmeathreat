@@ -96,7 +96,6 @@ function buildSvg({ a, b, p1, p2 }) {
     ${labelMarkup === null ? "" : `<text x="${toX(p[0]).toFixed(2)}" y="${(toY(p[1]) + dy).toFixed(2)}" font-family="Georgia, serif" font-size="16" fill="${fill}" text-anchor="middle">${labelMarkup}</text>`}`;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <rect width="${width}" height="${height}" fill="white" />
 
   <!-- axes -->
   <line x1="${pad}" y1="${toY(0).toFixed(2)}" x2="${width - pad}" y2="${toY(0).toFixed(2)}" stroke="#ccc" stroke-width="1" />

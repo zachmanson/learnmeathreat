@@ -93,7 +93,6 @@ function buildSvg(points, { infinity = false } = {}) {
       <path d="M0,0 L8,4 L0,8 Z" fill="#1a1a2e" />
     </marker>
   </defs>
-  <rect width="${width}" height="${height}" fill="white" />
 
   ${gridLines.join("\n  ")}
 

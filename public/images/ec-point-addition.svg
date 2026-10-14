@@ -1,5 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640">
-  <rect width="640" height="640" fill="white" />
 
   <!-- axes -->
   <line x1="40" y1="320.00" x2="600" y2="320.00" stroke="#ccc" stroke-width="1" />
