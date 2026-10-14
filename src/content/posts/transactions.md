@@ -69,7 +69,7 @@ So far the `txid` has just been a long string of hex digits that points to an ea
 $$
 \texttt{txid} = \operatorname{SHA-256}(\operatorname{SHA-256}(\operatorname{bytes}(\text{transaction without its witnesses}))),
 $$
-where $\operatorname{bytes}(x)$ is $x$ written out as bytes. The witnesses are left out on purpose. The reason has to do with signatures, so I'll come back to it once we get to what gets signed.
+where $\operatorname{bytes}(x)$ is $x$ written out as bytes, field by field in the order of the definition. The witnesses are left out on purpose. The reason has to do with signatures, so I'll come back to it once we get to what gets signed.
 
 :::note
 Hashing twice with $\operatorname{SHA-256}$ comes up so often in Bitcoin that from now on I'll write it as
