@@ -71,10 +71,9 @@ test('3. chapters render as native details/summary accordions', () => {
   assert.ok(navRegion.includes('<details'), 'expected at least one <details> in left-nav');
   assert.ok(navRegion.includes('<summary'), 'expected at least one <summary> in left-nav');
   const summaryCount = (navRegion.match(/<summary/g) || []).length;
-  // Two chapters exist in the current seed content (Cryptography,
-  // Quantum Algorithms) since the 260905-rvd quick task added the
-  // Cryptography chapter stub posts.
-  assert.equal(summaryCount, 2, `expected 2 distinct chapters, found ${summaryCount}`);
+  // Three chapters exist in the current content: Cryptography, Quantum
+  // Algorithms (test fixtures) and Bitcoin.
+  assert.equal(summaryCount, 3, `expected 3 distinct chapters, found ${summaryCount}`);
 });
 
 test("4. the current post's chapter is open and its link marked", () => {
@@ -230,7 +229,13 @@ test('14. last post of a chapter flows into the next chapter', () => {
 });
 
 test('15. last post overall has a prev link and no next link', () => {
-  const html = readHtml('posts/authoring-primitives/index.html');
+  // The left nav lists every post in reading order, so its last link is the
+  // last post overall. Deriving it keeps this test valid as new posts are
+  // published at the end of the newest chapter.
+  const navRegion = extractLeftNavRegion(readHtml(`posts/${POST_SLUG}/index.html`));
+  const navSlugs = [...navRegion.matchAll(/href="\/posts\/([^/"]+)\/"/g)].map((m) => m[1]);
+  const lastSlug = navSlugs[navSlugs.length - 1];
+  const html = readHtml(`posts/${lastSlug}/index.html`);
   const postNav = extractPostNavRegion(html);
   assert.ok(
     postNav.includes('post-nav-prev'),
@@ -335,7 +340,8 @@ test('19. mini-ToC on the section page', () => {
 });
 
 test('20. mini-ToC absent on non-section posts', () => {
-  const slugs = nonDraftPostSlugs().filter((slug) => slug !== 'cryptography');
+  const sectionSlugs = ['cryptography', 'bitcoin'];
+  const slugs = nonDraftPostSlugs().filter((slug) => !sectionSlugs.includes(slug));
   for (const slug of slugs) {
     const html = readHtml(`posts/${slug}/index.html`);
     assert.ok(!html.includes('chapter-toc'), `expected no chapter-toc on ${slug}`);
