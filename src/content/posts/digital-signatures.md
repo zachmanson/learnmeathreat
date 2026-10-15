@@ -1,6 +1,6 @@
 ---
 title: Digital Signatures
-date: 2026-08-23
+date: 2026-08-24
 tags: ["Cryptography"]
 excerpt: "How you can prove you own a private key without ever revealing it, and why that's what actually authorizes a Bitcoin transaction."
 slug: digital-signatures

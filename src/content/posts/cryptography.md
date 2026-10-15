@@ -2,7 +2,7 @@
 title: Cryptography
 date: 2026-08-20
 tags: ["Cryptography"]
-excerpt: "The three cryptographic tools Bitcoin leans on, and why you need to understand them before any of the quantum stuff makes sense."
+excerpt: "The four cryptographic tools Bitcoin leans on, and why you need to understand them before any of the quantum stuff makes sense."
 slug: cryptography
 draft: false
 section: true
@@ -14,4 +14,5 @@ Anyways, here is what this section will cover:
 
 - [Asymmetric and symmetric cryptography](/posts/asymmetric-and-symmetric-cryptography/), and which one Bitcoin actually relies on
 - [Hash functions](/posts/hash-functions/), and what makes a function "cryptographically" hard to reverse
+- [Merkle trees](/posts/merkle-trees/), and how to prove one item is in a huge set without needing the whole set
 - [Digital signatures](/posts/digital-signatures/), and how they let you prove ownership without revealing a secret

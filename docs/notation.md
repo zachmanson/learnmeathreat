@@ -34,6 +34,8 @@ Symbol conventions for every post on the site. `/revisepost` checks drafts again
 | $\operatorname{hash}$ | A hash function | hash-functions |
 | $\ell$ | Hash output length in bits (an $\ell$-bit hash has $2^\ell$ outputs) | hash-functions |
 | $q$ | Number of tries/queries an attacker makes (birthday bound; later Grover) | hash-functions |
+| $a \Vert b$ (written `a \| b` in posts) | Concatenation of bitstrings $a$ and $b$ | merkle-trees |
+| $h_{\text{root}}$ | Merkle root | merkle-trees |
 | $\operatorname{SHA-256}^2$ | $\operatorname{SHA-256}$ applied twice, $\operatorname{SHA-256}(\operatorname{SHA-256}(x))$ | transactions |
 | $\sigma$ | A signature | digital-signatures |
 | $k$ | Signing nonce | digital-signatures |

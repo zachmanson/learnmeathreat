@@ -215,8 +215,8 @@ test('13. mid-chapter post links prev and next within the chapter', () => {
     'expected prev link to /posts/asymmetric-and-symmetric-cryptography/'
   );
   assert.ok(
-    postNav.includes('href="/posts/digital-signatures/"'),
-    'expected next link to /posts/digital-signatures/'
+    postNav.includes('href="/posts/merkle-trees/"'),
+    'expected next link to /posts/merkle-trees/'
   );
 });
 
@@ -288,7 +288,7 @@ test('17. Cryptography chapter is hierarchical', () => {
   );
 
   const subsectionCount = (fragment.match(/class="nav-subsection"/g) || []).length;
-  assert.equal(subsectionCount, 3, `expected exactly three nav-subsection, found ${subsectionCount}`);
+  assert.equal(subsectionCount, 4, `expected exactly four nav-subsection, found ${subsectionCount}`);
 
   const summaryEndIndex = fragment.indexOf('</summary>');
   const firstSubsectionIndex = fragment.indexOf('class="nav-subsection"');
@@ -323,9 +323,10 @@ test('19. mini-ToC on the section page', () => {
   assert.ok(fragment.includes('In this chapter'), 'expected the "In this chapter" label');
 
   const hrefs = [...fragment.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
-  assert.equal(hrefs.length, 3, `expected exactly 3 hrefs in the mini-ToC, found ${hrefs.length}`);
+  assert.equal(hrefs.length, 4, `expected exactly 4 hrefs in the mini-ToC, found ${hrefs.length}`);
   assert.ok(hrefs.includes('/posts/asymmetric-and-symmetric-cryptography/'));
   assert.ok(hrefs.includes('/posts/hash-functions/'));
+  assert.ok(hrefs.includes('/posts/merkle-trees/'));
   assert.ok(hrefs.includes('/posts/digital-signatures/'));
   assert.ok(
     !fragment.includes('href="/posts/cryptography/"'),
