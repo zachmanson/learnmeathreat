@@ -89,10 +89,10 @@ The other fix is to hash items differently from pairs of nodes, by putting a fix
 $$
 h_i = \operatorname{hash}(00000000 \| m_i), \qquad h_{12} = \operatorname{hash}(00000001 \| h_1 \| h_2).
 $$
-Now if someone passes off $h_1 \| h_2$ as an item, it gets the item tag in front,
+With the tags, the trick from before stops working. If someone claims $h_1 \| h_2$ is one of the items, you hash it the way you hash every item, with $00000000$ in front,
 $$
-\operatorname{hash}(00000000 \| h_1 \| h_2) \ne h_{12},
+\operatorname{hash}(00000000 \| h_1 \| h_2).
 $$
-so the proof fails \cite{LLK13}. Not every Merkle tree does this. The ones that skip it are only safe if you check how many layers the tree has.
+This doesn't come out as $h_{12}$, since $h_{12}$ was made with $00000001$ in front instead, so the proof fails \cite{LLK13}. Not every Merkle tree uses tags like this, and in the ones that don't, you have to check that the proof has the right number of hashes.
 
 All of this only works if you already trust the root. A Merkle proof tells you an item belongs to the tree with a given root, but if a stranger hands you both the root and the proof, they could have built the whole tree themselves out of whatever they wanted. Just like with a plain hash, nothing here tells you *who* the root came from. Next I'm covering digital signatures, which are how you prove who something came from.
