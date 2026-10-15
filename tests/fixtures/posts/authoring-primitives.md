@@ -23,7 +23,7 @@ And here's a raster image. Raster figures don't get inverted, since flipping the
 
 ## Callouts
 
-Four flavors of callout exist, each opened and closed explicitly so there's never any ambiguity about where a block starts and stops.
+Five flavors of callout exist, each opened and closed explicitly so there's never any ambiguity about where a block starts and stops.
 
 :::note
 This is a note. Use it for a side comment that's useful but not essential to the main flow.
@@ -37,6 +37,10 @@ It can also hold more than one paragraph, like this second one, and both should 
 
 :::tip
 This is a tip. Use it for a shortcut or a "here's an easier way to think about it."
+:::
+
+:::notation
+This is a notation box. Use it to introduce a symbol before the post starts using it, like $a \| b$ for $a$ followed by $b$.
 :::
 
 :::definition

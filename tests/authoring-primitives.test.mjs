@@ -207,3 +207,8 @@ test('13. (CONT-08) a repeated cite key yields exactly one bibliography entry', 
     `(CONT-08) expected the repeated Sho97 citation to produce exactly 1 bibliography entry, found ${shorEntries}`
   );
 });
+
+test('notation callout renders as its own callout variant', () => {
+  const html = readDistFile(`posts/${FIXTURE_SLUG}/index.html`);
+  assert.ok(html.includes('callout callout-notation'), 'expected "callout callout-notation" in fixture page');
+});

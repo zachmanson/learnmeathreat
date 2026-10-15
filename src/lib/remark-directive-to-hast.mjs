@@ -15,7 +15,7 @@
 // without inverting photographic/raster content.
 //
 // Callouts and definitions (D-09/D-10/D-11/D-12): `:::note`, `:::warning`,
-// `:::tip`, and `:::definition` container (or leaf) directives become
+// `:::tip`, `:::notation`, and `:::definition` container (or leaf) directives become
 // `<div class="callout callout-{name}">`, leaving children untouched so
 // nested Markdown (bold, links, inline math, multiple paragraphs) still
 // renders normally. Every `:::definition` also gets a sequential
@@ -49,7 +49,7 @@
 import { visit } from 'unist-util-visit';
 import { h } from 'hastscript';
 
-const CALLOUT_NAMES = new Set(['note', 'warning', 'tip', 'definition']);
+const CALLOUT_NAMES = new Set(['note', 'warning', 'tip', 'notation', 'definition']);
 const ALGORITHM_KEYWORD = /^(Input|Output|Procedure):[ \t]*/;
 
 function span(className, value) {

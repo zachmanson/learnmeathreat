@@ -227,6 +227,10 @@ pre code {
   border-left: 3px dotted var(--muted);
 }
 
+.callout-notation {
+  border-left: 6px solid var(--muted);
+}
+
 .callout > :first-child::before {
   font-weight: 600;
 }
@@ -241,6 +245,10 @@ pre code {
 
 .callout-tip > :first-child::before {
   content: "Tip: ";
+}
+
+.callout-notation > :first-child::before {
+  content: "Notation: ";
 }
 
 /* --- Sentence lists --- */
